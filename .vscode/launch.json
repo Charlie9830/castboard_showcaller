@@ -5,10 +5,20 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "castboard_remote",
+            "name": "web_castboard_remote",
             "request": "launch",
             "type": "dart",
-            "args": ["--web-renderer canvasKit"]
+            "deviceId": "chrome",
+            "args": [
+                "--web-renderer canvasKit"
+            ]
+        },
+        {
+            "name": "windows_castboard_remote",
+            "request": "launch",
+            "type": "dart",
+            "deviceId": "windows",
+            "args": []
         }
     ]
 }

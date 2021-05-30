@@ -10,3 +10,8 @@ enum PlaybackAction {
   prev,
   next,
 }
+
+enum CastChangePageTab {
+  presets,
+  castChangeEdit,
+}

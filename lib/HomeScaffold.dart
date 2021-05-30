@@ -1,17 +1,39 @@
 import 'package:castboard_remote/RemotePage.dart';
+import 'package:castboard_remote/cast_change_page/CastChangePage.dart';
+import 'package:castboard_remote/containers/CastChangePageContainer.dart';
 import 'package:castboard_remote/enums.dart';
 import 'package:castboard_remote/view_models/HomeScaffoldViewModel.dart';
 import 'package:flutter/material.dart';
 
-class HomeScaffold extends StatelessWidget {
+class HomeScaffold extends StatefulWidget {
   final HomeScaffoldViewModel viewModel;
   const HomeScaffold({Key? key, required this.viewModel}) : super(key: key);
+
+  @override
+  _HomeScaffoldState createState() => _HomeScaffoldState();
+}
+
+class _HomeScaffoldState extends State<HomeScaffold>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    _tabController = TabController(length: 2, vsync: this);
+    super.initState();
+  }
+
+  @override
+  void didUpdateWidget(covariant HomeScaffold oldWidget) {
+    super.didUpdateWidget(oldWidget);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Castboard Remote'),
+        bottom: _getBottomAppBar(context, widget.viewModel, _tabController),
         actions: [
           IconButton(
             icon: Icon(Icons.upload),
@@ -25,10 +47,14 @@ class HomeScaffold extends StatelessWidget {
           ),
         ],
       ),
-      body: _getCurrentPage(viewModel),
+      body: _getCurrentPage(widget.viewModel),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.bug_report),
+        onPressed: () => widget.viewModel.onDebugButtonPressed(),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         onTap: _handleBottomNavBarTap,
-        currentIndex: _getCurrentPageIndex(viewModel),
+        currentIndex: _getCurrentPageIndex(widget.viewModel),
         items: [
           BottomNavigationBarItem(
             label: 'Remote',
@@ -45,6 +71,34 @@ class HomeScaffold extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  PreferredSizeWidget? _getBottomAppBar(BuildContext context,
+      HomeScaffoldViewModel viewModel, TabController controller) {
+    if (viewModel.currentPage == HomePage.castChanges) {
+      return TabBar(
+        controller: controller,
+        onTap: _handleCastChangeTabTap,
+        tabs: [
+          Tab(
+            child: Text('Presets'),
+          ),
+          Tab(
+            child: Text('Cast Change'),
+          )
+        ],
+      );
+    }
+  }
+
+  void _handleCastChangeTabTap(int index) {
+    if (index == 0) {
+      widget.viewModel.onCastChangeTabChanged(CastChangePageTab.presets);
+    }
+
+    if (index == 0) {
+      widget.viewModel.onCastChangeTabChanged(CastChangePageTab.castChangeEdit);
+    }
   }
 
   int _getCurrentPageIndex(HomeScaffoldViewModel viewModel) {
@@ -69,7 +123,9 @@ class HomeScaffold extends StatelessWidget {
           onPrevPressed: () => viewModel.onPlaybackAction(PlaybackAction.prev),
         );
       case HomePage.castChanges:
-        return SizedBox();
+        return CastChangePageContainer(
+          tabController: _tabController,
+        );
       case HomePage.showfile:
         return SizedBox();
       default:
@@ -80,13 +136,13 @@ class HomeScaffold extends StatelessWidget {
   void _handleBottomNavBarTap(int index) {
     switch (index) {
       case 0:
-        viewModel.onHomePageChanged(HomePage.remote);
+        widget.viewModel.onHomePageChanged(HomePage.remote);
         return;
       case 1:
-        viewModel.onHomePageChanged(HomePage.castChanges);
+        widget.viewModel.onHomePageChanged(HomePage.castChanges);
         return;
       case 2:
-        viewModel.onHomePageChanged(HomePage.showfile);
+        widget.viewModel.onHomePageChanged(HomePage.showfile);
         return;
     }
   }

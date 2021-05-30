@@ -21,12 +21,18 @@ class HomeScaffoldContainer extends StatelessWidget {
       },
       converter: (Store<AppState> store) {
         return HomeScaffoldViewModel(
-            currentPage: store.state.homePage,
-            onHomePageChanged: (HomePage page) => store.dispatch(
-                  SetHomePage(page),
-                ),
-            onPlaybackAction: (action) =>
-                store.dispatch(sendPlaybackAction(action)));
+          currentPage: store.state.navState.homePage,
+          onHomePageChanged: (HomePage page) => store.dispatch(
+            SetHomePage(page),
+          ),
+          onPlaybackAction: (action) => store.dispatch(
+            sendPlaybackAction(action),
+          ),
+          onCastChangeTabChanged: (tab) => store.dispatch(
+            SetCastChangePageTab(tab),
+          ),
+          onDebugButtonPressed: () => store.dispatch(InitMockData()),
+        );
       },
     );
   }
