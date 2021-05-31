@@ -1,11 +1,110 @@
+import 'package:castboard_core/models/CastChangeModel.dart';
+import 'package:castboard_core/models/PresetModel.dart';
+import 'package:castboard_remote/dialogs/AddNewPresetDialog.dart';
+import 'package:castboard_remote/dialogs/DeletePresetDialog.dart';
+import 'package:castboard_remote/dialogs/EditPresetPropertiesDialog.dart';
 import 'package:castboard_remote/dialogs/SelectNestedPresetBottomSheet.dart';
 import 'package:castboard_remote/enums.dart';
 import 'package:castboard_remote/redux/actions/SyncActions.dart';
 import 'package:castboard_remote/redux/state/AppState.dart';
+import 'package:castboard_remote/utils/getUid.dart';
 import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:http/http.dart' as http;
+
+ThunkAction<AppState> editPresetProperties(
+    BuildContext context, String presetId) {
+  return (Store<AppState> store) async {
+    final preset = store.state.showState.presets[presetId];
+
+    if (preset == null) {
+      return;
+    }
+
+    final result = await showDialog(
+        context: context,
+        builder: (builderContext) =>
+            EditPresetPropertiesDialog(existing: preset));
+
+    if (result is PresetModel) {
+      store.dispatch(UpdatePreset(result));
+    }
+  };
+}
+
+ThunkAction<AppState> deletePreset(BuildContext context, String presetId) {
+  return (Store<AppState> store) async {
+    final preset = store.state.showState.presets[presetId];
+
+    if (preset == null) {
+      return;
+    }
+
+    final result = await showDialog(
+        context: context,
+        builder: (builderContext) =>
+            DeletePresetDialog(presetName: preset.name));
+
+    if (result is bool && result == true) {
+      store.dispatch(DeletePreset(presetId));
+    }
+  };
+}
+
+ThunkAction<AppState> duplicatePreset(String sourcePresetId) {
+  return (Store<AppState> store) async {
+    final preset = store.state.showState.presets[sourcePresetId];
+
+    if (preset == null) {
+      return;
+    }
+
+    final newPreset = preset.copyWith(
+      uid: getUid(),
+      name: preset.name + ' Copy',
+      createdOnRemote: true,
+      castChange: preset.castChange.copy(),
+    );
+
+    store.dispatch(AddNewPreset(newPreset));
+  };
+}
+
+ThunkAction<AppState> addNewPreset(BuildContext context) {
+  return (Store<AppState> store) async {
+    final result = await showDialog(
+      context: context,
+      builder: (builderContext) => AddNewPresetDialog(
+        existingSelectedPresetName: store.state.showState
+                .presets[store.state.editingState.selectedPresetId]?.name ??
+            '',
+      ),
+    );
+
+    if (result is AddNewPresetDialogResult) {
+      final preset = PresetModel(
+        uid: getUid(),
+        createdOnRemote: true,
+        name: result.name,
+        details: result.details,
+        isNestable: result.isNestable,
+        castChange: result.useExistingSelectedCastChange
+            ? buildCopiedCastChange(
+                store.state.showState
+                    .presets[store.state.editingState.selectedPresetId],
+                store.state.editingState.combinedPresetIds
+                    .map((id) => store.state.showState.presets[id]!)
+                    .toList(),
+                store.state.editingState.editedAssignments,
+              )
+            : CastChangeModel.initial(),
+      );
+
+      store.dispatch(AddNewPreset(preset));
+    }
+  };
+}
 
 ThunkAction<AppState> combinePreset(BuildContext context, String presetId) {
   return (Store<AppState> store) async {
@@ -73,4 +172,15 @@ String _buildPlaybackActionPayload(PlaybackAction action) {
     case PlaybackAction.next:
       return 'next';
   }
+}
+
+CastChangeModel buildCopiedCastChange(PresetModel? preset,
+    List<PresetModel> combinedPresets, CastChangeModel editedCastChange) {
+  if (preset == null) {
+    return CastChangeModel.initial();
+  }
+
+  return preset.castChange
+      .combinedWithOthers(combinedPresets.map((preset) => preset.castChange))
+      .stompedByOther(editedCastChange);
 }

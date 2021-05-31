@@ -49,7 +49,15 @@ class CastChangePageContainer extends StatelessWidget {
               actorRef: actorRef,
             ),
           ),
-          onClearLiveEdit: (trackRef) => store.dispatch(ClearLiveEdit(trackRef))
+          onClearLiveEdit: (trackRef) =>
+              store.dispatch(ClearLiveEdit(trackRef)),
+          onNewPresetButtonPressed: () => store.dispatch(addNewPreset(context)),
+          onDeletePreset: (presetId) =>
+              store.dispatch(deletePreset(context, presetId)),
+          onDuplicatePreset: (presetId) =>
+              store.dispatch(duplicatePreset(presetId)),
+          onEditPresetProperties: (presetId) =>
+              store.dispatch(editPresetProperties(context, presetId)),
         );
       },
     );

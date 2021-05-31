@@ -8,33 +8,49 @@ class PresetListTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final presets = viewModel.presets.values.toList();
     return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: presets.length,
-              itemBuilder: (context, index) {
-                final preset = presets[index];
-                final selected = preset.uid == viewModel.selectedPresetId;
-                return _PresetListTile(
-                  preset: preset,
-                  selected: selected,
-                  nestedPresetText: selected
-                      ? _getNestedPresetText(preset, viewModel.combinedPresets)
-                      : '',
-                  onTap: () => viewModel.onPresetSelected(preset.uid),
-                  onCombineButtonPressed: () =>
-                      viewModel.onCombinePresetButtonPressed(preset.uid),
-                );
-              },
-            ),
+      child: ListView(children: [
+        ...viewModel.presets.values.map((preset) {
+          final selected = preset.uid == viewModel.selectedPresetId;
+          return _PresetListTile(
+            preset: preset,
+            selected: selected,
+            allowPropertyEdit: preset.isBuiltIn == false,
+            onPresetAction: (action) => _handlePresetAction(preset.uid, action),
+            nestedPresetText: selected
+                ? _getNestedPresetText(preset, viewModel.combinedPresets)
+                : '',
+            onTap: () => viewModel.onPresetSelected(preset.uid),
+            onCombineButtonPressed: () =>
+                viewModel.onCombinePresetButtonPressed(preset.uid),
+          );
+        }).toList(),
+        Container(
+          margin: EdgeInsets.only(left: 16),
+          padding: EdgeInsets.symmetric(vertical: 16),
+          alignment: Alignment.center,
+          child: OutlinedButton.icon(
+            onPressed: viewModel.onNewPresetButtonPressed,
+            icon: Icon(Icons.add),
+            label: Text('New Preset'),
           ),
-        ],
-      ),
+        ),
+      ]),
     );
+  }
+
+  void _handlePresetAction(String presetId, _PresetAction action) {
+    switch (action) {
+      case _PresetAction.duplicate:
+        viewModel.onDuplicatePreset(presetId);
+        break;
+      case _PresetAction.editProperties:
+        viewModel.onEditPresetProperties(presetId);
+        break;
+      case _PresetAction.delete:
+        viewModel.onDeletePreset(presetId);
+        break;
+    }
   }
 
   String _getNestedPresetText(
@@ -54,7 +70,9 @@ class PresetListTab extends StatelessWidget {
 class _PresetListTile extends StatelessWidget {
   final PresetModel preset;
   final bool selected;
+  final bool allowPropertyEdit;
   final String nestedPresetText;
+  final Function(_PresetAction action) onPresetAction;
   final dynamic onTap;
   final dynamic onCombineButtonPressed;
 
@@ -62,6 +80,8 @@ class _PresetListTile extends StatelessWidget {
     Key? key,
     required this.preset,
     required this.selected,
+    required this.onPresetAction,
+    this.allowPropertyEdit = true,
     this.nestedPresetText = '',
     this.onTap,
     this.onCombineButtonPressed,
@@ -71,11 +91,9 @@ class _PresetListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       selected: selected,
-      
       leading: preset.isNestable
           ? Icon(Icons.subdirectory_arrow_right,
-              size: 20,
-              color: Theme.of(context).disabledColor)
+              size: 20, color: Theme.of(context).disabledColor)
           : null,
       title: Text(preset.name),
       subtitle: preset.details.isNotEmpty || nestedPresetText.isNotEmpty
@@ -83,12 +101,21 @@ class _PresetListTile extends StatelessWidget {
               details: preset.details, nestedPresetText: nestedPresetText)
           : null,
       onTap: () => onTap?.call(),
+      onLongPress: allowPropertyEdit ? () => _handleLongPress(context) : null,
       trailing: preset.isNestable == false
           ? IconButton(
               icon: Icon(Icons.merge_type),
               onPressed: () => onCombineButtonPressed?.call())
           : null,
     );
+  }
+
+  void _handleLongPress(BuildContext context) async {
+    await showModalBottomSheet(
+        context: context,
+        builder: (builderContext) => _PresetActionsBottomSheet(
+              onAction: onPresetAction,
+            ));
   }
 }
 
@@ -116,6 +143,57 @@ class _PresetSubtitle extends StatelessWidget {
                 ),
           ),
       ]),
+    );
+  }
+}
+
+enum _PresetAction {
+  duplicate,
+  editProperties,
+  delete,
+}
+
+class _PresetActionsBottomSheet extends StatelessWidget {
+  final void Function(_PresetAction action) onAction;
+
+  const _PresetActionsBottomSheet({Key? key, required this.onAction})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BottomSheet(
+      onClosing: () {},
+      builder: (context) {
+        return Column(
+          children: [
+            ListTile(
+              leading: Icon(Icons.copy),
+              title: Text('Duplicate'),
+              onTap: () {
+                Navigator.of(context).pop();
+                onAction(_PresetAction.duplicate);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.edit),
+              title: Text('Edit Properties'),
+              onTap: () {
+                Navigator.of(context).pop();
+                onAction(_PresetAction.editProperties);
+              },
+            ),
+            Divider(),
+            ListTile(
+              leading: Icon(Icons.delete),
+              title: Text('Delete'),
+              onTap: () {
+                Navigator.of(context).pop();
+                onAction(_PresetAction.delete);
+              },
+            )
+          ],
+        );
+      },
     );
   }
 }

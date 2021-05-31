@@ -15,9 +15,12 @@ class CastChangePageViewModel {
   final CastChangeModel? activeCastChange;
   final dynamic onPresetSelected;
   final dynamic onCombinePresetButtonPressed;
-  final void Function(TrackRef track, ActorRef actor)
-      onAssignmentUpdated;
+  final void Function(TrackRef track, ActorRef actor) onAssignmentUpdated;
   final void Function(TrackRef track) onClearLiveEdit;
+  final dynamic onNewPresetButtonPressed;
+  final dynamic onDuplicatePreset;
+  final dynamic onEditPresetProperties;
+  final dynamic onDeletePreset;
 
   CastChangePageViewModel({
     required this.presets,
@@ -31,5 +34,9 @@ class CastChangePageViewModel {
     required this.onCombinePresetButtonPressed,
     required this.onAssignmentUpdated,
     required this.onClearLiveEdit,
+    required this.onNewPresetButtonPressed,
+    required this.onDeletePreset,
+    required this.onEditPresetProperties,
+    required this.onDuplicatePreset,
   });
 }

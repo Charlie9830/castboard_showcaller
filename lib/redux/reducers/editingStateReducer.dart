@@ -7,6 +7,28 @@ import 'package:castboard_remote/redux/state/EditingState.dart';
 import 'package:castboard_remote/redux/state/NavigationState.dart';
 
 EditingState editingStateReducer(EditingState state, dynamic action) {
+  if (action is DeletePreset) {
+    return state.copyWith(
+      selectedPresetId: '',
+      deletedPresetIds: state.deletedPresetIds.toSet()..add(action.presetId),
+      combinedPresetIds: <String>[],
+      editedAssignments: CastChangeModel.initial(),
+    );
+  }
+
+  if (action is UpdatePreset) {
+    return state.copyWith(
+      selectedPresetId: action.preset.uid,
+      editedPresetIds: state.editedPresetIds.toSet()..add(action.preset.uid),
+    );
+  }
+
+  if (action is AddNewPreset) {
+    return state.copyWith(
+        freshPresetIds: state.freshPresetIds.toSet()..add(action.preset.uid),
+        selectedPresetId: action.preset.uid);
+  }
+
   if (action is SetSelectedPresetId) {
     if (action.id == state.selectedPresetId) {
       return state;
