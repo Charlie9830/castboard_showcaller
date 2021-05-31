@@ -1,4 +1,6 @@
+import 'package:castboard_core/models/ActorRef.dart';
 import 'package:castboard_core/models/PresetModel.dart';
+import 'package:castboard_core/models/TrackRef.dart';
 import 'package:castboard_remote/enums.dart';
 
 class SetHomePage {
@@ -19,8 +21,9 @@ class InitMockData {
 
 class SetSelectedPresetId {
   final String id;
+  final PresetModel? preset;
 
-  SetSelectedPresetId(this.id);
+  SetSelectedPresetId({required this.id, this.preset});
 }
 
 class UpdateCombinedPresets {
@@ -31,4 +34,20 @@ class UpdateCombinedPresets {
     required this.basePreset,
     required this.combinedPresets,
   });
+}
+
+class UpdateAssignment {
+  final TrackRef trackRef;
+  final ActorRef actorRef;
+
+  UpdateAssignment({
+    required this.trackRef,
+    required this.actorRef,
+  });
+}
+
+class ClearLiveEdit {
+  final TrackRef track;
+
+  ClearLiveEdit(this.track);
 }

@@ -1,4 +1,10 @@
+import 'package:castboard_core/classes/PhotoRef.dart';
+import 'package:castboard_core/models/ActorModel.dart';
+import 'package:castboard_core/models/ActorRef.dart';
+import 'package:castboard_core/models/CastChangeModel.dart';
 import 'package:castboard_core/models/PresetModel.dart';
+import 'package:castboard_core/models/TrackModel.dart';
+import 'package:castboard_core/models/TrackRef.dart';
 import 'package:castboard_remote/enums.dart';
 import 'package:castboard_remote/redux/actions/SyncActions.dart';
 import 'package:castboard_remote/redux/reducers/editingStateReducer.dart';
@@ -10,29 +16,98 @@ import 'package:castboard_remote/redux/state/AppState.dart';
 AppState appStateReducer(AppState state, dynamic action) {
   if (action is InitMockData) {
     return state.copyWith(
-        navState: state.navState.copyWith(
-          homePage: HomePage.castChanges,
-          castChangePageTab: CastChangePageTab.presets,
-        ),
-        showState: state.showState.copyWith(presets: <String, PresetModel>{
-          'preset1': PresetModel(uid: 'preset1', name: 'Full Cast Tina', details: 'Some details about this Preset'),
-          'preset2': PresetModel(uid: 'preset2', name: 'Full Cast Gemma'),
-          'preset3': PresetModel(
-            uid: 'preset3',
+      navState: state.navState.copyWith(
+        homePage: HomePage.castChanges,
+        castChangePageTab: CastChangePageTab.presets,
+      ),
+      showState: state.showState.copyWith(
+        actors: {
+          ActorRef('ID-bront'):
+              ActorModel(ref: ActorRef('ID-bront'), name: 'Bront'),
+          ActorRef('ID-fancy'):
+              ActorModel(ref: ActorRef('ID-fancy'), name: 'Fancy'),
+          ActorRef('ID-goofy'):
+              ActorModel(ref: ActorRef('ID-goofy'), name: 'Goofy'),
+          ActorRef('ID-snowy'):
+              ActorModel(ref: ActorRef('ID-snowy'), name: 'Snowy'),
+          ActorRef('ID-pittie'):
+              ActorModel(ref: ActorRef('ID-pittie'), name: 'Pittie'),
+          ActorRef('ID-pugglesworth'): ActorModel(
+              ref: ActorRef('ID-pugglesworth'), name: 'Pugglesworth'),
+          ActorRef('ID-shiba'):
+              ActorModel(ref: ActorRef('ID-shiba'), name: 'Shiba'),
+          ActorRef('ID-klaus'):
+              ActorModel(ref: ActorRef('ID-klaus'), name: 'Klaus'),
+          ActorRef('ID-jimmy'):
+              ActorModel(ref: ActorRef('ID-jimmy'), name: 'Jimmy'),
+        },
+        tracks: {
+          TrackRef('ID-TRACK-bully'): TrackModel(
+              ref: TrackRef('ID-TRACK-bully'),
+              title: 'The Bully',
+              internalTitle: 'The Bully'),
+          TrackRef('ID-TRACK-mayor'): TrackModel(
+              ref: TrackRef('ID-TRACK-mayor'),
+              title: 'The Mayor',
+              internalTitle: 'The Mayor'),
+          TrackRef('ID-TRACK-surfer'): TrackModel(
+              ref: TrackRef('ID-TRACK-surfer'),
+              title: 'The Surfer',
+              internalTitle: 'The Surfer'),
+          TrackRef('ID-TRACK-tracker'): TrackModel(
+              ref: TrackRef('ID-TRACK-tracker'),
+              title: 'The Tracker',
+              internalTitle: 'The Tracker'),
+          TrackRef('ID-TRACK-heroin'): TrackModel(
+              ref: TrackRef('ID-TRACK-heroin'),
+              title: 'The Heroin',
+              internalTitle: 'The Heroin'),
+          TrackRef('ID-TRACK-igor'): TrackModel(
+              ref: TrackRef('ID-TRACK-igor'),
+              title: 'Igor',
+              internalTitle: 'Igor'),
+          TrackRef('ID-TRACK-screamer'): TrackModel(
+              ref: TrackRef('ID-TRACK-screamer'),
+              title: 'The Screamer',
+              internalTitle: 'The Screamer'),
+          TrackRef('ID-TRACK-captain'): TrackModel(
+              ref: TrackRef('ID-TRACK-captain'),
+              title: 'Captain Merkel',
+              internalTitle: 'Captain Merkel'),
+          TrackRef('ID-TRACK-politician'): TrackModel(
+              ref: TrackRef('ID-TRACK-politician'),
+              title: 'The Politician',
+              internalTitle: 'The Politician'),
+        },
+        presets: {
+          PresetModel.builtIn().uid: PresetModel.builtIn().copyWith(
+            castChange: CastChangeModel({
+              TrackRef('ID-TRACK-bully'): ActorRef('ID-bront'),
+              TrackRef('ID-TRACK-mayor'): ActorRef('ID-fancy'),
+              TrackRef('ID-TRACK-surfer'): ActorRef('ID-goofy'),
+              TrackRef('ID-TRACK-tracker'): ActorRef('ID-snowy'),
+              TrackRef('ID-TRACK-heroin'): ActorRef('ID-pittie'),
+              TrackRef('ID-TRACK-igor'): ActorRef('ID-pugglesworth'),
+              TrackRef('ID-TRACK-screamer'): ActorRef.unassigned(),
+              TrackRef('ID-TRACK-captain'): ActorRef.unassigned(),
+              TrackRef('ID-TRACK-politician'): ActorRef.unassigned(),
+            }),
+          ),
+          'nestedPreset1': PresetModel(
+            uid: 'nestedPreset1',
+            isNestable: true,
             name: 'Diamonds',
-            isNestable: true,
-          ),
-          'preset4': PresetModel(
-            uid: 'preset4',
-            name: 'Saphires',
-            isNestable: true,
-          ),
-          'preset5': PresetModel(
-            uid: 'preset5',
-            name: 'Rubies',
-            isNestable: true,
-          ),
-        }));
+            castChange: CastChangeModel(
+              {
+                TrackRef('ID-TRACK-screamer'): ActorRef('ID-shiba'),
+                TrackRef('ID-TRACK-captain'): ActorRef('ID-klaus'),
+                TrackRef('ID-TRACK-politician'): ActorRef('ID-jimmy'),
+              },
+            ),
+          )
+        },
+      ),
+    );
   }
 
   return state.copyWith(

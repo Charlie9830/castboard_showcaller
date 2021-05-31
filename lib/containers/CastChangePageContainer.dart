@@ -27,18 +27,37 @@ class CastChangePageContainer extends StatelessWidget {
       },
       converter: (Store<AppState> store) {
         return CastChangePageViewModel(
-            actors: store.state.showState.actors,
-            tracks: store.state.showState.tracks,
-            presets: store.state.showState.presets,
-            selectedPresetId: store.state.editingState.selectedPresetId,
-            combinedPresets: _selectCombinedPresets(store),
-            onPresetSelected: (id) => store.dispatch(
-                  SetSelectedPresetId(id),
-                ),
-            onCombinePresetButtonPressed: (presetId) =>
-                store.dispatch(combinePreset(context, presetId)));
+          actors: store.state.showState.actors,
+          tracks: store.state.showState.tracks,
+          presets: store.state.showState.presets,
+          basePreset: _selectBasePreset(store),
+          selectedPresetId: store.state.editingState.selectedPresetId,
+          combinedPresets: _selectCombinedPresets(store),
+          activeCastChange: store.state.editingState.editedAssignments,
+          onPresetSelected: (id) => store.dispatch(
+            SetSelectedPresetId(
+              id: id,
+              preset: store.state.showState.presets[id],
+            ),
+          ),
+          onCombinePresetButtonPressed: (presetId) => store.dispatch(
+            combinePreset(context, presetId),
+          ),
+          onAssignmentUpdated: (trackRef, actorRef) => store.dispatch(
+            UpdateAssignment(
+              trackRef: trackRef,
+              actorRef: actorRef,
+            ),
+          ),
+          onClearLiveEdit: (trackRef) => store.dispatch(ClearLiveEdit(trackRef))
+        );
       },
     );
+  }
+
+  PresetModel? _selectBasePreset(Store<AppState> store) {
+    return store
+        .state.showState.presets[store.state.editingState.selectedPresetId];
   }
 
   List<PresetModel> _selectCombinedPresets(Store<AppState> store) =>

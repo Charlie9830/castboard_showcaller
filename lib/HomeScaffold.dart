@@ -61,7 +61,7 @@ class _HomeScaffoldState extends State<HomeScaffold>
             icon: Icon(Icons.settings_remote),
           ),
           BottomNavigationBarItem(
-            label: 'Cast Change',
+            label: 'Cast Changes',
             icon: Icon(Icons.sticky_note_2),
           ),
           BottomNavigationBarItem(
@@ -82,9 +82,11 @@ class _HomeScaffoldState extends State<HomeScaffold>
         tabs: [
           Tab(
             child: Text('Presets'),
+            icon: Icon(Icons.favorite),
           ),
           Tab(
             child: Text('Cast Change'),
+            icon: Icon(Icons.sticky_note_2),
           )
         ],
       );
