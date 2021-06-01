@@ -3,6 +3,7 @@ import 'package:castboard_remote/enums.dart';
 import 'package:castboard_remote/redux/actions/AsyncActions.dart';
 import 'package:castboard_remote/redux/actions/SyncActions.dart';
 import 'package:castboard_remote/redux/state/AppState.dart';
+import 'package:castboard_remote/view_models/HomePopupMenuViewModel.dart';
 import 'package:castboard_remote/view_models/HomeScaffoldViewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -32,8 +33,33 @@ class HomeScaffoldContainer extends StatelessWidget {
             SetCastChangePageTab(tab),
           ),
           onDebugButtonPressed: () => store.dispatch(InitMockData()),
+          popupMenuViewModel: HomePopupMenuViewModel(
+            allowPresetUpdates: _selectShowPresetActions(store),
+            mode: _selectSettingsMode(store),
+            onUpdatePreset: () => store.dispatch(updatePreset(context)),
+            onResetChanges: () => store.dispatch(ResetLiveEdits()),
+            onSettingsPressed: () => store.dispatch(showPlayerSettings(context)),
+
+          ),
         );
       },
     );
+  }
+
+  HomeSettingsMenuMode _selectSettingsMode(Store<AppState> store) {
+    if (store.state.navState.homePage == HomePage.remote ||
+        store.state.navState.homePage == HomePage.showfile) {
+      return HomeSettingsMenuMode.playerSettings;
+    }
+
+    if (store.state.navState.homePage == HomePage.castChanges) {
+      return HomeSettingsMenuMode.castChangeActions;
+    }
+
+    return HomeSettingsMenuMode.generic;
+  }
+
+  bool _selectShowPresetActions(Store<AppState> store) {
+    return store.state.editingState.editedAssignments.isNotEmpty;
   }
 }

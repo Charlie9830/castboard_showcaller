@@ -1,3 +1,4 @@
+import 'package:castboard_remote/HomePopupMenu.dart';
 import 'package:castboard_remote/RemotePage.dart';
 import 'package:castboard_remote/cast_change_page/CastChangePage.dart';
 import 'package:castboard_remote/containers/CastChangePageContainer.dart';
@@ -39,12 +40,9 @@ class _HomeScaffoldState extends State<HomeScaffold>
             icon: Icon(Icons.upload),
             onPressed: () {},
           ),
-          PopupMenuButton(
-            icon: Icon(Icons.more_vert),
-            itemBuilder: (buttonContext) => [
-              PopupMenuItem(child: Text('Player Settings')),
-            ],
-          ),
+          HomePopupMenu(
+            viewModel: widget.viewModel.popupMenuViewModel,
+          )
         ],
       ),
       body: _getCurrentPage(widget.viewModel),

@@ -4,6 +4,7 @@ import 'package:castboard_remote/dialogs/AddNewPresetDialog.dart';
 import 'package:castboard_remote/dialogs/DeletePresetDialog.dart';
 import 'package:castboard_remote/dialogs/EditPresetPropertiesDialog.dart';
 import 'package:castboard_remote/dialogs/SelectNestedPresetBottomSheet.dart';
+import 'package:castboard_remote/dialogs/UpdatePresetDialog.dart';
 import 'package:castboard_remote/enums.dart';
 import 'package:castboard_remote/redux/actions/SyncActions.dart';
 import 'package:castboard_remote/redux/state/AppState.dart';
@@ -12,6 +13,42 @@ import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:http/http.dart' as http;
+
+ThunkAction<AppState> updatePreset(BuildContext context) {
+  return (Store<AppState> store) async {
+    final preset = store
+        .state.showState.presets[store.state.editingState.selectedPresetId];
+
+    if (preset == null) {
+      return;
+    }
+
+    final result = await showDialog(
+        context: context,
+        builder: (builderContext) => UpdatePresetDialog(
+              presetName: preset.name,
+            ));
+
+    if (result is bool && result == true) {
+      final newPreset = preset.copyWith(
+        castChange: preset.castChange
+            .combinedWithOthers(
+              store.state.editingState.combinedPresetIds
+                  .map((id) => store.state.showState.presets[id]!.castChange),
+            )
+            .stompedByOther(store.state.editingState.editedAssignments),
+      );
+
+      store.dispatch(UpdatePreset(newPreset));
+      store.dispatch(ResetLiveEdits());
+      store.dispatch(ClearCombinedPresets());
+    }
+  };
+}
+
+ThunkAction<AppState> showPlayerSettings(BuildContext context) {
+  return (Store<AppState> store) async {};
+}
 
 ThunkAction<AppState> editPresetProperties(
     BuildContext context, String presetId) {
@@ -75,11 +112,7 @@ ThunkAction<AppState> addNewPreset(BuildContext context) {
   return (Store<AppState> store) async {
     final result = await showDialog(
       context: context,
-      builder: (builderContext) => AddNewPresetDialog(
-        existingSelectedPresetName: store.state.showState
-                .presets[store.state.editingState.selectedPresetId]?.name ??
-            '',
-      ),
+      builder: (builderContext) => AddNewPresetDialog(),
     );
 
     if (result is AddNewPresetDialogResult) {
@@ -89,7 +122,7 @@ ThunkAction<AppState> addNewPreset(BuildContext context) {
         name: result.name,
         details: result.details,
         isNestable: result.isNestable,
-        castChange: result.useExistingSelectedCastChange
+        castChange: result.useExistingCastChange
             ? buildCopiedCastChange(
                 store.state.showState
                     .presets[store.state.editingState.selectedPresetId],
@@ -129,7 +162,6 @@ ThunkAction<AppState> combinePreset(BuildContext context, String presetId) {
       ),
     );
 
-    print(result.runtimeType);
     if (result is String && result.isNotEmpty) {
       final newCombinedPresetIds =
           store.state.editingState.combinedPresetIds.toList()..add(result);
@@ -181,6 +213,6 @@ CastChangeModel buildCopiedCastChange(PresetModel? preset,
   }
 
   return preset.castChange
-      .combinedWithOthers(combinedPresets.map((preset) => preset.castChange))
+      .combinedWithOthers(combinedPresets.map((item) => item.castChange))
       .stompedByOther(editedCastChange);
 }

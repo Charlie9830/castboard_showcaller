@@ -14,7 +14,7 @@ class CastChangeEditTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Padding(
       padding: EdgeInsets.only(left: 16.0, right: 16.0),
       child: CastChangeDetails(
         selfScrolling: true,
@@ -25,7 +25,7 @@ class CastChangeEditTab extends StatelessWidget {
         tracksByRef: viewModel.tracks,
         assignments: _getAssignments(),
         onAssignmentUpdated: viewModel.onAssignmentUpdated,
-        onClearLiveEdit: viewModel.onClearLiveEdit,
+        onResetLiveEdit: viewModel.onClearLiveEdit,
       ),
     );
   }
@@ -35,18 +35,17 @@ class CastChangeEditTab extends StatelessWidget {
         viewModel.basePreset, viewModel.combinedPresets)
       ..addAll(
         {
-          if (viewModel.activeCastChange != null)
-            ...viewModel.activeCastChange!.assignments.map(
-              (trackRef, actorRef) => MapEntry(
-                trackRef.uid,
-                ActorTuple(
-                  actorRef: actorRef,
-                  fromNestedPreset: false,
-                  sourcePresetName: '',
-                  fromLiveEdit: true,
-                ),
+          ...viewModel.editedAssignments.assignments.map(
+            (trackRef, actorRef) => MapEntry(
+              trackRef.uid,
+              ActorTuple(
+                actorRef: actorRef,
+                fromNestedPreset: false,
+                sourcePresetName: '',
+                fromLiveEdit: true,
               ),
-            )
+            ),
+          )
         },
       );
   }

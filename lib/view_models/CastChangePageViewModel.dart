@@ -12,7 +12,7 @@ class CastChangePageViewModel {
   final Map<TrackRef, TrackModel> tracks;
   final String selectedPresetId;
   final List<PresetModel> combinedPresets;
-  final CastChangeModel? activeCastChange;
+  final CastChangeModel editedAssignments;
   final dynamic onPresetSelected;
   final dynamic onCombinePresetButtonPressed;
   final void Function(TrackRef track, ActorRef actor) onAssignmentUpdated;
@@ -27,7 +27,7 @@ class CastChangePageViewModel {
     required this.basePreset,
     required this.actors,
     required this.tracks,
-    required this.activeCastChange,
+    required this.editedAssignments,
     required this.selectedPresetId,
     required this.combinedPresets,
     required this.onPresetSelected,

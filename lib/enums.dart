@@ -15,3 +15,9 @@ enum CastChangePageTab {
   presets,
   castChangeEdit,
 }
+
+enum HomeSettingsMenuMode {
+  playerSettings,
+  castChangeActions,
+  generic,
+}

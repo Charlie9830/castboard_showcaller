@@ -15,6 +15,7 @@ class MyApp extends StatelessWidget {
     return StoreProvider<AppState>(
       store: appStore,
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Castboard Remote',
         theme: ThemeData(
           primarySwatch: Colors.blue,

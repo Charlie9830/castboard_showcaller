@@ -25,7 +25,6 @@ dependencies:
     sdk: flutter
   castboard_core:
     path: ../castboard_core
-  cupertino_icons: ^1.0.2
   flutter_redux: ^0.8.2
   http: ^0.13.3
   path: ^1.8.0

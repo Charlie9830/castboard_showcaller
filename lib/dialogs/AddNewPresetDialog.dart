@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 
 class AddNewPresetDialog extends StatefulWidget {
-  final String existingSelectedPresetName;
   AddNewPresetDialog({
     Key? key,
-    this.existingSelectedPresetName = '',
   }) : super(key: key);
 
   @override
@@ -15,7 +13,7 @@ class _AddNewPresetDialogState extends State<AddNewPresetDialog> {
   late TextEditingController _nameController;
   late TextEditingController _detailsController;
   bool _allowCreation = false;
-  bool _startFromExisting = false;
+  bool _useExistingCastChange = true;
   bool _isNestable = false;
 
   @override
@@ -42,7 +40,7 @@ class _AddNewPresetDialogState extends State<AddNewPresetDialog> {
                       AddNewPresetDialogResult(
                         name: _nameController.text,
                         details: _detailsController.text,
-                        useExistingSelectedCastChange: _startFromExisting,
+                        useExistingCastChange: _useExistingCastChange,
                         isNestable: _isNestable,
                       ),
                     )
@@ -53,6 +51,7 @@ class _AddNewPresetDialogState extends State<AddNewPresetDialog> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TextField(
               autofocus: true,
@@ -75,14 +74,14 @@ class _AddNewPresetDialogState extends State<AddNewPresetDialog> {
               value: _isNestable,
               onChanged: (value) => setState(() => _isNestable = value),
             ),
-            if (widget.existingSelectedPresetName.isNotEmpty)
-              SwitchListTile(
-                  contentPadding: switchListTilePadding,
-                  title: Text(
-                      "Start from ${widget.existingSelectedPresetName}'s cast change"),
-                  value: _startFromExisting,
-                  onChanged: (value) =>
-                      setState(() => _startFromExisting = value)),
+            SwitchListTile(
+              contentPadding: switchListTilePadding,
+              title: Text("Copy from current cast change"),
+              value: _useExistingCastChange,
+              onChanged: (value) => setState(() => _useExistingCastChange = value),
+            ),
+            if (_useExistingCastChange == false)
+            Text('Cast change will start from blank', style: Theme.of(context).textTheme.caption),
           ],
         ),
       ),
@@ -100,13 +99,13 @@ class _AddNewPresetDialogState extends State<AddNewPresetDialog> {
 class AddNewPresetDialogResult {
   final String name;
   final String details;
-  final bool useExistingSelectedCastChange;
+  final bool useExistingCastChange;
   final bool isNestable;
 
   AddNewPresetDialogResult({
     this.name = '',
     this.details = '',
-    this.useExistingSelectedCastChange = false,
+    this.useExistingCastChange = false,
     this.isNestable = false,
   });
 }

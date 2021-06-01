@@ -58,6 +58,14 @@ class ClearLiveEdit {
   ClearLiveEdit(this.track);
 }
 
+class ClearCombinedPresets {
+  ClearCombinedPresets();
+}
+
+class ResetLiveEdits {
+  ResetLiveEdits();
+}
+
 class AddNewPreset {
   final PresetModel preset;
 

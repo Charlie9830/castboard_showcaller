@@ -9,7 +9,7 @@ import 'package:castboard_remote/redux/state/NavigationState.dart';
 EditingState editingStateReducer(EditingState state, dynamic action) {
   if (action is DeletePreset) {
     return state.copyWith(
-      selectedPresetId: '',
+      selectedPresetId: const PresetModel.builtIn().uid,
       deletedPresetIds: state.deletedPresetIds.toSet()..add(action.presetId),
       combinedPresetIds: <String>[],
       editedAssignments: CastChangeModel.initial(),
@@ -25,8 +25,11 @@ EditingState editingStateReducer(EditingState state, dynamic action) {
 
   if (action is AddNewPreset) {
     return state.copyWith(
-        freshPresetIds: state.freshPresetIds.toSet()..add(action.preset.uid),
-        selectedPresetId: action.preset.uid);
+      freshPresetIds: state.freshPresetIds.toSet()..add(action.preset.uid),
+      selectedPresetId: action.preset.uid,
+      combinedPresetIds: const [],
+      editedAssignments: CastChangeModel.initial(),
+    );
   }
 
   if (action is SetSelectedPresetId) {
@@ -49,6 +52,12 @@ EditingState editingStateReducer(EditingState state, dynamic action) {
     );
   }
 
+  if (action is ClearCombinedPresets) {
+    return state.copyWith(
+      combinedPresetIds: const [],
+    );
+  }
+
   if (action is UpdateAssignment) {
     return state.copyWith(
         editedAssignments: state.editedAssignments
@@ -59,6 +68,12 @@ EditingState editingStateReducer(EditingState state, dynamic action) {
     return state.copyWith(
       editedAssignments:
           state.editedAssignments.withRemovedAssignment(action.track),
+    );
+  }
+
+  if (action is ResetLiveEdits) {
+    return state.copyWith(
+      editedAssignments: CastChangeModel.initial(),
     );
   }
 

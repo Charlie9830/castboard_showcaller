@@ -33,7 +33,7 @@ class CastChangePageContainer extends StatelessWidget {
           basePreset: _selectBasePreset(store),
           selectedPresetId: store.state.editingState.selectedPresetId,
           combinedPresets: _selectCombinedPresets(store),
-          activeCastChange: store.state.editingState.editedAssignments,
+          editedAssignments: store.state.editingState.editedAssignments,
           onPresetSelected: (id) => store.dispatch(
             SetSelectedPresetId(
               id: id,

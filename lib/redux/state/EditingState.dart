@@ -1,4 +1,5 @@
 import 'package:castboard_core/models/CastChangeModel.dart';
+import 'package:castboard_core/models/PresetModel.dart';
 
 class EditingState {
   final String selectedPresetId;
@@ -22,7 +23,7 @@ class EditingState {
   });
 
   EditingState.initial()
-      : selectedPresetId = '',
+      : selectedPresetId = const PresetModel.builtIn().uid,
         combinedPresetIds = const [],
         editedAssignments = CastChangeModel.initial(),
         freshPresetIds = const {},
