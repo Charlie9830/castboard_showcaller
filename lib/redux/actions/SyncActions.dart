@@ -1,7 +1,14 @@
 import 'package:castboard_core/models/ActorRef.dart';
 import 'package:castboard_core/models/PresetModel.dart';
+import 'package:castboard_core/models/RemoteShowData.dart';
 import 'package:castboard_core/models/TrackRef.dart';
 import 'package:castboard_remote/enums.dart';
+
+class ReceiveShowData {
+  final RemoteShowData data;
+
+  ReceiveShowData(this.data);
+}
 
 class DeletePreset {
   final String presetId;

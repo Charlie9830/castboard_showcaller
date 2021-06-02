@@ -8,8 +8,10 @@ class HomeScaffoldViewModel {
   final dynamic onPlaybackAction;
   final dynamic onCastChangeTabChanged;
   final dynamic onDebugButtonPressed;
+  final dynamic onUploadCastChange;
 
   HomeScaffoldViewModel({
+    required this.onUploadCastChange,
     required this.currentPage,
     required this.popupMenuViewModel,
     required this.onHomePageChanged,

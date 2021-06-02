@@ -1,4 +1,7 @@
+import 'package:castboard_remote/Routes.dart';
+import 'package:castboard_remote/SplashScreen.dart';
 import 'package:castboard_remote/containers/HomeScaffoldContainer.dart';
+import 'package:castboard_remote/containers/SplashScreenContainer.dart';
 import 'package:castboard_remote/redux/AppStore.dart';
 import 'package:castboard_remote/redux/state/AppState.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +24,11 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           brightness: Brightness.dark,
         ),
-        home: HomeScaffoldContainer(),
+        initialRoute: Routes.splash,
+        routes: {
+          Routes.splash: (context) => SplashScreenContainer(),
+          Routes.home: (context) => HomeScaffoldContainer()
+        },
       ),
     );
   }

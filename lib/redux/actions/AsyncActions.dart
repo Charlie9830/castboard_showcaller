@@ -1,5 +1,14 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:castboard_core/models/CastChangeModel.dart';
 import 'package:castboard_core/models/PresetModel.dart';
+import 'package:castboard_core/models/RemoteCastChangeData.dart';
+import 'package:castboard_core/models/RemoteShowData.dart';
+import 'package:castboard_core/models/ShowDataModel.dart';
+import 'package:castboard_core/models/ShowModificationData.dart';
+import 'package:castboard_remote/Routes.dart';
 import 'package:castboard_remote/dialogs/AddNewPresetDialog.dart';
 import 'package:castboard_remote/dialogs/DeletePresetDialog.dart';
 import 'package:castboard_remote/dialogs/EditPresetPropertiesDialog.dart';
@@ -9,10 +18,63 @@ import 'package:castboard_remote/enums.dart';
 import 'package:castboard_remote/redux/actions/SyncActions.dart';
 import 'package:castboard_remote/redux/state/AppState.dart';
 import 'package:castboard_remote/utils/getUid.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:http/http.dart' as http;
+
+ThunkAction<AppState> uploadCastChange(BuildContext context) {
+  return (Store<AppState> store) async {
+    final uri = Uri.http(store.state.playerState.uri.authority, '/show');
+
+    final remoteShowData = RemoteShowData(
+        playbackState: PlaybackStateData(
+          combinedPresetIds: store.state.editingState.combinedPresetIds,
+          currentPresetId: store.state.editingState.selectedPresetId,
+          liveCastChangeEdits: store.state.editingState.editedAssignments,
+        ),
+        showModificationData: ShowModificationData(
+          deletedPresetIds: store.state.editingState.deletedPresetIds,
+          editedPresetIds: store.state.editingState.editedPresetIds,
+          freshPresetIds: store.state.editingState.freshPresetIds,
+        ),
+        showData: ShowDataModel(
+          presets: store.state.showState.presets,
+        ));
+
+    final jsonShowData = json.encode(remoteShowData.toMap());
+
+    final response = await http.post(uri, body: jsonShowData, headers: {'Content-Type': 'application/json'});
+    print(response.statusCode);
+  };
+}
+
+ThunkAction<AppState> pullShowData(BuildContext context) {
+  return (Store<AppState> store) async {
+    final uri = Uri.http(store.state.playerState.uri.authority, '/show');
+
+    try {
+      final response = await http.get(uri);
+
+      if (response.statusCode == 200) {
+        final raw = jsonDecode(response.body);
+        final data = RemoteShowData.fromMap(raw);
+        store.dispatch(ReceiveShowData(data));
+
+        Navigator.of(context).popAndPushNamed(Routes.home);
+      } else {
+        print(response.statusCode);
+      }
+    } catch (error) {
+      print(error);
+
+      if (kDebugMode) {
+        Navigator.of(context).popAndPushNamed(Routes.home);
+      }
+    }
+  };
+}
 
 ThunkAction<AppState> updatePreset(BuildContext context) {
   return (Store<AppState> store) async {

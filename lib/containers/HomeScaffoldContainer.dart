@@ -33,6 +33,7 @@ class HomeScaffoldContainer extends StatelessWidget {
             SetCastChangePageTab(tab),
           ),
           onDebugButtonPressed: () => store.dispatch(InitMockData()),
+          onUploadCastChange: () => store.dispatch(uploadCastChange(context)),
           popupMenuViewModel: HomePopupMenuViewModel(
             allowPresetUpdates: _selectShowPresetActions(store),
             mode: _selectSettingsMode(store),

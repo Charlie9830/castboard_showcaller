@@ -1,6 +1,5 @@
 import 'package:castboard_remote/HomePopupMenu.dart';
 import 'package:castboard_remote/RemotePage.dart';
-import 'package:castboard_remote/cast_change_page/CastChangePage.dart';
 import 'package:castboard_remote/containers/CastChangePageContainer.dart';
 import 'package:castboard_remote/enums.dart';
 import 'package:castboard_remote/view_models/HomeScaffoldViewModel.dart';
@@ -38,7 +37,7 @@ class _HomeScaffoldState extends State<HomeScaffold>
         actions: [
           IconButton(
             icon: Icon(Icons.upload),
-            onPressed: () {},
+            onPressed: widget.viewModel.onUploadCastChange,
           ),
           HomePopupMenu(
             viewModel: widget.viewModel.popupMenuViewModel,
@@ -127,7 +126,6 @@ class _HomeScaffoldState extends State<HomeScaffold>
           tabController: _tabController,
         );
       case HomePage.showfile:
-        return SizedBox();
       default:
         return SizedBox();
     }
