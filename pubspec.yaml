@@ -25,6 +25,9 @@ dependencies:
     sdk: flutter
   castboard_core:
     path: ../castboard_core
+  file_selector: ^0.8.2
+  file_selector_web: ^0.8.1
+  file_selector_windows: ^0.0.2
   flutter_redux: ^0.8.2
   http: ^0.13.3
   path: ^1.8.0

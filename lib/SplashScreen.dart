@@ -29,7 +29,7 @@ class _SplashScreenState extends State<SplashScreen> {
             child: LinearProgressIndicator(),
           ),
           SizedBox(height: 16),
-          Text('Just a moment', style: Theme.of(context).textTheme.caption),
+          Text('Just a moment', style: Theme.of(context).textTheme.caption!.copyWith(color: Colors.white)),
         ],
       ),
     ));

@@ -12,17 +12,86 @@ import 'package:castboard_remote/Routes.dart';
 import 'package:castboard_remote/dialogs/AddNewPresetDialog.dart';
 import 'package:castboard_remote/dialogs/DeletePresetDialog.dart';
 import 'package:castboard_remote/dialogs/EditPresetPropertiesDialog.dart';
+import 'package:castboard_remote/dialogs/FileUploadDialog.dart';
+import 'package:castboard_remote/dialogs/ResyncingDialog.dart';
 import 'package:castboard_remote/dialogs/SelectNestedPresetBottomSheet.dart';
 import 'package:castboard_remote/dialogs/UpdatePresetDialog.dart';
 import 'package:castboard_remote/enums.dart';
 import 'package:castboard_remote/redux/actions/SyncActions.dart';
 import 'package:castboard_remote/redux/state/AppState.dart';
+import 'package:castboard_remote/snackBars/FileUploadSnackBar.dart';
 import 'package:castboard_remote/utils/getUid.dart';
+import 'package:file_selector/file_selector.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:http/http.dart' as http;
+
+ThunkAction<AppState> uploadShowFile(BuildContext context, XFile file) {
+  return (Store<AppState> store) async {
+    final uri = Uri.http(store.state.playerState.uri.authority, '/upload');
+
+    final byteData = await file.readAsBytes();
+
+    final result = await showDialog(
+        context: context,
+        builder: (builderContext) =>
+            FileUploadDialog(uri: uri, byteData: byteData));
+
+    if (result is FileUploadDialogResult) {
+      if (result.response == null) {
+        // An Exception was thrown.
+        print(result.exceptionMessage);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: FileUploadSnackBar(success: false)),
+        );
+        return;
+      }
+
+      final statusCode = result.response!.statusCode;
+
+      if (statusCode != 200) {
+        // Something went wrong Serverside.
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: FileUploadSnackBar(success: false)),
+        );
+        print(result.response!.body);
+        return;
+      }
+
+      // Ensure we are in sync with Player.
+      showDialog(context: context, builder: (_) => ResyncingDialog());
+      await Future.delayed(Duration(
+          seconds:
+              4)); // Give he player some breathing room to finish loading the show File.
+
+      final uri = Uri.http(store.state.playerState.uri.authority, '/show');
+
+      try {
+        final response = await http.get(uri);
+
+        if (response.statusCode == 200) {
+          final raw = jsonDecode(response.body);
+          final data = RemoteShowData.fromMap(raw);
+          store.dispatch(ReceiveShowData(data));
+          store.dispatch(SetHomePage(HomePage.remote));
+
+          Navigator.of(context).pop();
+        } else {
+          print(response.statusCode);
+        }
+      } catch (error) {
+        print(error);
+
+        if (kDebugMode) {
+          store.dispatch(SetHomePage(HomePage.remote));
+          Navigator.of(context).pop();
+        }
+      }
+    }
+  };
+}
 
 ThunkAction<AppState> uploadCastChange(BuildContext context) {
   return (Store<AppState> store) async {
@@ -45,7 +114,8 @@ ThunkAction<AppState> uploadCastChange(BuildContext context) {
 
     final jsonShowData = json.encode(remoteShowData.toMap());
 
-    final response = await http.post(uri, body: jsonShowData, headers: {'Content-Type': 'application/json'});
+    final response = await http.post(uri,
+        body: jsonShowData, headers: {'Content-Type': 'application/json'});
     print(response.statusCode);
   };
 }

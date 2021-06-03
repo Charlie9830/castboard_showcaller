@@ -23,7 +23,9 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
           brightness: Brightness.dark,
+          backgroundColor: Colors.black,
         ),
+        
         initialRoute: Routes.splash,
         routes: {
           Routes.splash: (context) => SplashScreenContainer(),

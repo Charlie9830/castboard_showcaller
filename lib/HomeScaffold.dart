@@ -1,7 +1,9 @@
 import 'package:castboard_remote/HomePopupMenu.dart';
-import 'package:castboard_remote/RemotePage.dart';
+import 'package:castboard_remote/containers/ShowfilePageContainer.dart';
+import 'package:castboard_remote/root_pages/remote_page/RemotePage.dart';
 import 'package:castboard_remote/containers/CastChangePageContainer.dart';
 import 'package:castboard_remote/enums.dart';
+import 'package:castboard_remote/root_pages/showfile_page/ShowFilePage.dart';
 import 'package:castboard_remote/view_models/HomeScaffoldViewModel.dart';
 import 'package:flutter/material.dart';
 
@@ -127,7 +129,7 @@ class _HomeScaffoldState extends State<HomeScaffold>
         );
       case HomePage.showfile:
       default:
-        return SizedBox();
+        return ShowfilePageContainer();
     }
   }
 

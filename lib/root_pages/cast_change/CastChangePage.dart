@@ -1,5 +1,5 @@
-import 'package:castboard_remote/cast_change_page/CastChangeEditTab.dart';
-import 'package:castboard_remote/cast_change_page/PresetListTab.dart';
+import 'package:castboard_remote/root_pages/cast_change/CastChangeEditTab.dart';
+import 'package:castboard_remote/root_pages/cast_change/PresetListTab.dart';
 import 'package:castboard_remote/view_models/CastChangePageViewModel.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +17,9 @@ class CastChangePage extends StatelessWidget {
       controller: tabController,
       children: [
         PresetListTab(viewModel: viewModel),
-        CastChangeEditTab(viewModel: viewModel,),
+        CastChangeEditTab(
+          viewModel: viewModel,
+        ),
       ],
     ));
   }
