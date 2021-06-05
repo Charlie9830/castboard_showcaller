@@ -47,6 +47,9 @@ class _FileDownloadDialogState extends State<FileDownloadDialog> {
     try {
       final response = await http.get(widget.uri);
 
+      // Pause for Effect.
+      await Future.delayed(Duration(seconds: 3));
+
       Navigator.of(context).pop(
         FileDownloadDialogResult(response: response),
       );
