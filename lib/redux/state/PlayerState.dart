@@ -12,7 +12,7 @@ class PlayerState {
   PlayerState.initial()
       : uri = kDebugMode
             ? Uri.http('localhost:8080', '')
-            : Uri.http('192.168.0.102:8080', '');
+            : Uri.base;
 
   PlayerState copyWith({
     Uri? uri,
