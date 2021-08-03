@@ -16,7 +16,7 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Castboard Remote',
       theme: ThemeData(
-        fontFamily: 'Roboto',
+        fontFamily: 'Poppins',
         primarySwatch: Colors.blue,
         brightness: Brightness.dark,
         backgroundColor: Colors.black,
