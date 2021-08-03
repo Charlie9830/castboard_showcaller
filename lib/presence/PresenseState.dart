@@ -1,0 +1,4 @@
+enum PresenseState {
+  connected,
+  disconnected,
+}

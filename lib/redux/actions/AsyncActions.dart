@@ -17,6 +17,7 @@ import 'package:castboard_remote/dialogs/ResyncingDialog.dart';
 import 'package:castboard_remote/dialogs/SelectNestedPresetBottomSheet.dart';
 import 'package:castboard_remote/dialogs/UpdatePresetDialog.dart';
 import 'package:castboard_remote/enums.dart';
+import 'package:castboard_remote/presence/PresenceManager.dart';
 import 'package:castboard_remote/redux/actions/SyncActions.dart';
 import 'package:castboard_remote/redux/state/AppState.dart';
 import 'package:castboard_remote/root_pages/WaitingOverlay.dart';
@@ -141,7 +142,7 @@ ThunkAction<AppState> uploadCastChange(BuildContext context) {
       }
     } catch (error) {
       Navigator.of(context).pop();
-      
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: GeneralMessageSnackBar(
@@ -153,10 +154,9 @@ ThunkAction<AppState> uploadCastChange(BuildContext context) {
   };
 }
 
-ThunkAction<AppState> pullShowData(BuildContext context) {
+ThunkAction<AppState> initializeApp(BuildContext context) {
   return (Store<AppState> store) async {
     final uri = Uri.http(store.state.playerState.uri.authority, '/show');
-
     try {
       final response = await http.get(uri);
 
@@ -166,6 +166,12 @@ ThunkAction<AppState> pullShowData(BuildContext context) {
         store.dispatch(ReceiveShowData(data));
 
         Navigator.of(context).popAndPushNamed(Routes.home);
+
+        // Establish a Heartbeat.
+        final presenceManager = PresenseManager(
+          serverUri: store.state.playerState.uri,
+          sessionId: getUid(),
+        )..establishHeartbeat();
       } else {
         print(response.statusCode);
       }

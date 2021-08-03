@@ -24,7 +24,7 @@ class SplashScreenContainer extends StatelessWidget {
       },
       converter: (Store<AppState> store) {
         return SplashScreenViewModel(
-            onPullDownData: () => store.dispatch(pullShowData(context)));
+            onPullDownData: () => store.dispatch(initializeApp(context)));
       },
     );
   }
