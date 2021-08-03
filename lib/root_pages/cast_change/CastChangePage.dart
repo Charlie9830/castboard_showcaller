@@ -16,10 +16,10 @@ class CastChangePage extends StatelessWidget {
         child: TabBarView(
       controller: tabController,
       children: [
-        PresetListTab(viewModel: viewModel),
         CastChangeEditTab(
           viewModel: viewModel,
         ),
+        PresetListTab(viewModel: viewModel),
       ],
     ));
   }

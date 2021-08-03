@@ -80,13 +80,13 @@ class _HomeScaffoldState extends State<HomeScaffold>
         onTap: _handleCastChangeTabTap,
         tabs: [
           Tab(
+            child: Text('Cast Change'),
+            icon: Icon(Icons.sticky_note_2),
+          ),
+          Tab(
             child: Text('Presets'),
             icon: Icon(Icons.favorite),
           ),
-          Tab(
-            child: Text('Cast Change'),
-            icon: Icon(Icons.sticky_note_2),
-          )
         ],
       );
     }
