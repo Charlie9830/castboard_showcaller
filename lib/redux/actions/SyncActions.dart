@@ -4,6 +4,12 @@ import 'package:castboard_core/models/RemoteShowData.dart';
 import 'package:castboard_core/models/TrackRef.dart';
 import 'package:castboard_remote/enums.dart';
 
+class SetFetched {
+  final bool fetched;
+
+  SetFetched(this.fetched);
+}
+
 class ReceiveShowData {
   final RemoteShowData data;
 

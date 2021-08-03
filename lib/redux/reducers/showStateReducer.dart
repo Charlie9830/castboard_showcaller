@@ -4,8 +4,15 @@ import 'package:castboard_remote/redux/state/AppState.dart';
 import 'package:castboard_remote/redux/state/ShowState.dart';
 
 ShowState showStateReducer(ShowState state, dynamic action) {
+  if (action is SetFetched) {
+    return state.copyWith(
+      fetched: action.fetched,
+    );
+  }
+
   if (action is ReceiveShowData) {
     return state.copyWith(
+      fetched: true,
       actors: action.data.showData.actors,
       tracks: action.data.showData.tracks,
       presets: action.data.showData.presets,

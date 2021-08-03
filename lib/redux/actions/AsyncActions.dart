@@ -19,7 +19,9 @@ import 'package:castboard_remote/dialogs/UpdatePresetDialog.dart';
 import 'package:castboard_remote/enums.dart';
 import 'package:castboard_remote/redux/actions/SyncActions.dart';
 import 'package:castboard_remote/redux/state/AppState.dart';
+import 'package:castboard_remote/root_pages/WaitingOverlay.dart';
 import 'package:castboard_remote/snackBars/FileUploadSnackBar.dart';
+import 'package:castboard_remote/snackBars/GeneralMessageSnackBar.dart';
 import 'package:castboard_remote/utils/getUid.dart';
 import 'package:file_selector/file_selector.dart';
 import 'package:flutter/foundation.dart';
@@ -114,9 +116,40 @@ ThunkAction<AppState> uploadCastChange(BuildContext context) {
 
     final jsonShowData = json.encode(remoteShowData.toMap());
 
-    final response = await http.post(uri,
-        body: jsonShowData, headers: {'Content-Type': 'application/json'});
-    print(response.statusCode);
+    showDialog(context: context, builder: (_) => WaitingOverlay());
+
+    try {
+      final response = await http.post(uri,
+          body: jsonShowData, headers: {'Content-Type': 'application/json'});
+
+      Navigator.of(context).pop();
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: GeneralMessageSnackBar(
+                success: true, message: 'Changes uploaded'),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: GeneralMessageSnackBar(
+                success: false,
+                message: 'Something went wrong, please try again.'),
+          ),
+        );
+      }
+    } catch (error) {
+      Navigator.of(context).pop();
+      
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: GeneralMessageSnackBar(
+              success: false,
+              message: 'Something went wrong, please try again.'),
+        ),
+      );
+    }
   };
 }
 
@@ -139,7 +172,9 @@ ThunkAction<AppState> pullShowData(BuildContext context) {
     } catch (error) {
       print(error);
 
+      // If in debug. Continue on through to home anyway.
       if (kDebugMode) {
+        store.dispatch(SetFetched(true));
         Navigator.of(context).popAndPushNamed(Routes.home);
       }
     }
