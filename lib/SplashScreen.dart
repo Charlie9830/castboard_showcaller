@@ -24,12 +24,12 @@ class _SplashScreenState extends State<SplashScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          Text('Castboard', style: Theme.of(context).textTheme.headline5),
+          SizedBox(height: 16),
           SizedBox(
             width: MediaQuery.of(context).size.width / 2,
             child: LinearProgressIndicator(),
           ),
-          SizedBox(height: 16),
-          Text('Just a moment', style: Theme.of(context).textTheme.caption!.copyWith(color: Colors.white)),
         ],
       ),
     ));
