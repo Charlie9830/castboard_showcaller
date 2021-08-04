@@ -1,5 +1,6 @@
 import 'package:castboard_remote/Routes.dart';
 import 'package:castboard_remote/containers/HomeScaffoldContainer.dart';
+import 'package:castboard_remote/containers/PlayerSettingsPageContainer.dart';
 import 'package:castboard_remote/containers/SplashScreenContainer.dart';
 import 'package:castboard_remote/root_pages/WaitingOverlay.dart';
 import 'package:castboard_remote/view_models/AppViewModel.dart';
@@ -21,12 +22,13 @@ class App extends StatelessWidget {
         brightness: Brightness.dark,
         backgroundColor: Colors.black,
       ),
-      initialRoute: Routes.splash,
+      initialRoute: Routes.settings,//Routes.splash,
       routes: {
         Routes.splash: (context) => SplashScreenContainer(),
         Routes.home: (context) => viewModel.fetched
             ? HomeScaffoldContainer()
             : SplashScreenContainer(),
+        Routes.settings: (context) => PlayerSettingsPageContainer(),
       },
       navigatorObservers: [],
     );
