@@ -13,7 +13,7 @@ class HomePopupMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (viewModel.mode == HomeSettingsMenuMode.playerSettings) {
-      return _SettingsButton(onPressed: () => viewModel.onSettingsPressed);
+      return _SettingsButton(onPressed: () => viewModel.onSettingsPressed());
     }
 
     if (viewModel.mode == HomeSettingsMenuMode.castChangeActions) {
