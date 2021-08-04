@@ -1,5 +1,6 @@
 import 'package:castboard_remote/dialogs/FileDownloadDialog.dart';
 import 'package:castboard_remote/root_pages/showfile_page/ListItemHeader.dart';
+import 'package:castboard_remote/root_pages/showfile_page/UploadShowfileButton.dart';
 import 'package:castboard_remote/snackBars/FileDownloadSnackBar.dart';
 import 'package:castboard_remote/view_models/ShowfilePageViewModel.dart';
 import 'package:file_selector/file_selector.dart';
@@ -19,9 +20,6 @@ class ShowfilePage extends StatefulWidget {
 }
 
 class _ShowfilePageState extends State<ShowfilePage> {
-  String _fileName = '';
-  XFile? _file;
-
   @override
   Widget build(BuildContext context) {
     final spacer = SizedBox(height: 16);
@@ -37,22 +35,17 @@ class _ShowfilePageState extends State<ShowfilePage> {
                 dateModified: 'Today',
               ),
             ),
-            ListItemHeader(title: 'Upload .castboard File'),
+            UploadShowfileButton(
+                onUploadFile: (file) => widget.viewModel.onFileUpload(file)),
             spacer,
-            _UploadFileListItem(
-                fileName: _fileName,
-                isAwaitingUpload: true,
-                onSelectPressed: _handleSelectFileForUploadPressed,
-                onUploadPressed: () {
-                  if (_file != null) {
-                    widget.viewModel.onFileUpload(_file!);
-                  }
-                }),
-            spacer,
-            ListItemHeader(title: 'Download .castboard File'),
-            spacer,
-            _DownloadFileListItem(
-                onDownloadButtonPressed: _handleDownloadButtonPressed)
+            Column(
+              children: [
+                ListItemHeader(title: 'Download .castboard File'),
+                spacer,
+                _DownloadFileListItem(
+                    onDownloadButtonPressed: _handleDownloadButtonPressed),
+              ],
+            )
           ],
         ));
   }
@@ -74,7 +67,8 @@ class _ShowfilePageState extends State<ShowfilePage> {
           XTypeGroup(label: 'Castboard file', extensions: ['castboard']);
 
       final path = await getSavePath(
-          acceptedTypeGroups: [typeGroup], suggestedName: 'Castboard Showfile.castboard');
+          acceptedTypeGroups: [typeGroup],
+          suggestedName: 'Castboard Showfile.castboard');
 
       if (path == null || path.isEmpty) {
         return;
@@ -89,19 +83,6 @@ class _ShowfilePageState extends State<ShowfilePage> {
       // Something went wrong.
       ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: FileDownloadSnackBar(success: false)));
-    }
-  }
-
-  void _handleSelectFileForUploadPressed() async {
-    final typeGroup =
-        XTypeGroup(label: 'Castboard file', extensions: ['castboard']);
-    final file = await openFile(acceptedTypeGroups: [typeGroup]);
-
-    if (file != null) {
-      setState(() {
-        _fileName = p.basenameWithoutExtension(file.path);
-        _file = file;
-      });
     }
   }
 }
@@ -126,66 +107,6 @@ class _DownloadFileListItem extends StatelessWidget {
         ),
       ],
     ));
-  }
-}
-
-class _UploadFileListItem extends StatelessWidget {
-  final String fileName;
-  final bool isAwaitingUpload;
-  final dynamic onSelectPressed;
-  final dynamic onUploadPressed;
-
-  const _UploadFileListItem({
-    Key? key,
-    required this.fileName,
-    required this.onSelectPressed,
-    required this.onUploadPressed,
-    this.isAwaitingUpload = false,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    if (fileName.isEmpty) {
-      return Row(
-        children: [
-          OutlinedButton(
-            child: Text('Select'),
-            onPressed: onSelectPressed,
-          )
-        ],
-      );
-    } else {
-      return Column(
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: Text(
-                  fileName,
-                  overflow: TextOverflow.fade,
-                ),
-              ),
-              TextButton(
-                child: Text('Change'),
-                onPressed: onSelectPressed,
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: ElevatedButton.icon(
-                  icon: Icon(Icons.file_upload),
-                  label: Text('Upload'),
-                  onPressed: onUploadPressed,
-                ),
-              ),
-            ],
-          ),
-        ],
-      );
-    }
   }
 }
 
@@ -224,15 +145,6 @@ class _FileData extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  BoxDecoration _getDecoration(BuildContext context) {
-    return BoxDecoration(
-      border: Border.all(color: Theme.of(context).dividerColor, width: 2),
-      borderRadius: BorderRadius.all(
-        Radius.circular(8),
       ),
     );
   }

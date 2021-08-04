@@ -39,8 +39,7 @@ class HomeScaffoldContainer extends StatelessWidget {
             mode: _selectSettingsMode(store),
             onUpdatePreset: () => store.dispatch(updatePreset(context)),
             onResetChanges: () => store.dispatch(ResetLiveEdits()),
-            onSettingsPressed: () => store.dispatch(showPlayerSettings(context)),
-
+            onSettingsPressed: () => store.dispatch(goToSettingsPage(context)),
           ),
         );
       },

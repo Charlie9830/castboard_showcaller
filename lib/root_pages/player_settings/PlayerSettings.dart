@@ -12,7 +12,9 @@ class _PlayerSettingsState extends State<PlayerSettings> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          leading: IconButton(icon: Icon(Icons.arrow_back), onPressed: () {}),
+          leading: IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () => Navigator.of(context).pop()),
           title: Text('Settings'),
           actions: [
             TextButton(onPressed: () {}, child: Text('Save')),

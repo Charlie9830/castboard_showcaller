@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:castboard_core/models/CastChangeModel.dart';
 import 'package:castboard_core/models/PresetModel.dart';
@@ -30,6 +29,12 @@ import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:http/http.dart' as http;
+
+ThunkAction<AppState> goToSettingsPage(BuildContext context) {
+  return (Store<AppState> store) async {
+    Navigator.of(context).pushNamed(Routes.settings);
+  };
+}
 
 ThunkAction<AppState> uploadShowFile(BuildContext context, XFile file) {
   return (Store<AppState> store) async {
@@ -165,7 +170,14 @@ ThunkAction<AppState> initializeApp(BuildContext context) {
         final data = RemoteShowData.fromMap(raw);
         store.dispatch(ReceiveShowData(data));
 
-        Navigator.of(context).popAndPushNamed(Routes.home);
+        final bool showLoaded =
+            data.manifest != null && data.manifest!.created.isNotEmpty;
+
+        if (showLoaded) {
+          Navigator.of(context).popAndPushNamed(Routes.home);
+        } else {
+          Navigator.of(context).popAndPushNamed(Routes.showfileUpload);
+        }
 
         // Establish a Heartbeat.
         final presenceManager = PresenseManager(
@@ -181,7 +193,7 @@ ThunkAction<AppState> initializeApp(BuildContext context) {
       // If in debug. Continue on through to home anyway.
       if (kDebugMode) {
         store.dispatch(SetFetched(true));
-        Navigator.of(context).popAndPushNamed(Routes.home);
+        Navigator.of(context).popAndPushNamed(Routes.showfileUpload);
       }
     }
   };
@@ -217,10 +229,6 @@ ThunkAction<AppState> updatePreset(BuildContext context) {
       store.dispatch(ClearCombinedPresets());
     }
   };
-}
-
-ThunkAction<AppState> showPlayerSettings(BuildContext context) {
-  return (Store<AppState> store) async {};
 }
 
 ThunkAction<AppState> editPresetProperties(
