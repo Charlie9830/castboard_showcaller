@@ -6,7 +6,7 @@ class WaitingOverlay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        color: Color.fromARGB(128, 0, 0, 0),
+        color: Color.fromARGB(64, 0, 0, 0),
         alignment: Alignment.center,
         child: SizedBox(
           width: 64,
