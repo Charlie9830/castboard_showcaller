@@ -36,7 +36,8 @@ ThunkAction<AppState> goToSettingsPage(BuildContext context) {
   };
 }
 
-ThunkAction<AppState> uploadShowFile(BuildContext context, XFile file) {
+ThunkAction<AppState> uploadShowFile(BuildContext context, XFile file,
+    {bool isInitialRoute = false}) {
   return (Store<AppState> store) async {
     final uri = Uri.http(store.state.playerState.uri.authority, '/upload');
 
@@ -85,7 +86,13 @@ ThunkAction<AppState> uploadShowFile(BuildContext context, XFile file) {
           store.dispatch(ReceiveShowData(data));
           store.dispatch(SetHomePage(HomePage.remote));
 
+          // Pops the resyncing Dialog.
           Navigator.of(context).pop();
+
+          if (isInitialRoute) {
+            // Because this is the initial route. We have no home page route underneath in the stack.
+            Navigator.of(context).pushNamed(Routes.home);
+          }
         } else {
           print(response.statusCode);
         }
@@ -94,7 +101,12 @@ ThunkAction<AppState> uploadShowFile(BuildContext context, XFile file) {
 
         if (kDebugMode) {
           store.dispatch(SetHomePage(HomePage.remote));
-          Navigator.of(context).pop();
+
+          if (Navigator.of(context).canPop()) {
+            Navigator.of(context).pop();
+          } else {
+            Navigator.of(context).popAndPushNamed(Routes.home);
+          }
         }
       }
     }
@@ -193,7 +205,7 @@ ThunkAction<AppState> initializeApp(BuildContext context) {
       // If in debug. Continue on through to home anyway.
       if (kDebugMode) {
         store.dispatch(SetFetched(true));
-        Navigator.of(context).popAndPushNamed(Routes.showfileUpload);
+        Navigator.of(context).popAndPushNamed(Routes.home);
       }
     }
   };

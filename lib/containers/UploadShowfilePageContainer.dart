@@ -23,8 +23,8 @@ class UploadShowfilePageContainer extends StatelessWidget {
         return UploadShowfilePageViewModel(
             onSettingsButtonPressed: () =>
                 store.dispatch(goToSettingsPage(context)),
-            onFileUpload: (file) =>
-                store.dispatch(uploadShowFile(context, file)));
+            onFileUpload: (file) => store
+                .dispatch(uploadShowFile(context, file, isInitialRoute: true)));
       },
     );
   }
