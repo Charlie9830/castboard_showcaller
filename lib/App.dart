@@ -4,6 +4,8 @@ import 'package:castboard_remote/containers/PlayerSettingsPageContainer.dart';
 import 'package:castboard_remote/containers/SplashScreenContainer.dart';
 import 'package:castboard_remote/containers/UploadShowfilePageContainer.dart';
 import 'package:castboard_remote/root_pages/WaitingOverlay.dart';
+import 'package:castboard_remote/root_pages/connection_failed/ConnectionFailed.dart';
+import 'package:castboard_remote/root_pages/device_restarting/DeviceRestarting.dart';
 import 'package:castboard_remote/view_models/AppViewModel.dart';
 import 'package:flutter/material.dart';
 
@@ -31,6 +33,8 @@ class App extends StatelessWidget {
             : SplashScreenContainer(),
         Routes.settings: (context) => PlayerSettingsPageContainer(),
         Routes.showfileUpload: (context) => UploadShowfilePageContainer(),
+        Routes.deviceRestarting: (context) => DeviceRestarting(),
+        Routes.connectionFailed: (context) => ConnectionFailed(),
       },
       navigatorObservers: [],
     );

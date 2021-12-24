@@ -30,6 +30,25 @@ import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:http/http.dart' as http;
 
+ThunkAction<AppState> showDeviceRestartingPage(BuildContext context) {
+  return (Store<AppState> store) async {
+    Navigator.of(context).pushNamed(Routes.deviceRestarting);
+
+    final playerUp = await _waitForPlayerRestart(
+        store.state.playerState.uri, Duration(seconds: 2));
+
+    if (playerUp == true) {
+      // Player has restarted and we are ready to restablish a connection.
+      Navigator.of(context)
+          .pushNamedAndRemoveUntil(Routes.splash, (route) => false);
+    } else {
+      // Player has not returned. We may have discconected off the network. Prompt the user to refresh.
+      Navigator.of(context)
+          .pushNamedAndRemoveUntil(Routes.connectionFailed, (route) => false);
+    }
+  };
+}
+
 ThunkAction<AppState> goToSettingsPage(BuildContext context) {
   return (Store<AppState> store) async {
     Navigator.of(context).pushNamed(Routes.settings);
@@ -408,4 +427,43 @@ CastChangeModel buildCopiedCastChange(PresetModel? preset,
   return preset.castChange
       .combinedWithOthers(combinedPresets.map((item) => item.castChange))
       .stompedByOther(editedCastChange);
+}
+
+/// Waits for the player to restart, begins pinging the player for signs of life after the [initialWait] as expired.
+/// Returns true once player has replied to a ping.
+/// Will attempt to ping the player [maxAttempts] number of times before returning false.
+Future<bool> _waitForPlayerRestart(
+  Uri uri,
+  Duration initialWait, {
+  int maxAttempts = 5,
+  int throttleSeconds = 1,
+}) async {
+  // Wait for the initial time before we start pinging the player.
+  await Future.delayed(initialWait);
+
+  int currentAttempt = 0;
+  while (currentAttempt <= maxAttempts) {
+    print('Attemping to Ping Player, currentAttempt $currentAttempt');
+    final result = await _pingPlayer(uri);
+    if (result == true) {
+      return true;
+    }
+
+    await Future.delayed(Duration(seconds: throttleSeconds));
+    currentAttempt++;
+  }
+
+  return false;
+}
+
+Future<bool> _pingPlayer(Uri uri) async {
+  final target = Uri.http(uri.authority, '/alive/doop');
+
+  try {
+    final response = await http.get(target);
+    return response.statusCode == 200 ? true : false;
+  } catch (e) {
+    print(e);
+    return false;
+  }
 }
