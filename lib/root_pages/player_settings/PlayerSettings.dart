@@ -91,12 +91,15 @@ class _PlayerSettingsState extends State<PlayerSettings> {
         _Subheading(text: 'Video Output'),
         ListTile(
           title: Text('Output Resolution'),
-          trailing: ResolutionDropdown(
-            selectedValue: _editingSystemConfig == null
-                ? _loadedSystemConfig.deviceResolution
-                : _editingSystemConfig!.deviceResolution,
-            resolutions: _loadedSystemConfig.availableResolutions.resolutions,
-            onChanged: _handleResolutionChanged,
+          trailing: SizedBox(
+            width: 180,
+            child: ResolutionDropdown(
+              selectedValue: _editingSystemConfig == null
+                  ? _loadedSystemConfig.deviceResolution
+                  : _editingSystemConfig!.deviceResolution,
+              resolutions: _loadedSystemConfig.availableResolutions.resolutions,
+              onChanged: _handleResolutionChanged,
+            ),
           ),
         ),
         ListTile(

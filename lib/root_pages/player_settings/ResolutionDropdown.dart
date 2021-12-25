@@ -18,7 +18,6 @@ class ResolutionDropdown extends StatelessWidget {
     if (resolutions.isEmpty) {
       return _ResolutionErrorFallback();
     }
-
     return SizedBox(
       height: 56,
       width: 180,
