@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 Future<bool> pushSystemConfig(Uri uri, SystemConfig config) async {
   final request = await http.post(uri, body: json.encode(config.toMap()));
 
-  if (request.statusCode == 200 && request.body is String) {
+  if (request.statusCode == 200) {
     return request.body == 'true';
   }
 

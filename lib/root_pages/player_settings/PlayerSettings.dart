@@ -2,8 +2,11 @@ import 'package:castboard_core/models/system_controller/AvailableResolutions.dar
 import 'package:castboard_core/models/system_controller/DeviceOrientation.dart';
 import 'package:castboard_core/models/system_controller/DeviceResolution.dart';
 import 'package:castboard_core/models/system_controller/SystemConfig.dart';
+import 'package:castboard_core/system-commands/SystemCommands.dart';
+import 'package:castboard_remote/root_pages/player_settings/ConfirmationDialog.dart';
 import 'package:castboard_remote/root_pages/player_settings/OrientationDropdown.dart';
 import 'package:castboard_remote/root_pages/player_settings/ResolutionDropdown.dart';
+import 'package:castboard_remote/root_pages/player_settings/SendSystemCommand.dart';
 import 'package:castboard_remote/root_pages/player_settings/UploadingSettingsDialog.dart';
 import 'package:castboard_remote/root_pages/player_settings/pullSystemConfig.dart';
 import 'package:castboard_remote/root_pages/player_settings/pushSystemConfig.dart';
@@ -110,22 +113,67 @@ class _PlayerSettingsState extends State<PlayerSettings> {
             alignment: WrapAlignment.spaceBetween,
             children: [
               TextButton(
-                child: Text('Power Off'),
-                onPressed: () {},
+                child: Text('Shutdown Player'),
+                onPressed: () => _handleShutdownButtonPressed(context),
               ),
               TextButton(
-                child: Text('Restart Device'),
-                onPressed: () {},
+                child: Text('Reboot Player'),
+                onPressed: () => _handleRebootButtonPressed(context),
               ),
               TextButton(
-                child: Text('Restart Software'),
-                onPressed: () {},
+                child: Text('Restart Player Software'),
+                onPressed: () => _handleRestartSoftwareButtonPressed(context),
               )
             ],
           ),
         )
       ],
     );
+  }
+
+  void _handleShutdownButtonPressed(BuildContext context) async {
+    final result = await showDialog(
+        context: context,
+        builder: (context) => ConfirmationDialog(
+            title: 'Shutdown Player',
+            message: "Are you sure?",
+            affirmativeText: 'Shutdown',
+            negativeText: 'Cancel'));
+
+    if (result is bool && result == true) {
+      sendSystemCommand(
+          widget.viewModel.systemConfigUri, SystemCommand.powerOff());
+    }
+  }
+
+  void _handleRebootButtonPressed(BuildContext context) async {
+    final result = await showDialog(
+        context: context,
+        builder: (context) => ConfirmationDialog(
+            title: 'Reboot Player',
+            message: "Are you sure?",
+            affirmativeText: 'Reboot',
+            negativeText: 'Cancel'));
+
+    if (result is bool && result == true) {
+      sendSystemCommand(
+          widget.viewModel.systemConfigUri, SystemCommand.reboot());
+    }
+  }
+
+  void _handleRestartSoftwareButtonPressed(BuildContext context) async {
+    final result = await showDialog(
+        context: context,
+        builder: (context) => ConfirmationDialog(
+            title: 'Restart Player Software',
+            message: "Are you sure?",
+            affirmativeText: 'Restart',
+            negativeText: 'Cancel'));
+
+    if (result is bool && result == true) {
+      sendSystemCommand(
+          widget.viewModel.systemConfigUri, SystemCommand.restartApplication());
+    }
   }
 
   SystemConfig _getEditingConfig() {
@@ -204,8 +252,6 @@ class _PlayerSettingsState extends State<PlayerSettings> {
     try {
       final restartRequired = await pushSystemConfig(
           widget.viewModel.systemConfigUri, _editingSystemConfig!);
-
-      print(restartRequired);
 
       if (restartRequired) {
         widget.viewModel.onShowDeviceRestartingSplash?.call();
