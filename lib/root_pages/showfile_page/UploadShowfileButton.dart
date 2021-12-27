@@ -46,7 +46,7 @@ class _UploadShowfileButtonState extends State<UploadShowfileButton> {
 
     if (file != null) {
       setState(() {
-        _fileName = p.basenameWithoutExtension(file.path);
+        _fileName = file.name;
         _file = file;
       });
     }
