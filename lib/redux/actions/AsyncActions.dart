@@ -70,7 +70,6 @@ ThunkAction<AppState> uploadShowFile(BuildContext context, XFile file,
     if (result is FileUploadDialogResult) {
       if (result.response == null) {
         // An Exception was thrown.
-        print(result.exceptionMessage);
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: FileUploadSnackBar(success: false)),
         );

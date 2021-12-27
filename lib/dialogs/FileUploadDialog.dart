@@ -35,13 +35,18 @@ class _FileUploadDialogState extends State<FileUploadDialog> {
             child: CircularProgressIndicator(),
           ),
           SizedBox(height: 16),
-          Text('Uploading file..', style: Theme.of(context).textTheme.caption!.copyWith(color: Colors.white)),
+          Text('Uploading file..',
+              style: Theme.of(context)
+                  .textTheme
+                  .caption!
+                  .copyWith(color: Colors.white)),
         ],
       ),
     );
   }
 
-  void _startFileTransfer() async {
+  Future<void> _startFileTransfer() async {
+    // TODO: Currently the PUT request stalls the UI due to it having to encode the byteData (probabaly). We should look at converting this to a Stream request.
     try {
       final response = await http.put(widget.uri, body: widget.byteData);
       Navigator.of(context).pop(FileUploadDialogResult(
