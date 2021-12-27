@@ -6,7 +6,7 @@ import 'package:castboard_core/system-commands/SystemCommands.dart';
 import 'package:castboard_remote/root_pages/player_settings/ConfirmationDialog.dart';
 import 'package:castboard_remote/root_pages/player_settings/OrientationDropdown.dart';
 import 'package:castboard_remote/root_pages/player_settings/ResolutionDropdown.dart';
-import 'package:castboard_remote/root_pages/player_settings/SendSystemCommand.dart';
+import 'package:castboard_remote/root_pages/player_settings/sendSystemCommand.dart';
 import 'package:castboard_remote/root_pages/player_settings/UploadingSettingsDialog.dart';
 import 'package:castboard_remote/root_pages/player_settings/pullSystemConfig.dart';
 import 'package:castboard_remote/root_pages/player_settings/pushSystemConfig.dart';
