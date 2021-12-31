@@ -47,7 +47,7 @@ class _PlayerSettingsState extends State<PlayerSettings> {
             if (_editingSystemConfig != null)
               TextButton(
                   onPressed: _handleResetButtonPressed, child: Text('Reset')),
-            TextButton(
+            ElevatedButton(
                 onPressed: _editingSystemConfig != null
                     ? _handleSaveButtonPressed
                     : null,
@@ -81,11 +81,10 @@ class _PlayerSettingsState extends State<PlayerSettings> {
           subtitle: Text(
               'Allow the player to resume playback when it no longer detects any active remotes'),
           trailing: Checkbox(
-            value: false, // TODO: Implement this.
-            // value: _editingSystemConfig == null
-            //     ? _loadedSystemConfig.resumeFromIdle
-            //     : _editingSystemConfig!.resumeFromIdle,
-            onChanged: _handleResumeFromIdleChanged,
+            value: _editingSystemConfig == null
+                ? _loadedSystemConfig.playShowOnIdle
+                : _editingSystemConfig!.playShowOnIdle, // TODO: Implement this.
+            onChanged: _handlePlayFromIdleChanged,
           ),
         ),
         _Subheading(text: 'Video Output'),
@@ -212,15 +211,15 @@ class _PlayerSettingsState extends State<PlayerSettings> {
     });
   }
 
-  void _handleResumeFromIdleChanged(bool? value) {
-    // if (value == null) {
-    //   return;
-    // }
+  void _handlePlayFromIdleChanged(bool? value) {
+    if (value == null) {
+      return;
+    }
 
-    // setState(() {
-    //   _editingSystemConfig =
-    //       _getEditingConfig().copyWith(resumeFromIdle: value);
-    // });
+    setState(() {
+      _editingSystemConfig =
+          _getEditingConfig().copyWith(playShowOnIdle: value);
+    });
   }
 
   void _handleOrientationChanged(DeviceOrientation? ori) {

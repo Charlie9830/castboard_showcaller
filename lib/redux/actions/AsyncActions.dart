@@ -35,7 +35,7 @@ ThunkAction<AppState> showDeviceRestartingPage(BuildContext context) {
     Navigator.of(context).pushNamed(Routes.deviceRestarting);
 
     final playerUp = await _waitForPlayerRestart(
-        store.state.playerState.uri, Duration(seconds: 2));
+        store.state.playerState.uri, Duration(seconds: kDebugMode ? 2 : 30));
 
     if (playerUp == true) {
       // Player has restarted and we are ready to restablish a connection.
