@@ -83,7 +83,7 @@ class _PlayerSettingsState extends State<PlayerSettings> {
           trailing: Checkbox(
             value: _editingSystemConfig == null
                 ? _loadedSystemConfig.playShowOnIdle
-                : _editingSystemConfig!.playShowOnIdle, // TODO: Implement this.
+                : _editingSystemConfig!.playShowOnIdle,
             onChanged: _handlePlayFromIdleChanged,
           ),
         ),
