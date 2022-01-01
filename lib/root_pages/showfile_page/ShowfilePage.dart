@@ -6,6 +6,7 @@ import 'package:castboard_remote/view_models/ShowfilePageViewModel.dart';
 import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as p;
+import 'package:url_launcher/url_launcher.dart';
 
 class ShowfilePage extends StatefulWidget {
   final ShowfilePageViewModel viewModel;
@@ -51,39 +52,13 @@ class _ShowfilePageState extends State<ShowfilePage> {
   }
 
   void _handleDownloadButtonPressed() async {
-    final uri = Uri.http(widget.viewModel.uri.authority, '/download');
-
-    final result = await showDialog(
+    await showDialog(
         context: context,
-        builder: (builderContext) => FileDownloadDialog(uri: uri));
-
-    if (result is FileDownloadDialogResult &&
-        result.response != null &&
-        result.response!.statusCode == 200) {
-      // Success.
-      final data = result.response!.bodyBytes;
-
-      final typeGroup =
-          XTypeGroup(label: 'Castboard file', extensions: ['castboard']);
-
-      final path = await getSavePath(
-          acceptedTypeGroups: [typeGroup],
-          suggestedName: 'Castboard Showfile.castboard');
-
-      if (path == null || path.isEmpty) {
-        return;
-      }
-
-      final file = XFile.fromData(data);
-      await file.saveTo(path);
-
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: FileDownloadSnackBar(success: true)));
-    } else {
-      // Something went wrong.
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: FileDownloadSnackBar(success: false)));
-    }
+        builder: (_) => FileDownloadDialog(
+            prepareShowfileUri: Uri.http(
+                widget.viewModel.uri.authority, 'prepareShowfileDownload'),
+            downloadShowfileUri:
+                Uri.http(widget.viewModel.uri.authority, 'showfileDownload')));
   }
 }
 
