@@ -3,6 +3,7 @@ import 'package:castboard_core/models/system_controller/DeviceOrientation.dart';
 import 'package:castboard_core/models/system_controller/DeviceResolution.dart';
 import 'package:castboard_core/models/system_controller/SystemConfig.dart';
 import 'package:castboard_core/system-commands/SystemCommands.dart';
+import 'package:castboard_remote/dialogs/GeneralFileDownloadDialog.dart';
 import 'package:castboard_remote/root_pages/player_settings/ConfirmationDialog.dart';
 import 'package:castboard_remote/root_pages/player_settings/DownloadLogsDialog.dart';
 import 'package:castboard_remote/root_pages/player_settings/OrientationDropdown.dart';
@@ -281,34 +282,16 @@ class _PlayerSettingsState extends State<PlayerSettings> {
   }
 
   void _handleDownloadLogsButtonButtonPressed(BuildContext context) async {
-    final uri = widget.viewModel.logsDownloadUri;
-
-    showDialog(context: context, builder: (_) => DownloadLogsDialog());
-
-    final result = await http.get(uri);
-
-    if (result.statusCode != 200) {
-      Navigator.of(context).pop();
-      return;
-    } else {}
-
-    final data = result.bodyBytes;
-
-    final typeGroup = XTypeGroup(label: 'Zip Archive', extensions: ['zip']);
-
-    final path = await getSavePath(
-        acceptedTypeGroups: [typeGroup], suggestedName: 'Logs.zip');
-
-    if (path == null || path.isEmpty) {
-      print('Null');
-      Navigator.of(context).pop();
-      return;
-    }
-
-    final file = XFile.fromData(data);
-    await file.saveTo(path);
-
-    Navigator.of(context).pop();
+    await showDialog(
+      context: context,
+      builder: (_) => GeneralFileDownloadDialog(
+        waitingMessage: 'Player is preparing the logs...',
+        prepareFileUri:
+            Uri.http(widget.viewModel.uri.authority, 'prepareLogsDownload'),
+        downloadFileUri:
+            Uri.http(widget.viewModel.uri.authority, 'logsDownload'),
+      ),
+    );
   }
 
   Future<void> _notifyAndReSync() async {

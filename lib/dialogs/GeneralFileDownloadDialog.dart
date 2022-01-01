@@ -1,26 +1,26 @@
-import 'dart:typed_data';
-
 import 'package:castboard_remote/snackBars/GeneralMessageSnackBar.dart';
-import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 
-class FileDownloadDialog extends StatefulWidget {
-  final Uri prepareShowfileUri;
-  final Uri downloadShowfileUri;
+class GeneralFileDownloadDialog extends StatefulWidget {
+  final String waitingMessage;
+  final Uri prepareFileUri;
+  final Uri downloadFileUri;
 
-  const FileDownloadDialog({
+  const GeneralFileDownloadDialog({
     Key? key,
-    required this.prepareShowfileUri,
-    required this.downloadShowfileUri,
+    required this.waitingMessage,
+    required this.prepareFileUri,
+    required this.downloadFileUri,
   }) : super(key: key);
 
   @override
-  _FileDownloadDialogState createState() => _FileDownloadDialogState();
+  _GeneralFileDownloadDialogState createState() =>
+      _GeneralFileDownloadDialogState();
 }
 
-class _FileDownloadDialogState extends State<FileDownloadDialog> {
+class _GeneralFileDownloadDialogState extends State<GeneralFileDownloadDialog> {
   bool _showfileReady = false;
   @override
   void initState() {
@@ -46,7 +46,10 @@ class _FileDownloadDialogState extends State<FileDownloadDialog> {
         child: CircularProgressIndicator(),
       ),
       SizedBox(height: 16),
-      Text('Player is preparing the showfile...',
+      Text(
+          widget.waitingMessage.isNotEmpty
+              ? widget.waitingMessage
+              : 'Preparing file...',
           style: Theme.of(context)
               .textTheme
               .caption!
@@ -71,15 +74,13 @@ class _FileDownloadDialogState extends State<FileDownloadDialog> {
     };
 
     try {
-      final result = await http.get(widget.prepareShowfileUri);
+      final result = await http.get(widget.prepareFileUri);
 
       if (result.statusCode != 200) {
         notifyFail();
       }
 
-      print('Launching ${widget.downloadShowfileUri.toString()}');
-
-      await launch(widget.downloadShowfileUri.toString());
+      await launch(widget.downloadFileUri.toString());
       Navigator.of(context).pop();
     } catch (e) {
       notifyFail();

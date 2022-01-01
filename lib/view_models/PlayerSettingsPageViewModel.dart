@@ -1,10 +1,10 @@
 class PlayerSettingsPageViewModel {
+  final Uri uri;
   final Uri systemConfigUri;
-  final Uri logsDownloadUri;
   final dynamic onShowDeviceRestartingSplash;
 
   PlayerSettingsPageViewModel({
-    required this.logsDownloadUri,
+    required this.uri,
     required this.systemConfigUri,
     this.onShowDeviceRestartingSplash,
   });

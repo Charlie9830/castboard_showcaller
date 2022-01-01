@@ -1,4 +1,4 @@
-import 'package:castboard_remote/dialogs/FileDownloadDialog.dart';
+import 'package:castboard_remote/dialogs/GeneralFileDownloadDialog.dart';
 import 'package:castboard_remote/root_pages/showfile_page/ListItemHeader.dart';
 import 'package:castboard_remote/root_pages/showfile_page/UploadShowfileButton.dart';
 import 'package:castboard_remote/snackBars/FileDownloadSnackBar.dart';
@@ -54,10 +54,11 @@ class _ShowfilePageState extends State<ShowfilePage> {
   void _handleDownloadButtonPressed() async {
     await showDialog(
         context: context,
-        builder: (_) => FileDownloadDialog(
-            prepareShowfileUri: Uri.http(
+        builder: (_) => GeneralFileDownloadDialog(
+            waitingMessage: 'Player is preparing the showfile...',
+            prepareFileUri: Uri.http(
                 widget.viewModel.uri.authority, 'prepareShowfileDownload'),
-            downloadShowfileUri:
+            downloadFileUri:
                 Uri.http(widget.viewModel.uri.authority, 'showfileDownload')));
   }
 }
