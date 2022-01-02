@@ -7,6 +7,7 @@ import 'package:castboard_remote/dialogs/GeneralFileDownloadDialog.dart';
 import 'package:castboard_remote/root_pages/player_settings/ConfirmationDialog.dart';
 import 'package:castboard_remote/root_pages/player_settings/DownloadLogsDialog.dart';
 import 'package:castboard_remote/root_pages/player_settings/OrientationDropdown.dart';
+import 'package:castboard_remote/root_pages/player_settings/PackageInfoDisplay.dart';
 import 'package:castboard_remote/root_pages/player_settings/ResolutionDropdown.dart';
 import 'package:castboard_remote/root_pages/player_settings/sendSystemCommand.dart';
 import 'package:castboard_remote/root_pages/player_settings/UploadingSettingsDialog.dart';
@@ -134,6 +135,9 @@ class _PlayerSettingsState extends State<PlayerSettings> {
           ),
         ),
         _Subheading(text: 'Diagnostics'),
+        ListTile(
+          title: PackageInfoDisplay(),
+        ),
         ListTile(
           title: TextButton(
             child: Text('Download Diagnostic Logs'),
