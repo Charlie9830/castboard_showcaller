@@ -8,6 +8,7 @@ import 'package:castboard_remote/root_pages/player_settings/ConfirmationDialog.d
 import 'package:castboard_remote/root_pages/player_settings/DownloadLogsDialog.dart';
 import 'package:castboard_remote/root_pages/player_settings/OrientationDropdown.dart';
 import 'package:castboard_remote/root_pages/player_settings/PackageInfoDisplay.dart';
+import 'package:castboard_remote/root_pages/player_settings/PlayerDetailsListTile.dart';
 import 'package:castboard_remote/root_pages/player_settings/ResolutionDropdown.dart';
 import 'package:castboard_remote/root_pages/player_settings/sendSystemCommand.dart';
 import 'package:castboard_remote/root_pages/player_settings/UploadingSettingsDialog.dart';
@@ -135,12 +136,26 @@ class _PlayerSettingsState extends State<PlayerSettings> {
           ),
         ),
         _Subheading(text: 'Diagnostics'),
+        PlayerDetailsListTile(
+          leading: 'Player Version',
+          trailing: _loadedSystemConfig.playerVersion,
+        ),
+        PlayerDetailsListTile(
+          leading: 'Player Build Number',
+          trailing: _loadedSystemConfig.playerBuildNumber,
+        ),
+        PlayerDetailsListTile(
+          leading: 'Player Build Signature',
+          trailing: _loadedSystemConfig.playerBuildSignature,
+        ),
         ListTile(
           title: PackageInfoDisplay(),
         ),
         ListTile(
           title: TextButton(
-            child: Text('Download Diagnostic Logs'),
+            child: Text(
+              'Download Diagnostic Logs',
+            ),
             onPressed: () => _handleDownloadLogsButtonButtonPressed(context),
           ),
         )
