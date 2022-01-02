@@ -80,10 +80,11 @@ ThunkAction<AppState> uploadShowFile(BuildContext context, XFile file,
 
       if (statusCode != 200) {
         // Something went wrong Serverside.
+        final serverMessage = result.response!.body;
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: FileUploadSnackBar(success: false)),
+          SnackBar(content: FileUploadSnackBar(success: false, message: serverMessage,)),
         );
-        print(result.response!.body);
+
         return;
       }
 

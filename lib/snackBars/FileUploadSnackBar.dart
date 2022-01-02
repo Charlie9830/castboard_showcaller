@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 class FileUploadSnackBar extends StatelessWidget {
   final bool success;
-  const FileUploadSnackBar({Key? key, required this.success}) : super(key: key);
+  final String message;
+  const FileUploadSnackBar({Key? key, required this.success, this.message = ''})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +23,9 @@ class FileUploadSnackBar extends StatelessWidget {
     if (success) {
       return 'File uploaded successfully.';
     } else {
-      return 'An error occured. Please try again.';
+      return message.isEmpty
+          ? 'A server error occurred. Please try again'
+          : message;
     }
   }
 }
