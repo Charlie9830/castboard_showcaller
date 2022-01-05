@@ -49,26 +49,26 @@ ThunkAction<AppState> updateSoftware(BuildContext context) {
         builder: (_) => FileUploadDialog(uri: uri, byteData: byteData));
 
     if (result is FileUploadDialogResult) {
+      // Exception thrown by http.
       if (result.exceptionMessage.isNotEmpty) {
-        // Exception thrown by http.
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: GeneralMessageSnackBar(
           message: result.exceptionMessage,
           success: false,
         )));
-
-        if (result.response != null && result.response!.statusCode != 200) {
-          // Non OK Response.
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: GeneralMessageSnackBar(
-            message: result.response!.body,
-            success: false,
-          )));
-        }
       }
 
+      // Non OK Response.
+      if (result.response != null && result.response!.statusCode != 200) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: GeneralMessageSnackBar(
+          message: result.response!.body,
+          success: false,
+        )));
+      }
+
+      // OK. Player is apply the update.
       if (result.response != null && result.response!.statusCode == 200) {
-        // OK. Player is apply the update.
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: GeneralMessageSnackBar(
             message: 'Player software update in progress..',
