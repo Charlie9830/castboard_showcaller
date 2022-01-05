@@ -48,14 +48,22 @@ class _PlayerSettingsState extends State<PlayerSettings> {
               onPressed: () => Navigator.of(context).pop()),
           title: Text('Settings'),
           actions: [
-            if (_editingSystemConfig != null)
-              TextButton(
-                  onPressed: _handleResetButtonPressed, child: Text('Reset')),
-            ElevatedButton(
+            TextButton(
                 onPressed: _editingSystemConfig != null
                     ? _handleSaveButtonPressed
                     : null,
                 child: Text('Save')),
+            PopupMenuButton(
+                icon: Icon(Icons.more_vert),
+                itemBuilder: (_) => [
+                      PopupMenuItem(
+                          enabled: _editingSystemConfig != null,
+                          onTap: _handleResetButtonPressed,
+                          child: Text('Reset Changes')),
+                      PopupMenuItem(
+                          child: Text('Update Player Software'),
+                          onTap: _handleUpdateSoftwareButtonPressed)
+                    ]),
           ],
         ),
         body: Padding(
@@ -133,6 +141,12 @@ class _PlayerSettingsState extends State<PlayerSettings> {
             ],
           ),
         ),
+        _Subheading(text: 'Software Update'),
+        ListTile(
+            title: TextButton(
+          child: Text('Update Software'),
+          onPressed: () => _handleUpdateSoftwareButtonPressed(),
+        )),
         _Subheading(text: 'Diagnostics'),
         ListTile(
           title: TextButton(
@@ -142,6 +156,10 @@ class _PlayerSettingsState extends State<PlayerSettings> {
         )
       ],
     );
+  }
+
+  void _handleUpdateSoftwareButtonPressed() {
+    widget.viewModel.onUpdateSoftwareButtonPressed();
   }
 
   void _handleShutdownButtonPressed(BuildContext context) async {

@@ -12,6 +12,7 @@ import 'package:castboard_remote/dialogs/AddNewPresetDialog.dart';
 import 'package:castboard_remote/dialogs/DeletePresetDialog.dart';
 import 'package:castboard_remote/dialogs/EditPresetPropertiesDialog.dart';
 import 'package:castboard_remote/dialogs/FileUploadDialog.dart';
+import 'package:castboard_remote/dialogs/GeneralFileDownloadDialog.dart';
 import 'package:castboard_remote/dialogs/ResyncingDialog.dart';
 import 'package:castboard_remote/dialogs/SelectNestedPresetBottomSheet.dart';
 import 'package:castboard_remote/dialogs/UpdatePresetDialog.dart';
@@ -29,6 +30,55 @@ import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:http/http.dart' as http;
+
+ThunkAction<AppState> updateSoftware(BuildContext context) {
+  return (Store<AppState> store) async {
+    // Show a file select Dialog.
+    final typeGroup = XTypeGroup(label: 'Zip file', extensions: ['.zip']);
+    final file = await openFile(acceptedTypeGroups: [typeGroup]);
+
+    if (file == null) {
+      return;
+    }
+
+    final uri = Uri.http(
+        store.state.playerState.uri.authority, 'system/softwareUpdate');
+    final byteData = await file.readAsBytes();
+    final result = await showDialog(
+        context: context,
+        builder: (_) => FileUploadDialog(uri: uri, byteData: byteData));
+
+    if (result is FileUploadDialogResult) {
+      if (result.exceptionMessage.isNotEmpty) {
+        // Exception thrown by http.
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: GeneralMessageSnackBar(
+          message: result.exceptionMessage,
+          success: false,
+        )));
+
+        if (result.response != null && result.response!.statusCode != 200) {
+          // Non OK Response.
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: GeneralMessageSnackBar(
+            message: result.response!.body,
+            success: false,
+          )));
+        }
+      }
+
+      if (result.response != null && result.response!.statusCode == 200) {
+        // OK. Player is apply the update.
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: GeneralMessageSnackBar(
+            message: 'Player software update in progress..',
+            success: true,
+          ),
+        ));
+      }
+    }
+  };
+}
 
 ThunkAction<AppState> showDeviceRestartingPage(BuildContext context) {
   return (Store<AppState> store) async {
@@ -82,7 +132,11 @@ ThunkAction<AppState> uploadShowFile(BuildContext context, XFile file,
         // Something went wrong Serverside.
         final serverMessage = result.response!.body;
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: FileUploadSnackBar(success: false, message: serverMessage,)),
+          SnackBar(
+              content: FileUploadSnackBar(
+            success: false,
+            message: serverMessage,
+          )),
         );
 
         return;
