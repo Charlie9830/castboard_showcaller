@@ -146,7 +146,8 @@ class _PlayerSettingsState extends State<PlayerSettings> {
         _Subheading(text: 'Software Update'),
         ListTile(
             title: TextButton(
-          child: Text('Update Software'),
+          child: Align(
+              alignment: Alignment.centerLeft, child: Text('Update Software')),
           onPressed: () => _handleUpdateSoftwareButtonPressed(),
         )),
         _Subheading(text: 'Diagnostics'),
@@ -163,16 +164,20 @@ class _PlayerSettingsState extends State<PlayerSettings> {
           trailing: _loadedSystemConfig.playerBuildSignature,
         ),
         ListTile(
-          title: PackageInfoDisplay(),
-        ),
-        ListTile(
           title: TextButton(
-            child: Text(
-              'Download Diagnostic Logs',
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Download Diagnostic Logs',
+              ),
             ),
             onPressed: () => _handleDownloadLogsButtonButtonPressed(context),
           ),
-        )
+        ),
+        _Subheading(text: "Remote Infomation"),
+        ListTile(
+          title: PackageInfoDisplay(),
+        ),
       ],
     );
   }

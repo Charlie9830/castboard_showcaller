@@ -28,24 +28,14 @@ class _PackageInfoDisplayState extends State<PackageInfoDisplay> {
         (String text) => Text(text, style: Theme.of(context).textTheme.caption);
 
     return Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              withStyle('$appName'),
-              withStyle('Version: $version'),
-              withStyle('Build Number: $buildNumber'),
-            ],
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              withStyle('Build Signature: $buildSignature'),
-              withStyle('Package Name: $packageName'),
-            ],
-          ),
+          withStyle('$appName'),
+          withStyle('Version: $version'),
+          withStyle('Build Number: $buildNumber'),
+          withStyle('Build Signature: $buildSignature'),
+          withStyle('Package Name: $packageName'),
         ],
       ),
     );
