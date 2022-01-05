@@ -46,7 +46,12 @@ class _FileUploadDialogState extends State<FileUploadDialog> {
   }
 
   Future<void> _startFileTransfer() async {
-    // TODO: Currently the PUT request stalls the UI due to it having to encode the byteData (probabaly). We should look at converting this to a Stream request.
+    // TODO: Currently the PUT request stalls the UI due to it having to encode the byteData (probabaly).
+    // We should look at converting this to a Stream request.
+    // TODO: Actually this might actaully be happening when the xFile is being decoded and
+    // the byte data is being provided. xFile.readAsBytes says in the docs
+    // that it is syncronous.
+
     try {
       final response = await http.put(widget.uri, body: widget.byteData);
       Navigator.of(context).pop(FileUploadDialogResult(

@@ -19,12 +19,13 @@ class PlayerSettingsPageContainer extends StatelessWidget {
       },
       converter: (Store<AppState> store) {
         return PlayerSettingsPageViewModel(
-          uri: store.state.playerState.uri,
-          systemConfigUri:
-              Uri.http(store.state.playerState.uri.authority, '/system'),
-          onShowDeviceRestartingSplash: () =>
-              store.dispatch(showDeviceRestartingPage(context)),
-        );
+            uri: store.state.playerState.uri,
+            systemConfigUri:
+                Uri.http(store.state.playerState.uri.authority, '/system'),
+            onShowDeviceRestartingSplash: () =>
+                store.dispatch(showDeviceRestartingPage(context)),
+            onUpdateSoftwareButtonPressed: () =>
+                store.dispatch(updateSoftware(context)));
       },
     );
   }
