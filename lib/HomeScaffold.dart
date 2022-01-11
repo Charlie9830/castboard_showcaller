@@ -34,7 +34,7 @@ class _HomeScaffoldState extends State<HomeScaffold>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Castboard Remote'),
+        title: Text('Showcaller'),
         bottom: _getBottomAppBar(context, widget.viewModel, _tabController),
         actions: [
           IconButton(
@@ -64,7 +64,7 @@ class _HomeScaffoldState extends State<HomeScaffold>
             icon: Icon(Icons.sticky_note_2),
           ),
           BottomNavigationBarItem(
-            label: 'Show File',
+            label: 'Showfile',
             icon: Icon(Icons.folder),
           )
         ],

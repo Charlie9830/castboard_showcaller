@@ -18,7 +18,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Castboard Remote',
+      title: 'Castboard Showcaller',
       theme: ThemeData(
         fontFamily: 'Poppins',
         primarySwatch: Colors.blue,
