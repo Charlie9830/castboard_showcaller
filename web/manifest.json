@@ -1,11 +1,11 @@
 {
-    "name": "castboard_remote",
-    "short_name": "castboard_remote",
+    "name": "Castboard Showcaller",
+    "short_name": "Showcaller",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "Remote dashboard for Castboard.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
