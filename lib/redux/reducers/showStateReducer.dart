@@ -1,7 +1,7 @@
 import 'package:castboard_core/models/PresetModel.dart';
-import 'package:castboard_remote/redux/actions/SyncActions.dart';
-import 'package:castboard_remote/redux/state/AppState.dart';
-import 'package:castboard_remote/redux/state/ShowState.dart';
+import 'package:castboard_showcaller/redux/actions/SyncActions.dart';
+import 'package:castboard_showcaller/redux/state/AppState.dart';
+import 'package:castboard_showcaller/redux/state/ShowState.dart';
 
 ShowState showStateReducer(ShowState state, dynamic action) {
   if (action is SetFetched) {

@@ -5,13 +5,13 @@ import 'package:castboard_core/models/CastChangeModel.dart';
 import 'package:castboard_core/models/PresetModel.dart';
 import 'package:castboard_core/models/TrackModel.dart';
 import 'package:castboard_core/models/TrackRef.dart';
-import 'package:castboard_remote/enums.dart';
-import 'package:castboard_remote/redux/actions/SyncActions.dart';
-import 'package:castboard_remote/redux/reducers/editingStateReducer.dart';
-import 'package:castboard_remote/redux/reducers/navStateReducer.dart';
-import 'package:castboard_remote/redux/reducers/playerStateReducer.dart';
-import 'package:castboard_remote/redux/reducers/showStateReducer.dart';
-import 'package:castboard_remote/redux/state/AppState.dart';
+import 'package:castboard_showcaller/enums.dart';
+import 'package:castboard_showcaller/redux/actions/SyncActions.dart';
+import 'package:castboard_showcaller/redux/reducers/editingStateReducer.dart';
+import 'package:castboard_showcaller/redux/reducers/navStateReducer.dart';
+import 'package:castboard_showcaller/redux/reducers/playerStateReducer.dart';
+import 'package:castboard_showcaller/redux/reducers/showStateReducer.dart';
+import 'package:castboard_showcaller/redux/state/AppState.dart';
 
 AppState appStateReducer(AppState state, dynamic action) {
   if (action is InitMockData) {

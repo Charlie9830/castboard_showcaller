@@ -1,4 +1,4 @@
-import 'package:castboard_remote/snackBars/GeneralMessageSnackBar.dart';
+import 'package:castboard_showcaller/snackBars/GeneralMessageSnackBar.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';

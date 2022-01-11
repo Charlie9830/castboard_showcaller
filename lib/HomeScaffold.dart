@@ -1,10 +1,10 @@
-import 'package:castboard_remote/HomePopupMenu.dart';
-import 'package:castboard_remote/containers/ShowfilePageContainer.dart';
-import 'package:castboard_remote/root_pages/remote_page/RemotePage.dart';
-import 'package:castboard_remote/containers/CastChangePageContainer.dart';
-import 'package:castboard_remote/enums.dart';
-import 'package:castboard_remote/root_pages/showfile_page/ShowfilePage.dart';
-import 'package:castboard_remote/view_models/HomeScaffoldViewModel.dart';
+import 'package:castboard_showcaller/HomePopupMenu.dart';
+import 'package:castboard_showcaller/containers/ShowfilePageContainer.dart';
+import 'package:castboard_showcaller/root_pages/remote_page/RemotePage.dart';
+import 'package:castboard_showcaller/containers/CastChangePageContainer.dart';
+import 'package:castboard_showcaller/enums.dart';
+import 'package:castboard_showcaller/root_pages/showfile_page/ShowfilePage.dart';
+import 'package:castboard_showcaller/view_models/HomeScaffoldViewModel.dart';
 import 'package:flutter/material.dart';
 
 class HomeScaffold extends StatefulWidget {

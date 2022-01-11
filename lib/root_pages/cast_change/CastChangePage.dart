@@ -1,6 +1,6 @@
-import 'package:castboard_remote/root_pages/cast_change/CastChangeEditTab.dart';
-import 'package:castboard_remote/root_pages/cast_change/PresetListTab.dart';
-import 'package:castboard_remote/view_models/CastChangePageViewModel.dart';
+import 'package:castboard_showcaller/root_pages/cast_change/CastChangeEditTab.dart';
+import 'package:castboard_showcaller/root_pages/cast_change/PresetListTab.dart';
+import 'package:castboard_showcaller/view_models/CastChangePageViewModel.dart';
 import 'package:flutter/material.dart';
 
 class CastChangePage extends StatelessWidget {

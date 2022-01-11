@@ -1,5 +1,5 @@
-import 'package:castboard_remote/redux/actions/SyncActions.dart';
-import 'package:castboard_remote/redux/state/NavigationState.dart';
+import 'package:castboard_showcaller/redux/actions/SyncActions.dart';
+import 'package:castboard_showcaller/redux/state/NavigationState.dart';
 
 NavigationState navStateReducer(NavigationState state, dynamic action) {
   if (action is SetHomePage) {

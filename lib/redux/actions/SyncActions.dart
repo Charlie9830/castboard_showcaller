@@ -2,7 +2,7 @@ import 'package:castboard_core/models/ActorRef.dart';
 import 'package:castboard_core/models/PresetModel.dart';
 import 'package:castboard_core/models/RemoteShowData.dart';
 import 'package:castboard_core/models/TrackRef.dart';
-import 'package:castboard_remote/enums.dart';
+import 'package:castboard_showcaller/enums.dart';
 
 class SetFetched {
   final bool fetched;

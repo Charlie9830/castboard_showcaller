@@ -1,5 +1,5 @@
 import 'package:castboard_core/models/PresetModel.dart';
-import 'package:castboard_remote/view_models/CastChangePageViewModel.dart';
+import 'package:castboard_showcaller/view_models/CastChangePageViewModel.dart';
 import 'package:flutter/material.dart';
 
 class PresetListTab extends StatelessWidget {

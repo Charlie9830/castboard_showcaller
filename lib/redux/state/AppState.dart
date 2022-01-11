@@ -1,8 +1,8 @@
-import 'package:castboard_remote/enums.dart';
-import 'package:castboard_remote/redux/state/EditingState.dart';
-import 'package:castboard_remote/redux/state/NavigationState.dart';
-import 'package:castboard_remote/redux/state/PlayerState.dart';
-import 'package:castboard_remote/redux/state/ShowState.dart';
+import 'package:castboard_showcaller/enums.dart';
+import 'package:castboard_showcaller/redux/state/EditingState.dart';
+import 'package:castboard_showcaller/redux/state/NavigationState.dart';
+import 'package:castboard_showcaller/redux/state/PlayerState.dart';
+import 'package:castboard_showcaller/redux/state/ShowState.dart';
 
 class AppState {
   final ShowState showState;

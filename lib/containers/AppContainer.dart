@@ -1,6 +1,6 @@
-import 'package:castboard_remote/App.dart';
-import 'package:castboard_remote/redux/state/AppState.dart';
-import 'package:castboard_remote/view_models/AppViewModel.dart';
+import 'package:castboard_showcaller/App.dart';
+import 'package:castboard_showcaller/redux/state/AppState.dart';
+import 'package:castboard_showcaller/view_models/AppViewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';

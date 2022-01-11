@@ -1,5 +1,5 @@
-import 'package:castboard_remote/root_pages/showfile_page/UploadShowfileButton.dart';
-import 'package:castboard_remote/view_models/UploadShowfilePageViewModel.dart';
+import 'package:castboard_showcaller/root_pages/showfile_page/UploadShowfileButton.dart';
+import 'package:castboard_showcaller/view_models/UploadShowfilePageViewModel.dart';
 import 'package:flutter/material.dart';
 
 class UploadShowfilePage extends StatelessWidget {

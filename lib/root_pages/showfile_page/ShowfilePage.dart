@@ -1,8 +1,8 @@
-import 'package:castboard_remote/dialogs/GeneralFileDownloadDialog.dart';
-import 'package:castboard_remote/root_pages/showfile_page/ListItemHeader.dart';
-import 'package:castboard_remote/root_pages/showfile_page/UploadShowfileButton.dart';
-import 'package:castboard_remote/snackBars/FileDownloadSnackBar.dart';
-import 'package:castboard_remote/view_models/ShowfilePageViewModel.dart';
+import 'package:castboard_showcaller/dialogs/GeneralFileDownloadDialog.dart';
+import 'package:castboard_showcaller/root_pages/showfile_page/ListItemHeader.dart';
+import 'package:castboard_showcaller/root_pages/showfile_page/UploadShowfileButton.dart';
+import 'package:castboard_showcaller/snackBars/FileDownloadSnackBar.dart';
+import 'package:castboard_showcaller/view_models/ShowfilePageViewModel.dart';
 import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as p;

@@ -2,9 +2,9 @@ import 'package:castboard_core/models/ActorRef.dart';
 import 'package:castboard_core/models/CastChangeModel.dart';
 import 'package:castboard_core/models/PresetModel.dart';
 import 'package:castboard_core/models/TrackRef.dart';
-import 'package:castboard_remote/redux/actions/SyncActions.dart';
-import 'package:castboard_remote/redux/state/EditingState.dart';
-import 'package:castboard_remote/redux/state/NavigationState.dart';
+import 'package:castboard_showcaller/redux/actions/SyncActions.dart';
+import 'package:castboard_showcaller/redux/state/EditingState.dart';
+import 'package:castboard_showcaller/redux/state/NavigationState.dart';
 
 EditingState editingStateReducer(EditingState state, dynamic action) {
   if (action is ReceiveShowData) {

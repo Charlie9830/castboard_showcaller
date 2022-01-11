@@ -1,4 +1,4 @@
-import 'package:castboard_remote/view_models/SplashScreenViewModel.dart';
+import 'package:castboard_showcaller/view_models/SplashScreenViewModel.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {

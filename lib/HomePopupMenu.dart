@@ -1,5 +1,5 @@
-import 'package:castboard_remote/enums.dart';
-import 'package:castboard_remote/view_models/HomePopupMenuViewModel.dart';
+import 'package:castboard_showcaller/enums.dart';
+import 'package:castboard_showcaller/view_models/HomePopupMenuViewModel.dart';
 import 'package:flutter/material.dart';
 
 class HomePopupMenu extends StatelessWidget {

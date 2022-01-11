@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:castboard_remote/presence/PresenseState.dart';
+import 'package:castboard_showcaller/presence/PresenseState.dart';
 import 'package:http/http.dart' as http;
 
 class PresenseManager {

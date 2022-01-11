@@ -1,4 +1,4 @@
-import 'package:castboard_remote/enums.dart';
+import 'package:castboard_showcaller/enums.dart';
 
 class HomePopupMenuViewModel {
   final bool allowPresetUpdates;

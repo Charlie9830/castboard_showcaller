@@ -1,7 +1,7 @@
 import 'package:castboard_core/models/PresetModel.dart';
 import 'package:castboard_core/widgets/cast-change-details/CastChangeDetails.dart';
 import 'package:castboard_core/widgets/cast-change-details/buildCombinedPresets.dart';
-import 'package:castboard_remote/view_models/CastChangePageViewModel.dart';
+import 'package:castboard_showcaller/view_models/CastChangePageViewModel.dart';
 import 'package:flutter/material.dart';
 
 class CastChangeEditTab extends StatelessWidget {
