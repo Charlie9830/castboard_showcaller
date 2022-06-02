@@ -5,6 +5,7 @@ import 'package:castboard_showcaller/containers/CastChangePageContainer.dart';
 import 'package:castboard_showcaller/enums.dart';
 import 'package:castboard_showcaller/root_pages/showfile_page/ShowfilePage.dart';
 import 'package:castboard_showcaller/view_models/HomeScaffoldViewModel.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class HomeScaffold extends StatefulWidget {
@@ -37,20 +38,18 @@ class _HomeScaffoldState extends State<HomeScaffold>
         title: Text('Showcaller'),
         bottom: _getBottomAppBar(context, widget.viewModel, _tabController),
         actions: [
-          IconButton(
-            icon: Icon(Icons.upload),
-            onPressed: widget.viewModel.onUploadCastChange,
-          ),
           HomePopupMenu(
             viewModel: widget.viewModel.popupMenuViewModel,
           )
         ],
       ),
       body: _getCurrentPage(widget.viewModel),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.bug_report),
-        onPressed: () => widget.viewModel.onDebugButtonPressed(),
-      ),
+      floatingActionButton: widget.viewModel.currentPage == HomePage.castChanges
+          ? FloatingActionButton(
+              child: Icon(Icons.cloud_upload),
+              onPressed: widget.viewModel.onUploadCastChange,
+            )
+          : null,
       bottomNavigationBar: BottomNavigationBar(
         onTap: _handleBottomNavBarTap,
         currentIndex: _getCurrentPageIndex(widget.viewModel),
