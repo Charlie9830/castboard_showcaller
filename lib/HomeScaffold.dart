@@ -5,6 +5,7 @@ import 'package:castboard_showcaller/containers/CastChangePageContainer.dart';
 import 'package:castboard_showcaller/enums.dart';
 import 'package:castboard_showcaller/root_pages/showfile_page/ShowfilePage.dart';
 import 'package:castboard_showcaller/view_models/HomeScaffoldViewModel.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class HomeScaffold extends StatefulWidget {
@@ -47,10 +48,12 @@ class _HomeScaffoldState extends State<HomeScaffold>
         ],
       ),
       body: _getCurrentPage(widget.viewModel),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.bug_report),
-        onPressed: () => widget.viewModel.onDebugButtonPressed(),
-      ),
+      floatingActionButton: kDebugMode
+          ? FloatingActionButton(
+              child: Icon(Icons.bug_report),
+              onPressed: () => widget.viewModel.onDebugButtonPressed(),
+            )
+          : null,
       bottomNavigationBar: BottomNavigationBar(
         onTap: _handleBottomNavBarTap,
         currentIndex: _getCurrentPageIndex(widget.viewModel),
