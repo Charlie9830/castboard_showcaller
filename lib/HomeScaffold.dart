@@ -44,6 +44,7 @@ class _HomeScaffoldState extends State<HomeScaffold>
         ],
       ),
       body: _getCurrentPage(widget.viewModel),
+      
       floatingActionButton: widget.viewModel.currentPage == HomePage.castChanges
           ? FloatingActionButton(
               child: Icon(Icons.cloud_upload),
