@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class FileUploadDialog extends StatefulWidget {
-  final Uint8List byteData;
+  final XFile xFile;
   final Uri uri;
 
-  const FileUploadDialog({Key? key, required this.uri, required this.byteData})
+  const FileUploadDialog({Key? key, required this.uri, required this.xFile})
       : super(key: key);
 
   @override
@@ -40,20 +40,30 @@ class _FileUploadDialogState extends State<FileUploadDialog> {
                   .textTheme
                   .caption!
                   .copyWith(color: Colors.white)),
+          SizedBox(height: 8),
+          Text('This can take a while',
+              style: Theme.of(context)
+                  .textTheme
+                  .caption!
+                  .copyWith(color: Colors.white)),
         ],
       ),
     );
   }
 
   Future<void> _startFileTransfer() async {
-    // TODO: Currently the PUT request stalls the UI due to it having to encode the byteData (probabaly).
-    // We should look at converting this to a Stream request.
-    // TODO: Actually this might actaully be happening when the xFile is being decoded and
-    // the byte data is being provided. xFile.readAsBytes says in the docs
-    // that it is syncronous.
-
     try {
-      final response = await http.put(widget.uri, body: widget.byteData);
+      // Build Request. We use a Multipart Request so avoid blocking the main thread.
+      final request = http.MultipartRequest('PUT', widget.uri);
+      request.files.add(await _buildMultipartFile(widget.xFile));
+
+      // Initialize the Http Client.
+      final client = http.Client();
+
+      // Send the request, extract the response from the return stream.
+      final response =
+          await http.Response.fromStream(await client.send(request));
+
       Navigator.of(context).pop(FileUploadDialogResult(
         response: response,
       ));
@@ -62,6 +72,15 @@ class _FileUploadDialogState extends State<FileUploadDialog> {
         exceptionMessage: e.toString(),
       ));
     }
+  }
+
+  /// Packages the provided [file] into a [MultipartFile] with 'file' as the field header.
+  Future<http.MultipartFile> _buildMultipartFile(XFile file) async {
+    const fieldHeader =
+        'file'; // Performer will check for this field before processing the request.
+
+    final length = await widget.xFile.length();
+    return http.MultipartFile(fieldHeader, widget.xFile.openRead(), length);
   }
 }
 

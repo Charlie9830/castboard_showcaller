@@ -36,7 +36,7 @@ class _ResyncingDialogState extends State<ResyncingDialog> {
                   .bodyText1!
                   .copyWith(color: Theme.of(context).colorScheme.secondary)),
           SizedBox(height: 16),
-          Text('Syncing with Player..',
+          Text('Syncing with Performer..',
               style: Theme.of(context)
                   .textTheme
                   .caption!

@@ -12,7 +12,6 @@ import 'package:castboard_showcaller/dialogs/AddNewPresetDialog.dart';
 import 'package:castboard_showcaller/dialogs/DeletePresetDialog.dart';
 import 'package:castboard_showcaller/dialogs/EditPresetPropertiesDialog.dart';
 import 'package:castboard_showcaller/dialogs/FileUploadDialog.dart';
-import 'package:castboard_showcaller/dialogs/GeneralFileDownloadDialog.dart';
 import 'package:castboard_showcaller/dialogs/ResyncingDialog.dart';
 import 'package:castboard_showcaller/dialogs/SelectNestedPresetBottomSheet.dart';
 import 'package:castboard_showcaller/dialogs/UpdatePresetDialog.dart';
@@ -43,10 +42,10 @@ ThunkAction<AppState> updateSoftware(BuildContext context) {
 
     final uri = Uri.http(
         store.state.playerState.uri.authority, 'system/softwareUpdate');
-    final byteData = await file.readAsBytes();
+
     final result = await showDialog(
         context: context,
-        builder: (_) => FileUploadDialog(uri: uri, byteData: byteData));
+        builder: (_) => FileUploadDialog(uri: uri, xFile: file));
 
     if (result is FileUploadDialogResult) {
       // Exception thrown by http.
@@ -110,12 +109,9 @@ ThunkAction<AppState> uploadShowFile(BuildContext context, XFile file,
   return (Store<AppState> store) async {
     final uri = Uri.http(store.state.playerState.uri.authority, '/upload');
 
-    final byteData = await file.readAsBytes();
-
     final result = await showDialog(
         context: context,
-        builder: (builderContext) =>
-            FileUploadDialog(uri: uri, byteData: byteData));
+        builder: (builderContext) => FileUploadDialog(uri: uri, xFile: file));
 
     if (result is FileUploadDialogResult) {
       if (result.response == null) {
