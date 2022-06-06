@@ -64,6 +64,8 @@ class _FileUploadDialogState extends State<FileUploadDialog> {
       final response =
           await http.Response.fromStream(await client.send(request));
 
+      client.close();
+
       Navigator.of(context).pop(FileUploadDialogResult(
         response: response,
       ));
