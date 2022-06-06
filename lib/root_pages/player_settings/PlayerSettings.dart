@@ -174,7 +174,7 @@ class _PlayerSettingsState extends State<PlayerSettings> {
             onPressed: () => _handleDownloadLogsButtonButtonPressed(context),
           ),
         ),
-        _Subheading(text: "Remote Infomation"),
+        _Subheading(text: "Showcaller Infomation"),
         ListTile(
           title: PackageInfoDisplay(),
         ),
