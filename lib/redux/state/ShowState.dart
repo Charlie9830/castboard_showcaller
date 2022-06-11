@@ -9,31 +9,36 @@ class ShowState {
   final Map<String, PresetModel> presets;
   final Map<ActorRef, ActorModel> actors;
   final Map<TrackRef, TrackModel> tracks;
+  final Map<String, List<ActorRef>> categorizedActorRefs;
 
   ShowState({
     required this.fetched,
     required this.presets,
     required this.actors,
     required this.tracks,
+    required this.categorizedActorRefs,
   });
 
   ShowState.initial()
       : fetched = false,
         presets = <String, PresetModel>{},
         actors = <ActorRef, ActorModel>{},
-        tracks = <TrackRef, TrackModel>{};
+        tracks = <TrackRef, TrackModel>{},
+        categorizedActorRefs = <String, List<ActorRef>>{};
 
   ShowState copyWith({
     bool? fetched,
     Map<String, PresetModel>? presets,
     Map<ActorRef, ActorModel>? actors,
     Map<TrackRef, TrackModel>? tracks,
+    Map<String, List<ActorRef>>? categorizedActorRefs,
   }) {
     return ShowState(
       fetched: fetched ?? this.fetched,
       presets: presets ?? this.presets,
       actors: actors ?? this.actors,
       tracks: tracks ?? this.tracks,
+      categorizedActorRefs: categorizedActorRefs ?? this.categorizedActorRefs,
     );
   }
 }

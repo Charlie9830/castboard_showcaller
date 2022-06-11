@@ -28,6 +28,7 @@ class CastChangePageContainer extends StatelessWidget {
       converter: (Store<AppState> store) {
         return CastChangePageViewModel(
           actors: store.state.showState.actors,
+          categorizedActorRefs: store.state.showState.categorizedActorRefs,
           tracks: store.state.showState.tracks,
           presets: store.state.showState.presets,
           basePreset: _selectBasePreset(store),
