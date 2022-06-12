@@ -9,7 +9,6 @@ class CastChangePageViewModel {
   final Map<String, PresetModel> presets;
   final PresetModel? basePreset;
   final Map<ActorRef, ActorModel> actors;
-  final Map<String, List<ActorRef>> categorizedActorRefs;
   final Map<TrackRef, TrackModel> tracks;
   final String selectedPresetId;
   final List<PresetModel> combinedPresets;
@@ -27,7 +26,6 @@ class CastChangePageViewModel {
     required this.presets,
     required this.basePreset,
     required this.actors,
-    required this.categorizedActorRefs,
     required this.tracks,
     required this.editedAssignments,
     required this.selectedPresetId,
