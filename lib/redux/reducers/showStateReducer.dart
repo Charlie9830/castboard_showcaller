@@ -16,6 +16,7 @@ ShowState showStateReducer(ShowState state, dynamic action) {
       actors: action.data.showData.actors,
       tracks: action.data.showData.tracks,
       presets: action.data.showData.presets,
+      actorIndex: action.data.showData.actorIndex,
     );
   }
 

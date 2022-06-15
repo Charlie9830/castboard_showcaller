@@ -19,7 +19,7 @@ class CastChangeEditTab extends StatelessWidget {
       child: CastChangeDetails(
         selfScrolling: true,
         allowNestedEditing: true,
-        actors: viewModel.actors.values.toList(),
+        actorViewModels: viewModel.actorViewModels,
         actorsByRef: viewModel.actors,
         tracks: viewModel.tracks.values.toList(),
         tracksByRef: viewModel.tracks,

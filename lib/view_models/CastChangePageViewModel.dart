@@ -1,4 +1,5 @@
 import 'package:castboard_core/models/ActorModel.dart';
+import 'package:castboard_core/models/ActorOrDividerViewModel.dart';
 import 'package:castboard_core/models/ActorRef.dart';
 import 'package:castboard_core/models/CastChangeModel.dart';
 import 'package:castboard_core/models/PresetModel.dart';
@@ -8,6 +9,7 @@ import 'package:castboard_core/models/TrackRef.dart';
 class CastChangePageViewModel {
   final Map<String, PresetModel> presets;
   final PresetModel? basePreset;
+  final List<ActorOrDividerViewModel> actorViewModels;
   final Map<ActorRef, ActorModel> actors;
   final Map<TrackRef, TrackModel> tracks;
   final String selectedPresetId;
@@ -25,6 +27,7 @@ class CastChangePageViewModel {
   CastChangePageViewModel({
     required this.presets,
     required this.basePreset,
+    required this.actorViewModels,
     required this.actors,
     required this.tracks,
     required this.editedAssignments,

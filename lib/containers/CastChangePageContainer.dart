@@ -1,3 +1,5 @@
+import 'package:castboard_core/models/ActorIndex.dart';
+import 'package:castboard_core/models/ActorOrDividerViewModel.dart';
 import 'package:castboard_core/models/PresetModel.dart';
 
 import 'package:castboard_showcaller/enums.dart';
@@ -28,6 +30,7 @@ class CastChangePageContainer extends StatelessWidget {
       converter: (Store<AppState> store) {
         return CastChangePageViewModel(
           actors: store.state.showState.actors,
+          actorViewModels: _selectActorViewModels(store),
           tracks: store.state.showState.tracks,
           presets: store.state.showState.presets,
           basePreset: _selectBasePreset(store),
@@ -61,6 +64,10 @@ class CastChangePageContainer extends StatelessWidget {
         );
       },
     );
+  }
+
+  List<ActorOrDividerViewModel> _selectActorViewModels(Store<AppState> store) {
+    return ActorIndexBase.toViewModels(store.state.showState.actors, store.state.showState.actorIndex);
   }
 
   PresetModel? _selectBasePreset(Store<AppState> store) {

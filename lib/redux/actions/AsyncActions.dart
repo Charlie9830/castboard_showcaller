@@ -199,6 +199,10 @@ ThunkAction<AppState> uploadCastChange(BuildContext context) {
         ),
         showData: ShowDataModel(
           presets: store.state.showState.presets,
+          actorIndex: ShowDataModel.initial().actorIndex,
+          actors: ShowDataModel.initial().actors,
+          trackRefsByName: ShowDataModel.initial().trackRefsByName,
+          tracks: ShowDataModel.initial().tracks,
         ));
 
     final jsonShowData = json.encode(remoteShowData.toMap());
