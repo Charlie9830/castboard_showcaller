@@ -1,4 +1,3 @@
-import 'package:castboard_core/models/PresetModel.dart';
 import 'package:castboard_core/widgets/cast-change-details/CastChangeDetails.dart';
 import 'package:castboard_core/widgets/cast-change-details/buildCombinedPresets.dart';
 import 'package:castboard_showcaller/view_models/CastChangePageViewModel.dart';
@@ -21,7 +20,7 @@ class CastChangeEditTab extends StatelessWidget {
         allowNestedEditing: true,
         actorViewModels: viewModel.actorViewModels,
         actorsByRef: viewModel.actors,
-        tracks: viewModel.tracks.values.toList(),
+        trackViewModels: viewModel.trackViewModels,
         tracksByRef: viewModel.tracks,
         assignments: _getAssignments(),
         onAssignmentUpdated: viewModel.onAssignmentUpdated,

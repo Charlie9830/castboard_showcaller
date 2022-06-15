@@ -1,6 +1,8 @@
 import 'package:castboard_core/models/ActorIndex.dart';
 import 'package:castboard_core/models/ActorOrDividerViewModel.dart';
 import 'package:castboard_core/models/PresetModel.dart';
+import 'package:castboard_core/models/TrackIndex.dart';
+import 'package:castboard_core/models/TrackOrIndexViewModel.dart';
 
 import 'package:castboard_showcaller/enums.dart';
 import 'package:castboard_showcaller/redux/actions/AsyncActions.dart';
@@ -30,8 +32,9 @@ class CastChangePageContainer extends StatelessWidget {
       converter: (Store<AppState> store) {
         return CastChangePageViewModel(
           actors: store.state.showState.actors,
-          actorViewModels: _selectActorViewModels(store),
           tracks: store.state.showState.tracks,
+          actorViewModels: _selectActorViewModels(store),
+          trackViewModels: _selectTrackViewModels(store),
           presets: store.state.showState.presets,
           basePreset: _selectBasePreset(store),
           selectedPresetId: store.state.editingState.selectedPresetId,
@@ -67,7 +70,13 @@ class CastChangePageContainer extends StatelessWidget {
   }
 
   List<ActorOrDividerViewModel> _selectActorViewModels(Store<AppState> store) {
-    return ActorIndexBase.toViewModels(store.state.showState.actors, store.state.showState.actorIndex);
+    return ActorIndexBase.toViewModels(
+        store.state.showState.actors, store.state.showState.actorIndex);
+  }
+
+  List<TrackOrDividerViewModel> _selectTrackViewModels(Store<AppState> store) {
+    return TrackIndexBase.toViewModels(
+        store.state.showState.tracks, store.state.showState.trackIndex);
   }
 
   PresetModel? _selectBasePreset(Store<AppState> store) {
