@@ -11,11 +11,11 @@ class UpdatePresetDialog extends StatelessWidget {
       title: Text('Update $presetName?'),
       actions: [
         TextButton(
-          child: Text('Cancel'),
+          child: const Text('Cancel'),
           onPressed: () => Navigator.of(context).pop(false),
         ),
         TextButton(
-          child: Text('Update'),
+          child: const Text('Update'),
           onPressed: () => Navigator.of(context).pop(true),
         )
       ],

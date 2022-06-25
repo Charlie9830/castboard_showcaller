@@ -3,7 +3,7 @@ import 'package:castboard_showcaller/containers/HomeScaffoldContainer.dart';
 import 'package:castboard_showcaller/containers/PlayerSettingsPageContainer.dart';
 import 'package:castboard_showcaller/containers/SplashScreenContainer.dart';
 import 'package:castboard_showcaller/containers/UploadShowfilePageContainer.dart';
-import 'package:castboard_showcaller/root_pages/WaitingOverlay.dart';
+import 'package:castboard_showcaller/global_keys.dart';
 import 'package:castboard_showcaller/root_pages/connection_failed/ConnectionFailed.dart';
 import 'package:castboard_showcaller/root_pages/device_restarting/DeviceRestarting.dart';
 import 'package:castboard_showcaller/view_models/AppViewModel.dart';
@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 class App extends StatelessWidget {
   final AppViewModel viewModel;
 
-  App({required this.viewModel});
+  const App({Key? key, required this.viewModel}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,18 +25,19 @@ class App extends StatelessWidget {
         brightness: Brightness.dark,
         backgroundColor: Colors.black,
       ),
+      navigatorKey: navigatorKey,
       initialRoute: Routes.splash,
       routes: {
-        Routes.splash: (context) => SplashScreenContainer(),
+        Routes.splash: (context) => const SplashScreenContainer(),
         Routes.home: (context) => viewModel.fetched
-            ? HomeScaffoldContainer()
-            : SplashScreenContainer(),
-        Routes.settings: (context) => PlayerSettingsPageContainer(),
-        Routes.showfileUpload: (context) => UploadShowfilePageContainer(),
-        Routes.deviceRestarting: (context) => DeviceRestarting(),
-        Routes.connectionFailed: (context) => ConnectionFailed(),
+            ? const HomeScaffoldContainer()
+            : const SplashScreenContainer(),
+        Routes.settings: (context) => const PlayerSettingsPageContainer(),
+        Routes.showfileUpload: (context) => const UploadShowfilePageContainer(),
+        Routes.deviceRestarting: (context) => const DeviceRestarting(),
+        Routes.connectionFailed: (context) => const ConnectionFailed(),
       },
-      navigatorObservers: [],
+      navigatorObservers: const [],
     );
   }
 }

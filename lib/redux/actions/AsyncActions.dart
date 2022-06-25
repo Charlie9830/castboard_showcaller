@@ -16,6 +16,7 @@ import 'package:castboard_showcaller/dialogs/ResyncingDialog.dart';
 import 'package:castboard_showcaller/dialogs/SelectNestedPresetBottomSheet.dart';
 import 'package:castboard_showcaller/dialogs/UpdatePresetDialog.dart';
 import 'package:castboard_showcaller/enums.dart';
+import 'package:castboard_showcaller/global_keys.dart';
 import 'package:castboard_showcaller/presence/PresenceManager.dart';
 import 'package:castboard_showcaller/redux/actions/SyncActions.dart';
 import 'package:castboard_showcaller/redux/state/AppState.dart';
@@ -68,7 +69,7 @@ ThunkAction<AppState> updateSoftware(BuildContext context) {
 
       // OK. Player is apply the update.
       if (result.response != null && result.response!.statusCode == 200) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: GeneralMessageSnackBar(
             message: 'Player software update in progress..',
             success: true,
@@ -81,26 +82,26 @@ ThunkAction<AppState> updateSoftware(BuildContext context) {
 
 ThunkAction<AppState> showDeviceRestartingPage(BuildContext context) {
   return (Store<AppState> store) async {
-    Navigator.of(context).pushNamed(Routes.deviceRestarting);
+    navigatorKey.currentState?.pushNamed(Routes.deviceRestarting);
 
-    final playerUp = await _waitForPlayerRestart(
-        store.state.playerState.uri, Duration(seconds: kDebugMode ? 2 : 30));
+    final playerUp = await _waitForPlayerRestart(store.state.playerState.uri,
+        const Duration(seconds: kDebugMode ? 2 : 30));
 
     if (playerUp == true) {
       // Player has restarted and we are ready to restablish a connection.
-      Navigator.of(context)
-          .pushNamedAndRemoveUntil(Routes.splash, (route) => false);
+      navigatorKey.currentState
+          ?.pushNamedAndRemoveUntil(Routes.splash, (route) => false);
     } else {
       // Player has not returned. We may have discconected off the network. Prompt the user to refresh.
-      Navigator.of(context)
-          .pushNamedAndRemoveUntil(Routes.connectionFailed, (route) => false);
+      navigatorKey.currentState
+          ?.pushNamedAndRemoveUntil(Routes.connectionFailed, (route) => false);
     }
   };
 }
 
 ThunkAction<AppState> goToSettingsPage(BuildContext context) {
   return (Store<AppState> store) async {
-    Navigator.of(context).pushNamed(Routes.settings);
+    navigatorKey.currentState?.pushNamed(Routes.settings);
   };
 }
 
@@ -117,7 +118,7 @@ ThunkAction<AppState> uploadShowFile(BuildContext context, XFile file,
       if (result.response == null) {
         // An Exception was thrown.
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: FileUploadSnackBar(success: false)),
+          const SnackBar(content: FileUploadSnackBar(success: false)),
         );
         return;
       }
@@ -139,8 +140,8 @@ ThunkAction<AppState> uploadShowFile(BuildContext context, XFile file,
       }
 
       // Ensure we are in sync with Player.
-      showDialog(context: context, builder: (_) => ResyncingDialog());
-      await Future.delayed(Duration(
+      showDialog(context: context, builder: (_) => const ResyncingDialog());
+      await Future.delayed(const Duration(
           seconds:
               4)); // Give he player some breathing room to finish loading the show File.
 
@@ -156,11 +157,11 @@ ThunkAction<AppState> uploadShowFile(BuildContext context, XFile file,
           store.dispatch(SetHomePage(HomePage.remote));
 
           // Pops the resyncing Dialog.
-          Navigator.of(context).pop();
+          navigatorKey.currentState?.pop();
 
           if (isInitialRoute) {
             // Because this is the initial route. We have no home page route underneath in the stack.
-            Navigator.of(context).pushNamed(Routes.home);
+            navigatorKey.currentState?.pushNamed(Routes.home);
           }
         } else {
           print(response.statusCode);
@@ -171,10 +172,10 @@ ThunkAction<AppState> uploadShowFile(BuildContext context, XFile file,
         if (kDebugMode) {
           store.dispatch(SetHomePage(HomePage.remote));
 
-          if (Navigator.of(context).canPop()) {
-            Navigator.of(context).pop();
+          if (navigatorKey.currentState?.canPop() == true) {
+            navigatorKey.currentState?.pop();
           } else {
-            Navigator.of(context).popAndPushNamed(Routes.home);
+            navigatorKey.currentState?.popAndPushNamed(Routes.home);
           }
         }
       }
@@ -199,32 +200,32 @@ ThunkAction<AppState> uploadCastChange(BuildContext context) {
         ),
         showData: ShowDataModel(
           presets: store.state.showState.presets,
-          actorIndex: ShowDataModel.initial().actorIndex,
-          actors: ShowDataModel.initial().actors,
-          trackRefsByName: ShowDataModel.initial().trackRefsByName,
-          tracks: ShowDataModel.initial().tracks,
-          trackIndex: ShowDataModel.initial().trackIndex,
+          actorIndex: const ShowDataModel.initial().actorIndex,
+          actors: const ShowDataModel.initial().actors,
+          trackRefsByName: const ShowDataModel.initial().trackRefsByName,
+          tracks: const ShowDataModel.initial().tracks,
+          trackIndex: const ShowDataModel.initial().trackIndex,
         ));
 
     final jsonShowData = json.encode(remoteShowData.toMap());
 
-    showDialog(context: context, builder: (_) => WaitingOverlay());
+    showDialog(context: context, builder: (_) => const WaitingOverlay());
 
     try {
       final response = await http.post(uri,
           body: jsonShowData, headers: {'Content-Type': 'application/json'});
 
-      Navigator.of(context).pop();
+      navigatorKey.currentState?.pop();
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: GeneralMessageSnackBar(
                 success: true, message: 'Changes uploaded'),
           ),
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: GeneralMessageSnackBar(
                 success: false,
                 message: 'Something went wrong, please try again.'),
@@ -232,10 +233,10 @@ ThunkAction<AppState> uploadCastChange(BuildContext context) {
         );
       }
     } catch (error) {
-      Navigator.of(context).pop();
+      navigatorKey.currentState?.pop();
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: GeneralMessageSnackBar(
               success: false,
               message: 'Something went wrong, please try again.'),
@@ -255,14 +256,14 @@ ThunkAction<AppState> initializeApp(BuildContext context) {
         final raw = jsonDecode(response.body);
         final data = RemoteShowData.fromMap(raw);
         store.dispatch(ReceiveShowData(data));
-
+        
         final bool showLoaded =
             data.manifest != null && data.manifest!.created.isNotEmpty;
 
         if (showLoaded) {
-          Navigator.of(context).popAndPushNamed(Routes.home);
+          navigatorKey.currentState?.popAndPushNamed(Routes.home);
         } else {
-          Navigator.of(context).popAndPushNamed(Routes.showfileUpload);
+          navigatorKey.currentState?.popAndPushNamed(Routes.showfileUpload);
         }
 
         // Establish a Heartbeat.
@@ -279,7 +280,7 @@ ThunkAction<AppState> initializeApp(BuildContext context) {
       // If in debug. Continue on through to home anyway.
       if (kDebugMode) {
         store.dispatch(SetFetched(true));
-        Navigator.of(context).popAndPushNamed(Routes.home);
+        navigatorKey.currentState?.popAndPushNamed(Routes.home);
       }
     }
   };
@@ -366,7 +367,7 @@ ThunkAction<AppState> duplicatePreset(String sourcePresetId) {
 
     final newPreset = preset.copyWith(
       uid: getUid(),
-      name: preset.name + ' Copy',
+      name: '${preset.name} Copy',
       createdOnRemote: true,
       castChange: preset.castChange.copy(),
     );
@@ -379,7 +380,7 @@ ThunkAction<AppState> addNewPreset(BuildContext context) {
   return (Store<AppState> store) async {
     final result = await showDialog(
       context: context,
-      builder: (builderContext) => AddNewPresetDialog(),
+      builder: (builderContext) => const AddNewPresetDialog(),
     );
 
     if (result is AddNewPresetDialogResult) {
@@ -398,7 +399,7 @@ ThunkAction<AppState> addNewPreset(BuildContext context) {
                     .toList(),
                 store.state.editingState.editedAssignments,
               )
-            : CastChangeModel.initial(),
+            : const CastChangeModel.initial(),
       );
 
       store.dispatch(AddNewPreset(preset));
@@ -476,7 +477,7 @@ String _buildPlaybackActionPayload(PlaybackAction action) {
 CastChangeModel buildCopiedCastChange(PresetModel? preset,
     List<PresetModel> combinedPresets, CastChangeModel editedCastChange) {
   if (preset == null) {
-    return CastChangeModel.initial();
+    return const CastChangeModel.initial();
   }
 
   return preset.castChange

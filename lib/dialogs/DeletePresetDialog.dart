@@ -17,11 +17,11 @@ class DeletePresetDialog extends StatelessWidget {
               '$presetName will be deleted from the player. Are you sure you want to continue?')),
       actions: [
         TextButton(
-          child: Text('Cancel'),
+          child: const Text('Cancel'),
           onPressed: () => Navigator.of(context).pop(false),
         ),
         TextButton(
-          child: Text('Delete'),
+          child: const Text('Delete'),
           onPressed: () => Navigator.of(context).pop(true),
         )
       ],

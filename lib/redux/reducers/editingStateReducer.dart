@@ -1,10 +1,7 @@
-import 'package:castboard_core/models/ActorRef.dart';
 import 'package:castboard_core/models/CastChangeModel.dart';
 import 'package:castboard_core/models/PresetModel.dart';
-import 'package:castboard_core/models/TrackRef.dart';
 import 'package:castboard_showcaller/redux/actions/SyncActions.dart';
 import 'package:castboard_showcaller/redux/state/EditingState.dart';
-import 'package:castboard_showcaller/redux/state/NavigationState.dart';
 
 EditingState editingStateReducer(EditingState state, dynamic action) {
   if (action is ReceiveShowData) {
@@ -21,7 +18,7 @@ EditingState editingStateReducer(EditingState state, dynamic action) {
       selectedPresetId: const PresetModel.builtIn().uid,
       deletedPresetIds: state.deletedPresetIds.toSet()..add(action.presetId),
       combinedPresetIds: <String>[],
-      editedAssignments: CastChangeModel.initial(),
+      editedAssignments: const CastChangeModel.initial(),
     );
   }
 
@@ -37,7 +34,7 @@ EditingState editingStateReducer(EditingState state, dynamic action) {
       freshPresetIds: state.freshPresetIds.toSet()..add(action.preset.uid),
       selectedPresetId: action.preset.uid,
       combinedPresetIds: const [],
-      editedAssignments: CastChangeModel.initial(),
+      editedAssignments: const CastChangeModel.initial(),
     );
   }
 
@@ -49,7 +46,7 @@ EditingState editingStateReducer(EditingState state, dynamic action) {
     return state.copyWith(
       selectedPresetId: action.id,
       combinedPresetIds: const <String>[],
-      editedAssignments: CastChangeModel.initial(),
+      editedAssignments: const CastChangeModel.initial(),
     );
   }
 
@@ -82,7 +79,7 @@ EditingState editingStateReducer(EditingState state, dynamic action) {
 
   if (action is ResetLiveEdits) {
     return state.copyWith(
-      editedAssignments: CastChangeModel.initial(),
+      editedAssignments: const CastChangeModel.initial(),
     );
   }
 

@@ -1,4 +1,3 @@
-import 'package:castboard_showcaller/enums.dart';
 import 'package:castboard_showcaller/redux/state/EditingState.dart';
 import 'package:castboard_showcaller/redux/state/NavigationState.dart';
 import 'package:castboard_showcaller/redux/state/PlayerState.dart';

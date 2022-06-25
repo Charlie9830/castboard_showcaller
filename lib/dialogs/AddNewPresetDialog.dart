@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
 class AddNewPresetDialog extends StatefulWidget {
-  AddNewPresetDialog({
+  const AddNewPresetDialog({
     Key? key,
   }) : super(key: key);
 
   @override
-  _AddNewPresetDialogState createState() => _AddNewPresetDialogState();
+  AddNewPresetDialogState createState() => AddNewPresetDialogState();
 }
 
-class _AddNewPresetDialogState extends State<AddNewPresetDialog> {
+class AddNewPresetDialogState extends State<AddNewPresetDialog> {
   late TextEditingController _nameController;
   late TextEditingController _detailsController;
   bool _allowCreation = false;
@@ -28,13 +28,12 @@ class _AddNewPresetDialogState extends State<AddNewPresetDialog> {
 
   @override
   Widget build(BuildContext context) {
-    const switchListTilePadding = const EdgeInsets.only(left: 0);
+    const switchListTilePadding = EdgeInsets.only(left: 0);
     return Scaffold(
       appBar: AppBar(
-        title: Text('New Preset'),
+        title: const Text('New Preset'),
         actions: [
           TextButton(
-            child: Text('Create'),
             onPressed: _allowCreation
                 ? () => Navigator.of(context).pop(
                       AddNewPresetDialogResult(
@@ -45,6 +44,7 @@ class _AddNewPresetDialogState extends State<AddNewPresetDialog> {
                       ),
                     )
                 : null,
+            child: const Text('Create'),
           )
         ],
       ),
@@ -56,27 +56,27 @@ class _AddNewPresetDialogState extends State<AddNewPresetDialog> {
             TextField(
               autofocus: true,
               controller: _nameController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Name',
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             TextField(
               controller: _detailsController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Details',
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             SwitchListTile(
               contentPadding: switchListTilePadding,
-              title: Text('Nestable'),
+              title: const Text('Nestable'),
               value: _isNestable,
               onChanged: (value) => setState(() => _isNestable = value),
             ),
             SwitchListTile(
               contentPadding: switchListTilePadding,
-              title: Text("Copy from current cast change"),
+              title: const Text("Copy from current cast change"),
               value: _useExistingCastChange,
               onChanged: (value) => setState(() => _useExistingCastChange = value),
             ),

@@ -24,7 +24,7 @@ class HomePopupMenu extends StatelessWidget {
       );
     }
 
-    return IconButton(onPressed: () {}, icon: Icon(Icons.flutter_dash));
+    return IconButton(onPressed: () {}, icon: const Icon(Icons.flutter_dash));
   }
 }
 
@@ -39,7 +39,7 @@ class _SettingsButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      icon: Icon(Icons.settings),
+      icon: const Icon(Icons.settings),
       onPressed: onPressed,
     );
   }
@@ -61,18 +61,18 @@ class _CastChangeActionsMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     return PopupMenuButton<String>(
       onSelected: _handleItemPressed,
-      icon: Icon(Icons.more_vert),
+      icon: const Icon(Icons.more_vert),
       itemBuilder: (buttonContext) => <PopupMenuEntry<String>>[
         PopupMenuItem(
           value: 'update-preset',
           enabled: updateEnabled,
-          child: Text('Update preset'),
+          child: const Text('Update preset'),
         ),
-        PopupMenuDivider(),
+        const PopupMenuDivider(),
         PopupMenuItem(
           value: 'reset-changes',
           enabled: updateEnabled,
-          child: Text('Reset changes'),
+          child: const Text('Reset changes'),
         ),
       ],
     );

@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -12,10 +10,10 @@ class FileUploadDialog extends StatefulWidget {
       : super(key: key);
 
   @override
-  _FileUploadDialogState createState() => _FileUploadDialogState();
+  FileUploadDialogState createState() => FileUploadDialogState();
 }
 
-class _FileUploadDialogState extends State<FileUploadDialog> {
+class FileUploadDialogState extends State<FileUploadDialog> {
   @override
   void initState() {
     super.initState();
@@ -29,18 +27,18 @@ class _FileUploadDialogState extends State<FileUploadDialog> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(
+          const SizedBox(
             width: 64,
             height: 64,
             child: CircularProgressIndicator(),
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           Text('Uploading file..',
               style: Theme.of(context)
                   .textTheme
                   .caption!
                   .copyWith(color: Colors.white)),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Text('This can take a while',
               style: Theme.of(context)
                   .textTheme
@@ -66,13 +64,17 @@ class _FileUploadDialogState extends State<FileUploadDialog> {
 
       client.close();
 
-      Navigator.of(context).pop(FileUploadDialogResult(
-        response: response,
-      ));
+      if (mounted) {
+        Navigator.of(context).pop(FileUploadDialogResult(
+          response: response,
+        ));
+      }
     } catch (e) {
-      Navigator.of(context).pop(FileUploadDialogResult(
-        exceptionMessage: e.toString(),
-      ));
+      if (mounted) {
+        Navigator.of(context).pop(FileUploadDialogResult(
+          exceptionMessage: e.toString(),
+        ));
+      }
     }
   }
 

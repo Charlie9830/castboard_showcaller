@@ -16,12 +16,12 @@ class GeneralFileDownloadDialog extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _GeneralFileDownloadDialogState createState() =>
-      _GeneralFileDownloadDialogState();
+  GeneralFileDownloadDialogState createState() =>
+      GeneralFileDownloadDialogState();
 }
 
-class _GeneralFileDownloadDialogState extends State<GeneralFileDownloadDialog> {
-  bool _showfileReady = false;
+class GeneralFileDownloadDialogState extends State<GeneralFileDownloadDialog> {
+  final bool _showfileReady = false;
   @override
   void initState() {
     super.initState();
@@ -40,12 +40,12 @@ class _GeneralFileDownloadDialogState extends State<GeneralFileDownloadDialog> {
 
   Widget _buildPreparing(BuildContext context) {
     return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-      SizedBox(
+      const SizedBox(
         width: 64,
         height: 64,
         child: CircularProgressIndicator(),
       ),
-      SizedBox(height: 16),
+      const SizedBox(height: 16),
       Text(
           widget.waitingMessage.isNotEmpty
               ? widget.waitingMessage
@@ -60,18 +60,18 @@ class _GeneralFileDownloadDialogState extends State<GeneralFileDownloadDialog> {
   Widget _buildReadyForDownload(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: [Text('Ready')],
+      children: const [Text('Ready')],
     );
   }
 
   void _start() async {
-    final notifyFail = () {
+    notifyFail() {
       Navigator.of(context).pop();
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: GeneralMessageSnackBar(
               success: false,
               message: 'An error occurred, please try again.')));
-    };
+    }
 
     try {
       final result = await http.get(widget.prepareFileUri);
@@ -80,8 +80,11 @@ class _GeneralFileDownloadDialogState extends State<GeneralFileDownloadDialog> {
         notifyFail();
       }
 
-      await launch(widget.downloadFileUri.toString());
-      Navigator.of(context).pop();
+      await launchUrl(widget.downloadFileUri);
+
+      if (mounted) {
+        Navigator.of(context).pop();
+      }
     } catch (e) {
       notifyFail();
     }

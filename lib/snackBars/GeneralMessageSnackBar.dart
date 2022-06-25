@@ -10,7 +10,7 @@ class GeneralMessageSnackBar extends StatelessWidget {
     return Row(
       children: [
         _Icon(success: success),
-        SizedBox(width: 8),
+        const SizedBox(width: 8),
         Expanded(
           child: Text(message),
         )

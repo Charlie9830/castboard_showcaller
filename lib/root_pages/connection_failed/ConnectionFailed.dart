@@ -4,10 +4,10 @@ class ConnectionFailed extends StatefulWidget {
   const ConnectionFailed({Key? key}) : super(key: key);
 
   @override
-  _ConnectionFailedState createState() => _ConnectionFailedState();
+  ConnectionFailedState createState() => ConnectionFailedState();
 }
 
-class _ConnectionFailedState extends State<ConnectionFailed> {
+class ConnectionFailedState extends State<ConnectionFailed> {
   @override
   void initState() {
     super.initState();
@@ -16,18 +16,16 @@ class _ConnectionFailedState extends State<ConnectionFailed> {
   @override
   Widget build(BuildContext context) {
     return Material(
-        child: Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(Icons.error),
-          SizedBox(height: 16),
-          Text("Unable to reconnect with player",
-              style: Theme.of(context).textTheme.subtitle1),
-          SizedBox(height: 16),
-          Text('Please check your Wifi settings then refresh the page'),
-        ],
-      ),
+        child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Icon(Icons.error),
+        const SizedBox(height: 16),
+        Text("Unable to reconnect with player",
+            style: Theme.of(context).textTheme.subtitle1),
+        const SizedBox(height: 16),
+        const Text('Please check your Wifi settings then refresh the page'),
+      ],
     ));
   }
 }

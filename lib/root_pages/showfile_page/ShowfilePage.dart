@@ -1,12 +1,8 @@
 import 'package:castboard_showcaller/dialogs/GeneralFileDownloadDialog.dart';
 import 'package:castboard_showcaller/root_pages/showfile_page/ListItemHeader.dart';
 import 'package:castboard_showcaller/root_pages/showfile_page/UploadShowfileButton.dart';
-import 'package:castboard_showcaller/snackBars/FileDownloadSnackBar.dart';
 import 'package:castboard_showcaller/view_models/ShowfilePageViewModel.dart';
-import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart' as p;
-import 'package:url_launcher/url_launcher.dart';
 
 class ShowfilePage extends StatefulWidget {
   final ShowfilePageViewModel viewModel;
@@ -17,18 +13,18 @@ class ShowfilePage extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _ShowfilePageState createState() => _ShowfilePageState();
+  ShowfilePageState createState() => ShowfilePageState();
 }
 
-class _ShowfilePageState extends State<ShowfilePage> {
+class ShowfilePageState extends State<ShowfilePage> {
   @override
   Widget build(BuildContext context) {
-    final spacer = SizedBox(height: 16);
+    const spacer = SizedBox(height: 16);
     return Container(
-        padding: EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         child: ListView(
           children: [
-            Padding(
+            const Padding(
               padding: EdgeInsets.symmetric(vertical: 16),
               child: _FileData(
                 fileName: 'Les Dogerables',
@@ -41,7 +37,7 @@ class _ShowfilePageState extends State<ShowfilePage> {
             spacer,
             Column(
               children: [
-                ListItemHeader(title: 'Download .castboard File'),
+                const ListItemHeader(title: 'Download .castboard File'),
                 spacer,
                 _DownloadFileListItem(
                     onDownloadButtonPressed: _handleDownloadButtonPressed),
@@ -73,16 +69,15 @@ class _DownloadFileListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: Row(
+    return Row(
       children: [
-        OutlinedButton.icon(
-          icon: Icon(Icons.file_download),
-          label: Text('Download'),
-          onPressed: onDownloadButtonPressed,
-        ),
+    OutlinedButton.icon(
+      icon: const Icon(Icons.file_download),
+      label: const Text('Download'),
+      onPressed: onDownloadButtonPressed,
+    ),
       ],
-    ));
+    );
   }
 }
 
@@ -100,11 +95,11 @@ class _FileData extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 160,
       child: Card(
         child: Padding(
-          padding: EdgeInsets.all(8),
+          padding: const EdgeInsets.all(8),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -113,7 +108,7 @@ class _FileData extends StatelessWidget {
                 style: Theme.of(context).textTheme.subtitle1,
                 overflow: TextOverflow.ellipsis,
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Text('Created $dateCreated',
                   style: Theme.of(context).textTheme.caption),
               Text('Modified $dateCreated',

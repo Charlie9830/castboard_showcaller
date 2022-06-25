@@ -17,17 +17,17 @@ class DialogButtonRow extends StatelessWidget {
       children: [
         if (negativeButtonText.isNotEmpty)
         TextButton(
-          child: Text(negativeButtonText),
           onPressed: onNegativeButtonPressed,
+          child: Text(negativeButtonText),
         ),
         if (negativeButtonText.isNotEmpty)
-        SizedBox(
+        const SizedBox(
           width: 8,
         ),
         if (affirmativeButtonText.isNotEmpty)
         TextButton(
-          child: Text(affirmativeButtonText),
           onPressed: onAffirmatedButtonPressed,
+          child: Text(affirmativeButtonText),
         ),
       ],
     );

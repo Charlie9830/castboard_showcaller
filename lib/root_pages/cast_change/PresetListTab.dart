@@ -8,35 +8,33 @@ class PresetListTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: ListView(children: [
-        ...viewModel.presets.values.map((preset) {
-          final selected = preset.uid == viewModel.selectedPresetId;
-          return _PresetListTile(
-            preset: preset,
-            selected: selected,
-            allowPropertyEdit: preset.isBuiltIn == false,
-            onPresetAction: (action) => _handlePresetAction(preset.uid, action),
-            nestedPresetText: selected
-                ? _getNestedPresetText(preset, viewModel.combinedPresets)
-                : '',
-            onTap: () => viewModel.onPresetSelected(preset.uid),
-            onCombineButtonPressed: () =>
-                viewModel.onCombinePresetButtonPressed(preset.uid),
-          );
-        }).toList(),
-        Container(
-          margin: EdgeInsets.only(left: 16),
-          padding: EdgeInsets.symmetric(vertical: 16),
-          alignment: Alignment.center,
-          child: OutlinedButton.icon(
-            onPressed: viewModel.onNewPresetButtonPressed,
-            icon: Icon(Icons.add),
-            label: Text('New Preset'),
-          ),
+    return ListView(children: [
+      ...viewModel.presets.values.map((preset) {
+        final selected = preset.uid == viewModel.selectedPresetId;
+        return _PresetListTile(
+          preset: preset,
+          selected: selected,
+          allowPropertyEdit: preset.isBuiltIn == false,
+          onPresetAction: (action) => _handlePresetAction(preset.uid, action),
+          nestedPresetText: selected
+              ? _getNestedPresetText(preset, viewModel.combinedPresets)
+              : '',
+          onTap: () => viewModel.onPresetSelected(preset.uid),
+          onCombineButtonPressed: () =>
+              viewModel.onCombinePresetButtonPressed(preset.uid),
+        );
+      }).toList(),
+      Container(
+        margin: const EdgeInsets.only(left: 16),
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        alignment: Alignment.center,
+        child: OutlinedButton.icon(
+          onPressed: viewModel.onNewPresetButtonPressed,
+          icon: const Icon(Icons.add),
+          label: const Text('New Preset'),
         ),
-      ]),
-    );
+      ),
+    ]);
   }
 
   void _handlePresetAction(String presetId, _PresetAction action) {
@@ -104,7 +102,7 @@ class _PresetListTile extends StatelessWidget {
       onLongPress: allowPropertyEdit ? () => _handleLongPress(context) : null,
       trailing: preset.isNestable == false
           ? IconButton(
-              icon: Icon(Icons.merge_type),
+              icon: const Icon(Icons.merge_type),
               onPressed: () => onCombineButtonPressed?.call())
           : null,
     );
@@ -167,25 +165,25 @@ class _PresetActionsBottomSheet extends StatelessWidget {
         return Column(
           children: [
             ListTile(
-              leading: Icon(Icons.copy),
-              title: Text('Duplicate'),
+              leading: const Icon(Icons.copy),
+              title: const Text('Duplicate'),
               onTap: () {
                 Navigator.of(context).pop();
                 onAction(_PresetAction.duplicate);
               },
             ),
             ListTile(
-              leading: Icon(Icons.edit),
-              title: Text('Edit Properties'),
+              leading: const Icon(Icons.edit),
+              title: const Text('Edit Properties'),
               onTap: () {
                 Navigator.of(context).pop();
                 onAction(_PresetAction.editProperties);
               },
             ),
-            Divider(),
+            const Divider(),
             ListTile(
-              leading: Icon(Icons.delete),
-              title: Text('Delete'),
+              leading: const Icon(Icons.delete),
+              title: const Text('Delete'),
               onTap: () {
                 Navigator.of(context).pop();
                 onAction(_PresetAction.delete);

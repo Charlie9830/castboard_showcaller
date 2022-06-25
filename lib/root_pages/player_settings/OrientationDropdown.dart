@@ -20,18 +20,18 @@ class OrientationDropdown extends StatelessWidget {
         isExpanded: true,
         onChanged: onChanged,
         value: selectedValue,
-        items: [
+        items: const [
           DropdownMenuItem<DeviceOrientation>(
-            child: Text('Landscape'),
             value: DeviceOrientation.landscape,
+            child: Text('Landscape'),
           ),
           DropdownMenuItem<DeviceOrientation>(
-            child: Text('Portrait Left'),
             value: DeviceOrientation.portraitLeft,
+            child: Text('Portrait Left'),
           ),
           DropdownMenuItem<DeviceOrientation>(
-            child: Text('Portrait Right'),
             value: DeviceOrientation.portraitRight,
+            child: Text('Portrait Right'),
           ),
         ],
       ),

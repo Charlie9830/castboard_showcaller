@@ -1,7 +1,6 @@
 import 'package:castboard_showcaller/root_pages/showfile_page/ListItemHeader.dart';
 import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart' as p;
 
 class UploadShowfileButton extends StatefulWidget {
   final void Function(XFile file) onUploadFile;
@@ -12,19 +11,19 @@ class UploadShowfileButton extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _UploadShowfileButtonState createState() => _UploadShowfileButtonState();
+  UploadShowfileButtonState createState() => UploadShowfileButtonState();
 }
 
-class _UploadShowfileButtonState extends State<UploadShowfileButton> {
+class UploadShowfileButtonState extends State<UploadShowfileButton> {
   String _fileName = '';
   XFile? _file;
 
   @override
   Widget build(BuildContext context) {
-    final spacer = SizedBox(height: 16);
+    const spacer = SizedBox(height: 16);
     return Column(
       children: [
-        ListItemHeader(title: 'Upload .castboard File'),
+        const ListItemHeader(title: 'Upload .castboard File'),
         spacer,
         _UploadFileListItem(
             fileName: _fileName,
@@ -73,8 +72,8 @@ class _UploadFileListItem extends StatelessWidget {
       return Row(
         children: [
           OutlinedButton(
-            child: Text('Select'),
             onPressed: onSelectPressed,
+            child: const Text('Select'),
           )
         ],
       );
@@ -90,8 +89,8 @@ class _UploadFileListItem extends StatelessWidget {
                 ),
               ),
               TextButton(
-                child: Text('Change'),
                 onPressed: onSelectPressed,
+                child: const Text('Change'),
               ),
             ],
           ),
@@ -100,8 +99,8 @@ class _UploadFileListItem extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(top: 8.0),
                 child: ElevatedButton.icon(
-                  icon: Icon(Icons.file_upload),
-                  label: Text('Upload'),
+                  icon: const Icon(Icons.file_upload),
+                  label: const Text('Upload'),
                   onPressed: onUploadPressed,
                 ),
               ),

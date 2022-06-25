@@ -1,11 +1,10 @@
 import 'package:castboard_showcaller/HomePopupMenu.dart';
 import 'package:castboard_showcaller/containers/ShowfilePageContainer.dart';
+import 'package:castboard_showcaller/global_keys.dart';
 import 'package:castboard_showcaller/root_pages/remote_page/RemotePage.dart';
 import 'package:castboard_showcaller/containers/CastChangePageContainer.dart';
 import 'package:castboard_showcaller/enums.dart';
-import 'package:castboard_showcaller/root_pages/showfile_page/ShowfilePage.dart';
 import 'package:castboard_showcaller/view_models/HomeScaffoldViewModel.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class HomeScaffold extends StatefulWidget {
@@ -13,10 +12,10 @@ class HomeScaffold extends StatefulWidget {
   const HomeScaffold({Key? key, required this.viewModel}) : super(key: key);
 
   @override
-  _HomeScaffoldState createState() => _HomeScaffoldState();
+  HomeScaffoldState createState() => HomeScaffoldState();
 }
 
-class _HomeScaffoldState extends State<HomeScaffold>
+class HomeScaffoldState extends State<HomeScaffold>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
@@ -34,8 +33,9 @@ class _HomeScaffoldState extends State<HomeScaffold>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
       appBar: AppBar(
-        title: Text('Showcaller'),
+        title: const Text('Showcaller'),
         bottom: _getBottomAppBar(context, widget.viewModel, _tabController),
         actions: [
           HomePopupMenu(
@@ -47,14 +47,14 @@ class _HomeScaffoldState extends State<HomeScaffold>
       
       floatingActionButton: widget.viewModel.currentPage == HomePage.castChanges
           ? FloatingActionButton(
-              child: Icon(Icons.cloud_upload),
               onPressed: widget.viewModel.onUploadCastChange,
+              child: const Icon(Icons.cloud_upload),
             )
           : null,
       bottomNavigationBar: BottomNavigationBar(
         onTap: _handleBottomNavBarTap,
         currentIndex: _getCurrentPageIndex(widget.viewModel),
-        items: [
+        items: const [
           BottomNavigationBarItem(
             label: 'Remote',
             icon: Icon(Icons.settings_remote),
@@ -78,18 +78,19 @@ class _HomeScaffoldState extends State<HomeScaffold>
       return TabBar(
         controller: controller,
         onTap: _handleCastChangeTabTap,
-        tabs: [
+        tabs: const [
           Tab(
-            child: Text('Cast Change'),
             icon: Icon(Icons.sticky_note_2),
+            child: Text('Cast Change'),
           ),
           Tab(
-            child: Text('Presets'),
             icon: Icon(Icons.favorite),
+            child: Text('Presets'),
           ),
         ],
       );
     }
+    return null;
   }
 
   void _handleCastChangeTabTap(int index) {
@@ -129,7 +130,7 @@ class _HomeScaffoldState extends State<HomeScaffold>
         );
       case HomePage.showfile:
       default:
-        return ShowfilePageContainer();
+        return const ShowfilePageContainer();
     }
   }
 

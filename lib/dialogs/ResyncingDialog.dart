@@ -1,17 +1,14 @@
-import 'dart:typed_data';
 
-import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 class ResyncingDialog extends StatefulWidget {
   const ResyncingDialog({Key? key}) : super(key: key);
 
   @override
-  _ResyncingDialogState createState() => _ResyncingDialogState();
+  ResyncingDialogState createState() => ResyncingDialogState();
 }
 
-class _ResyncingDialogState extends State<ResyncingDialog> {
+class ResyncingDialogState extends State<ResyncingDialog> {
   @override
   void initState() {
     super.initState();
@@ -24,18 +21,18 @@ class _ResyncingDialogState extends State<ResyncingDialog> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(
+          const SizedBox(
             width: 64,
             height: 64,
             child: CircularProgressIndicator(),
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           Text('Upload Complete',
               style: Theme.of(context)
                   .textTheme
                   .bodyText1!
                   .copyWith(color: Theme.of(context).colorScheme.secondary)),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           Text('Syncing with Performer..',
               style: Theme.of(context)
                   .textTheme

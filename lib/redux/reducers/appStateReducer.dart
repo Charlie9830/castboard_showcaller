@@ -1,4 +1,3 @@
-import 'package:castboard_core/classes/PhotoRef.dart';
 import 'package:castboard_core/models/ActorModel.dart';
 import 'package:castboard_core/models/ActorRef.dart';
 import 'package:castboard_core/models/CastChangeModel.dart';
@@ -80,7 +79,7 @@ AppState appStateReducer(AppState state, dynamic action) {
               internalTitle: 'The Politician'),
         },
         presets: {
-          PresetModel.builtIn().uid: PresetModel.builtIn().copyWith(
+          const PresetModel.builtIn().uid: const PresetModel.builtIn().copyWith(
             castChange: CastChangeModel({
               TrackRef('ID-TRACK-bully'): ActorRef('ID-bront'),
               TrackRef('ID-TRACK-mayor'): ActorRef('ID-fancy'),
@@ -88,9 +87,9 @@ AppState appStateReducer(AppState state, dynamic action) {
               TrackRef('ID-TRACK-tracker'): ActorRef('ID-snowy'),
               TrackRef('ID-TRACK-heroin'): ActorRef('ID-pittie'),
               TrackRef('ID-TRACK-igor'): ActorRef('ID-pugglesworth'),
-              TrackRef('ID-TRACK-screamer'): ActorRef.unassigned(),
-              TrackRef('ID-TRACK-captain'): ActorRef.unassigned(),
-              TrackRef('ID-TRACK-politician'): ActorRef.unassigned(),
+              TrackRef('ID-TRACK-screamer'): const ActorRef.unassigned(),
+              TrackRef('ID-TRACK-captain'): const ActorRef.unassigned(),
+              TrackRef('ID-TRACK-politician'): const ActorRef.unassigned(),
             }),
           ),
           'nestedPreset1': PresetModel(

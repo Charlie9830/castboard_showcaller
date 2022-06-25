@@ -13,6 +13,6 @@ class ListItemHeader extends StatelessWidget {
         style: Theme.of(context)
             .textTheme
             .subtitle2!
-            .copyWith(color: Theme.of(context).colorScheme.secondaryVariant));
+            .copyWith(color: Theme.of(context).colorScheme.secondaryContainer));
   }
 }

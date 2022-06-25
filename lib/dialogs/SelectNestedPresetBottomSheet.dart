@@ -12,7 +12,7 @@ class SelectNestedPresetBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: MediaQuery.of(context).size.height / 2,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -23,7 +23,7 @@ class SelectNestedPresetBottomSheet extends StatelessWidget {
             child: Text('Combine with..',
                 style: Theme.of(context).textTheme.caption),
           ),
-          Divider(),
+          const Divider(),
           Expanded(
             child: ListView.builder(
               itemCount: availablePresets.length,

@@ -20,14 +20,14 @@ class RemotePage extends StatelessWidget {
       alignment: Alignment.center,
       child: Column(
         children: [
-          Spacer(
+          const Spacer(
             flex: 2,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               _Button(
-                icon: Icon(Icons.play_circle),
+                icon: const Icon(Icons.play_circle),
                 onPressed: () => onPlayPressed?.call(),
               ),
             ],
@@ -36,11 +36,11 @@ class RemotePage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               _Button(
-                icon: Icon(Icons.fast_rewind),
+                icon: const Icon(Icons.fast_rewind),
                 onPressed: () => onPrevPressed?.call(),
               ),
               _Button(
-                  icon: Icon(Icons.fast_forward),
+                  icon: const Icon(Icons.fast_forward),
                   onPressed: () => onNextPressed?.call()),
             ],
           ),
@@ -48,12 +48,12 @@ class RemotePage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               _Button(
-                icon: Icon(Icons.pause_circle),
+                icon: const Icon(Icons.pause_circle),
                 onPressed: () => onPausePressed?.call(),
               ),
             ],
           ),
-          Spacer(flex: 1),
+          const Spacer(flex: 1),
         ],
       ),
     );

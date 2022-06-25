@@ -16,7 +16,7 @@ class ResolutionDropdown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (resolutions.isEmpty) {
-      return _ResolutionErrorFallback();
+      return const _ResolutionErrorFallback();
     }
     return SizedBox(
       height: 56,

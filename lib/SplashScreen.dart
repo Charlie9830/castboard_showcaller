@@ -7,10 +7,10 @@ class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key, required this.viewModel}) : super(key: key);
 
   @override
-  _SplashScreenState createState() => _SplashScreenState();
+  SplashScreenState createState() => SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
@@ -20,18 +20,16 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Material(
-        child: Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text('Castboard', style: Theme.of(context).textTheme.headline5),
-          SizedBox(height: 16),
-          SizedBox(
-            width: MediaQuery.of(context).size.width / 2,
-            child: LinearProgressIndicator(),
-          ),
-        ],
-      ),
+        child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text('Castboard', style: Theme.of(context).textTheme.headline5),
+        const SizedBox(height: 16),
+        SizedBox(
+          width: MediaQuery.of(context).size.width / 2,
+          child: const LinearProgressIndicator(),
+        ),
+      ],
     ));
   }
 }

@@ -14,9 +14,9 @@ class UploadShowfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Upload Show File'),
+        title: const Text('Upload Show File'),
         actions: [
-          IconButton(onPressed: viewModel.onSettingsButtonPressed, icon: Icon(Icons.settings))
+          IconButton(onPressed: viewModel.onSettingsButtonPressed, icon: const Icon(Icons.settings))
         ],
       ),
       body: Padding(

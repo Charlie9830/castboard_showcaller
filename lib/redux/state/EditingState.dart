@@ -25,7 +25,7 @@ class EditingState {
   EditingState.initial()
       : selectedPresetId = const PresetModel.builtIn().uid,
         combinedPresetIds = const [],
-        editedAssignments = CastChangeModel.initial(),
+        editedAssignments = const CastChangeModel.initial(),
         freshPresetIds = const {},
         deletedPresetIds = const {},
         editedPresetIds = const {};

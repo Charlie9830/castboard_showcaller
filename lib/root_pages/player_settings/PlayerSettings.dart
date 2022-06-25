@@ -1,11 +1,9 @@
-import 'package:castboard_core/models/system_controller/AvailableResolutions.dart';
 import 'package:castboard_core/models/system_controller/DeviceOrientation.dart';
 import 'package:castboard_core/models/system_controller/DeviceResolution.dart';
 import 'package:castboard_core/models/system_controller/SystemConfig.dart';
 import 'package:castboard_core/system-commands/SystemCommands.dart';
 import 'package:castboard_showcaller/dialogs/GeneralFileDownloadDialog.dart';
 import 'package:castboard_showcaller/root_pages/player_settings/ConfirmationDialog.dart';
-import 'package:castboard_showcaller/root_pages/player_settings/DownloadLogsDialog.dart';
 import 'package:castboard_showcaller/root_pages/player_settings/OrientationDropdown.dart';
 import 'package:castboard_showcaller/root_pages/player_settings/PackageInfoDisplay.dart';
 import 'package:castboard_showcaller/root_pages/player_settings/PlayerDetailsListTile.dart';
@@ -16,19 +14,17 @@ import 'package:castboard_showcaller/root_pages/player_settings/pullSystemConfig
 import 'package:castboard_showcaller/root_pages/player_settings/pushSystemConfig.dart';
 import 'package:castboard_showcaller/snackBars/GeneralMessageSnackBar.dart';
 import 'package:castboard_showcaller/view_models/PlayerSettingsPageViewModel.dart';
-import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 class PlayerSettings extends StatefulWidget {
   final PlayerSettingsPageViewModel viewModel;
-  PlayerSettings({Key? key, required this.viewModel}) : super(key: key);
+  const PlayerSettings({Key? key, required this.viewModel}) : super(key: key);
 
   @override
-  _PlayerSettingsState createState() => _PlayerSettingsState();
+  PlayerSettingsState createState() => PlayerSettingsState();
 }
 
-class _PlayerSettingsState extends State<PlayerSettings> {
+class PlayerSettingsState extends State<PlayerSettings> {
   // System Configuration
   bool _isFetchingSystemConfig = true;
   bool _systemConfigError = false;
@@ -46,25 +42,25 @@ class _PlayerSettingsState extends State<PlayerSettings> {
     return Scaffold(
         appBar: AppBar(
           leading: IconButton(
-              icon: Icon(Icons.arrow_back),
+              icon: const Icon(Icons.arrow_back),
               onPressed: () => Navigator.of(context).pop()),
-          title: Text('Settings'),
+          title: const Text('Settings'),
           actions: [
             TextButton(
                 onPressed: _editingSystemConfig != null
                     ? _handleSaveButtonPressed
                     : null,
-                child: Text('Save')),
+                child: const Text('Save')),
             PopupMenuButton(
-                icon: Icon(Icons.more_vert),
+                icon: const Icon(Icons.more_vert),
                 itemBuilder: (_) => [
                       PopupMenuItem(
                           enabled: _editingSystemConfig != null,
                           onTap: _handleResetButtonPressed,
-                          child: Text('Reset Changes')),
+                          child: const Text('Reset Changes')),
                       PopupMenuItem(
-                          child: Text('Update Player Software'),
-                          onTap: _handleUpdateSoftwareButtonPressed)
+                          onTap: _handleUpdateSoftwareButtonPressed,
+                          child: const Text('Update Player Software'))
                     ]),
           ],
         ),
@@ -76,11 +72,11 @@ class _PlayerSettingsState extends State<PlayerSettings> {
 
   Widget _buildPageContents(BuildContext context) {
     if (_isFetchingSystemConfig) {
-      return _SystemConfigThrobber();
+      return const _SystemConfigThrobber();
     }
 
     if (_systemConfigError) {
-      return _SystemConfigFallback();
+      return const _SystemConfigFallback();
     }
 
     return _buildSettings(context);
@@ -89,10 +85,10 @@ class _PlayerSettingsState extends State<PlayerSettings> {
   ListView _buildSettings(BuildContext context) {
     return ListView(
       children: [
-        _Subheading(text: 'Playback'),
+        const _Subheading(text: 'Playback'),
         ListTile(
-          title: Text('Auto resume playback'),
-          subtitle: Text(
+          title: const Text('Auto resume playback'),
+          subtitle: const Text(
               'Allow the player to resume playback when it no longer detects any active remotes'),
           trailing: Checkbox(
             value: _editingSystemConfig == null
@@ -101,9 +97,9 @@ class _PlayerSettingsState extends State<PlayerSettings> {
             onChanged: _handlePlayFromIdleChanged,
           ),
         ),
-        _Subheading(text: 'Video Output'),
+        const _Subheading(text: 'Video Output'),
         ListTile(
-          title: Text('Output Resolution'),
+          title: const Text('Output Resolution'),
           trailing: SizedBox(
             width: 180,
             child: ResolutionDropdown(
@@ -116,41 +112,41 @@ class _PlayerSettingsState extends State<PlayerSettings> {
           ),
         ),
         ListTile(
-            title: Text('Screen Orientation'),
+            title: const Text('Screen Orientation'),
             trailing: OrientationDropdown(
               selectedValue: _editingSystemConfig == null
                   ? _loadedSystemConfig.deviceOrientation
                   : _editingSystemConfig!.deviceOrientation,
               onChanged: _handleOrientationChanged,
             )),
-        _Subheading(text: 'Device Commands'),
+        const _Subheading(text: 'Device Commands'),
         ListTile(
           title: Wrap(
             alignment: WrapAlignment.spaceBetween,
             children: [
               TextButton(
-                child: Text('Shutdown Player'),
+                child: const Text('Shutdown Player'),
                 onPressed: () => _handleShutdownButtonPressed(context),
               ),
               TextButton(
-                child: Text('Reboot Player'),
+                child: const Text('Reboot Player'),
                 onPressed: () => _handleRebootButtonPressed(context),
               ),
               TextButton(
-                child: Text('Restart Player Software'),
+                child: const Text('Restart Player Software'),
                 onPressed: () => _handleRestartSoftwareButtonPressed(context),
               )
             ],
           ),
         ),
-        _Subheading(text: 'Software Update'),
+        const _Subheading(text: 'Software Update'),
         ListTile(
             title: TextButton(
-          child: Align(
+          child: const Align(
               alignment: Alignment.centerLeft, child: Text('Update Software')),
           onPressed: () => _handleUpdateSoftwareButtonPressed(),
         )),
-        _Subheading(text: 'Diagnostics'),
+        const _Subheading(text: 'Diagnostics'),
         PlayerDetailsListTile(
           leading: 'Player Version',
           trailing: _loadedSystemConfig.playerVersion,
@@ -165,7 +161,7 @@ class _PlayerSettingsState extends State<PlayerSettings> {
         ),
         ListTile(
           title: TextButton(
-            child: Align(
+            child: const Align(
               alignment: Alignment.centerLeft,
               child: Text(
                 'Download Diagnostic Logs',
@@ -174,8 +170,8 @@ class _PlayerSettingsState extends State<PlayerSettings> {
             onPressed: () => _handleDownloadLogsButtonButtonPressed(context),
           ),
         ),
-        _Subheading(text: "Showcaller Infomation"),
-        ListTile(
+        const _Subheading(text: "Showcaller Infomation"),
+        const ListTile(
           title: PackageInfoDisplay(),
         ),
       ],
@@ -189,7 +185,7 @@ class _PlayerSettingsState extends State<PlayerSettings> {
   void _handleShutdownButtonPressed(BuildContext context) async {
     final result = await showDialog(
         context: context,
-        builder: (context) => ConfirmationDialog(
+        builder: (context) => const ConfirmationDialog(
             title: 'Shutdown Player',
             message: "Are you sure?",
             affirmativeText: 'Shutdown',
@@ -204,7 +200,7 @@ class _PlayerSettingsState extends State<PlayerSettings> {
   void _handleRebootButtonPressed(BuildContext context) async {
     final result = await showDialog(
         context: context,
-        builder: (context) => ConfirmationDialog(
+        builder: (context) => const ConfirmationDialog(
             title: 'Reboot Player',
             message: "Are you sure?",
             affirmativeText: 'Reboot',
@@ -219,7 +215,7 @@ class _PlayerSettingsState extends State<PlayerSettings> {
   void _handleRestartSoftwareButtonPressed(BuildContext context) async {
     final result = await showDialog(
         context: context,
-        builder: (context) => ConfirmationDialog(
+        builder: (context) => const ConfirmationDialog(
             title: 'Restart Player Software',
             message: "Are you sure?",
             affirmativeText: 'Restart',
@@ -300,7 +296,7 @@ class _PlayerSettingsState extends State<PlayerSettings> {
     // Show a throbber Dialog.
     showDialog(
       context: context,
-      builder: (innerContext) => UploadingSettingsDialog(),
+      builder: (innerContext) => const UploadingSettingsDialog(),
       barrierDismissible: false,
     );
 
@@ -316,7 +312,7 @@ class _PlayerSettingsState extends State<PlayerSettings> {
     } catch (e) {
       // Pop the throbber Dialog.
       Navigator.of(context).pop();
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: GeneralMessageSnackBar(
             success: false, message: 'An unexpected error occurred'),
       ));
@@ -343,11 +339,13 @@ class _PlayerSettingsState extends State<PlayerSettings> {
       _editingSystemConfig = null;
     });
 
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: GeneralMessageSnackBar(
-      success: true,
-      message: 'Settings updated',
-    )));
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: GeneralMessageSnackBar(
+        success: true,
+        message: 'Settings updated',
+      )));
+    }
   }
 }
 
@@ -356,7 +354,7 @@ class _SystemConfigThrobber extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return const Center(
         child: SizedBox(
       height: 32,
       width: 32,

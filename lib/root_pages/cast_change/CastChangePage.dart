@@ -12,15 +12,14 @@ class CastChangePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: TabBarView(
+    return TabBarView(
       controller: tabController,
       children: [
-        CastChangeEditTab(
-          viewModel: viewModel,
-        ),
-        PresetListTab(viewModel: viewModel),
+    CastChangeEditTab(
+      viewModel: viewModel,
+    ),
+    PresetListTab(viewModel: viewModel),
       ],
-    ));
+    );
   }
 }

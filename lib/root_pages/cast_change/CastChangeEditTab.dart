@@ -14,7 +14,7 @@ class CastChangeEditTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(left: 16.0, right: 16.0),
+      padding: const EdgeInsets.only(left: 16.0, right: 16.0),
       child: CastChangeDetails(
         selfScrolling: true,
         allowNestedEditing: true,

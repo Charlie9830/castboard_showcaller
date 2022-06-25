@@ -4,17 +4,17 @@ import 'package:flutter/material.dart';
 class EditPresetPropertiesDialog extends StatefulWidget {
   final PresetModel existing;
 
-  EditPresetPropertiesDialog({
+  const EditPresetPropertiesDialog({
     Key? key,
     required this.existing,
   }) : super(key: key);
 
   @override
-  _EditPresetPropertiesDialogState createState() =>
-      _EditPresetPropertiesDialogState();
+  EditPresetPropertiesDialogState createState() =>
+      EditPresetPropertiesDialogState();
 }
 
-class _EditPresetPropertiesDialogState
+class EditPresetPropertiesDialogState
     extends State<EditPresetPropertiesDialog> {
   late TextEditingController _nameController;
   late TextEditingController _detailsController;
@@ -30,13 +30,13 @@ class _EditPresetPropertiesDialogState
 
   @override
   Widget build(BuildContext context) {
-    const switchListTilePadding = const EdgeInsets.only(left: 0);
+    const switchListTilePadding = EdgeInsets.only(left: 0);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit Details'),
+        title: const Text('Edit Details'),
         actions: [
           TextButton(
-            child: Text('Update'),
+            child: const Text('Update'),
             onPressed: () => Navigator.of(context).pop(widget.existing.copyWith(
               name: _nameController.text,
               details: _detailsController.text,
@@ -51,21 +51,21 @@ class _EditPresetPropertiesDialogState
           children: [
             TextField(
               controller: _nameController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Name',
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             TextField(
               controller: _detailsController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Details',
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             SwitchListTile(
               contentPadding: switchListTilePadding,
-              title: Text('Nestable'),
+              title: const Text('Nestable'),
               value: _isNestable,
               onChanged: (value) => setState(() => _isNestable = value),
             ),
