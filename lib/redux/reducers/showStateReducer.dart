@@ -1,6 +1,5 @@
 import 'package:castboard_core/models/PresetModel.dart';
 import 'package:castboard_showcaller/redux/actions/SyncActions.dart';
-import 'package:castboard_showcaller/redux/state/AppState.dart';
 import 'package:castboard_showcaller/redux/state/ShowState.dart';
 
 ShowState showStateReducer(ShowState state, dynamic action) {
@@ -17,6 +16,7 @@ ShowState showStateReducer(ShowState state, dynamic action) {
       tracks: action.data.showData.tracks,
       presets: action.data.showData.presets,
       actorIndex: action.data.showData.actorIndex,
+      trackIndex: action.data.showData.trackIndex,
     );
   }
 
