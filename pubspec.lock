@@ -28,7 +28,7 @@ packages:
       path: "../castboard_core"
       relative: true
     source: path
-    version: "1.0.3"
+    version: "1.2.0"
   characters:
     dependency: transitive
     description:
