@@ -3,29 +3,36 @@ import 'package:castboard_core/models/ActorOrDividerViewModel.dart';
 import 'package:castboard_core/models/PresetModel.dart';
 import 'package:castboard_core/models/TrackIndex.dart';
 import 'package:castboard_core/models/TrackOrIndexViewModel.dart';
+import 'package:castboard_showcaller/ResponsiveBuilder.dart';
+import 'package:castboard_showcaller/containers/selectors.dart';
 
 import 'package:castboard_showcaller/redux/actions/AsyncActions.dart';
 import 'package:castboard_showcaller/redux/actions/SyncActions.dart';
 import 'package:castboard_showcaller/redux/state/AppState.dart';
-import 'package:castboard_showcaller/root_pages/cast_change/CastChangePage.dart';
+import 'package:castboard_showcaller/root_pages/cast_change/CastChangePageLarge.dart';
+import 'package:castboard_showcaller/root_pages/cast_change/CastChangePageSmall.dart';
 import 'package:castboard_showcaller/view_models/CastChangePageViewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 
 class CastChangePageContainer extends StatelessWidget {
-  final TabController tabController;
-  const CastChangePageContainer({Key? key, required this.tabController})
+  final TabController? tabController;
+  const CastChangePageContainer({Key? key, this.tabController})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, CastChangePageViewModel>(
       builder: (context, viewModel) {
-        return CastChangePage(
-          viewModel: viewModel,
-          tabController: tabController,
-        );
+        return ResponsiveBuilder(
+            smallContentBuilder: (_) => CastChangePageSmall(
+                  viewModel: viewModel,
+                  tabController: tabController,
+                ),
+            largeContentBuilder: (_) => CastChangePageLarge(
+                  viewModel: viewModel,
+                ));
       },
       converter: (Store<AppState> store) {
         return CastChangePageViewModel(
@@ -62,6 +69,9 @@ class CastChangePageContainer extends StatelessWidget {
               store.dispatch(duplicatePreset(presetId)),
           onEditPresetProperties: (presetId) =>
               store.dispatch(editPresetProperties(context, presetId)),
+          allowPresetUpdates: selectShowPresetActions(store),
+          onUpdatePreset: () => store.dispatch(updatePreset(context)),
+          onResetChanges: () => store.dispatch(ResetLiveEdits()),
         );
       },
     );

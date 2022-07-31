@@ -24,12 +24,12 @@ class ShowfilePageState extends State<ShowfilePage> {
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: ListView(
           children: [
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 16),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16),
               child: _FileData(
-                fileName: 'Les Dogerables',
-                dateCreated: 'Yesterday',
-                dateModified: 'Today',
+                fileName: widget.viewModel.fileName,
+                dateCreated: widget.viewModel.dateCreated,
+                dateModified: widget.viewModel.dateModified,
               ),
             ),
             UploadShowfileButton(
@@ -71,11 +71,11 @@ class _DownloadFileListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-    OutlinedButton.icon(
-      icon: const Icon(Icons.file_download),
-      label: const Text('Download'),
-      onPressed: onDownloadButtonPressed,
-    ),
+        OutlinedButton.icon(
+          icon: const Icon(Icons.file_download),
+          label: const Text('Download'),
+          onPressed: onDownloadButtonPressed,
+        ),
       ],
     );
   }
@@ -84,7 +84,7 @@ class _DownloadFileListItem extends StatelessWidget {
 class _FileData extends StatelessWidget {
   final String fileName;
   final String dateCreated;
-  final String? dateModified;
+  final String dateModified;
 
   const _FileData({
     Key? key,
@@ -95,6 +95,9 @@ class _FileData extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final DateTime? created = DateTime.tryParse(dateCreated);
+    final DateTime? modified = DateTime.tryParse(dateModified);
+
     return SizedBox(
       height: 160,
       child: Card(
@@ -109,14 +112,22 @@ class _FileData extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
               const SizedBox(height: 8),
-              Text('Created $dateCreated',
+              Text('Created ${_formatDate(created)}',
                   style: Theme.of(context).textTheme.caption),
-              Text('Modified $dateCreated',
+              Text('Modified ${_formatDate(modified)}',
                   style: Theme.of(context).textTheme.caption)
             ],
           ),
         ),
       ),
     );
+  }
+
+  String _formatDate(DateTime? date) {
+    if (date == null) {
+      return '';
+    }
+
+    return '${date.day}/${date.month}/${date.year} at ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
   }
 }

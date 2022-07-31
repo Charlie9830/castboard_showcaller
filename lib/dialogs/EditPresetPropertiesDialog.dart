@@ -1,4 +1,5 @@
 import 'package:castboard_core/models/PresetModel.dart';
+import 'package:castboard_showcaller/ResponsiveDialogContainer.dart';
 import 'package:flutter/material.dart';
 
 class EditPresetPropertiesDialog extends StatefulWidget {
@@ -31,20 +32,19 @@ class EditPresetPropertiesDialogState
   @override
   Widget build(BuildContext context) {
     const switchListTilePadding = EdgeInsets.only(left: 0);
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Edit Details'),
-        actions: [
-          TextButton(
-            child: const Text('Update'),
-            onPressed: () => Navigator.of(context).pop(widget.existing.copyWith(
-              name: _nameController.text,
-              details: _detailsController.text,
-              isNestable: _isNestable,
-            )),
-          )
-        ],
-      ),
+
+    return ResponsiveDialogContainer(
+      title: 'Edit Details',
+      actions: [
+        TextButton(
+          child: const Text('Update'),
+          onPressed: () => Navigator.of(context).pop(widget.existing.copyWith(
+            name: _nameController.text,
+            details: _detailsController.text,
+            isNestable: _isNestable,
+          )),
+        )
+      ],
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

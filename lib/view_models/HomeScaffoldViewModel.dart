@@ -9,6 +9,7 @@ class HomeScaffoldViewModel {
   final dynamic onCastChangeTabChanged;
   final dynamic onDebugButtonPressed;
   final dynamic onUploadCastChange;
+  final dynamic onSettingsButtonPressed;
 
   HomeScaffoldViewModel({
     required this.onUploadCastChange,
@@ -18,5 +19,6 @@ class HomeScaffoldViewModel {
     required this.onPlaybackAction,
     required this.onCastChangeTabChanged,
     required this.onDebugButtonPressed,
+    required this.onSettingsButtonPressed,
   });
 }

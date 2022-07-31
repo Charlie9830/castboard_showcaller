@@ -25,6 +25,9 @@ class CastChangePageViewModel {
   final dynamic onDuplicatePreset;
   final dynamic onEditPresetProperties;
   final dynamic onDeletePreset;
+  final bool allowPresetUpdates;
+  final dynamic onUpdatePreset;
+  final dynamic onResetChanges;
 
   CastChangePageViewModel({
     required this.presets,
@@ -44,5 +47,8 @@ class CastChangePageViewModel {
     required this.onEditPresetProperties,
     required this.onDuplicatePreset,
     required this.trackViewModels,
+    required this.allowPresetUpdates,
+    required this.onUpdatePreset,
+    required this.onResetChanges,
   });
 }

@@ -10,7 +10,7 @@ class NavigationState {
   });
 
   NavigationState.initial()
-      : homePage = HomePage.remote,
+      : homePage = HomePage.castChanges,
         castChangePageTab = CastChangePageTab.presets;
 
   NavigationState copyWith({

@@ -7,15 +7,16 @@ import 'package:castboard_showcaller/enums.dart';
 import 'package:castboard_showcaller/view_models/HomeScaffoldViewModel.dart';
 import 'package:flutter/material.dart';
 
-class HomeScaffold extends StatefulWidget {
+class HomeScaffoldSmall extends StatefulWidget {
   final HomeScaffoldViewModel viewModel;
-  const HomeScaffold({Key? key, required this.viewModel}) : super(key: key);
+  const HomeScaffoldSmall({Key? key, required this.viewModel})
+      : super(key: key);
 
   @override
-  HomeScaffoldState createState() => HomeScaffoldState();
+  HomeScaffoldSmallState createState() => HomeScaffoldSmallState();
 }
 
-class HomeScaffoldState extends State<HomeScaffold>
+class HomeScaffoldSmallState extends State<HomeScaffoldSmall>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
@@ -26,7 +27,7 @@ class HomeScaffoldState extends State<HomeScaffold>
   }
 
   @override
-  void didUpdateWidget(covariant HomeScaffold oldWidget) {
+  void didUpdateWidget(covariant HomeScaffoldSmall oldWidget) {
     super.didUpdateWidget(oldWidget);
   }
 
@@ -34,17 +35,8 @@ class HomeScaffoldState extends State<HomeScaffold>
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
-      appBar: AppBar(
-        title: const Text('Showcaller'),
-        bottom: _getBottomAppBar(context, widget.viewModel, _tabController),
-        actions: [
-          HomePopupMenu(
-            viewModel: widget.viewModel.popupMenuViewModel,
-          )
-        ],
-      ),
+      appBar: _buildSmallAppBar(context),
       body: _getCurrentPage(widget.viewModel),
-      
       floatingActionButton: widget.viewModel.currentPage == HomePage.castChanges
           ? FloatingActionButton(
               onPressed: widget.viewModel.onUploadCastChange,
@@ -69,6 +61,18 @@ class HomeScaffoldState extends State<HomeScaffold>
           )
         ],
       ),
+    );
+  }
+
+  AppBar _buildSmallAppBar(BuildContext context) {
+    return AppBar(
+      title: const Text('Showcaller'),
+      bottom: _getBottomAppBar(context, widget.viewModel, _tabController),
+      actions: [
+        HomePopupMenu(
+          viewModel: widget.viewModel.popupMenuViewModel,
+        )
+      ],
     );
   }
 
@@ -111,6 +115,8 @@ class HomeScaffoldState extends State<HomeScaffold>
         return 1;
       case HomePage.showfile:
         return 2;
+      default:
+        return 0;
     }
   }
 

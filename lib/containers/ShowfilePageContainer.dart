@@ -19,9 +19,12 @@ class ShowfilePageContainer extends StatelessWidget {
       },
       converter: (Store<AppState> store) {
         return ShowfilePageViewModel(
-            uri: store.state.playerState.uri,
-            onFileUpload: (file) =>
-                store.dispatch(uploadShowFile(context, file)));
+          uri: store.state.playerState.uri,
+          onFileUpload: (file) => store.dispatch(uploadShowFile(context, file)),
+          fileName: store.state.playerState.loadedManifest.fileName,
+          dateCreated: store.state.playerState.loadedManifest.created,
+          dateModified: store.state.playerState.loadedManifest.modified,
+        );
       },
     );
   }

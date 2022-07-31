@@ -1,4 +1,7 @@
-import 'package:castboard_showcaller/HomeScaffold.dart';
+import 'package:castboard_showcaller/ResponsiveBuilder.dart';
+import 'package:castboard_showcaller/containers/selectors.dart';
+import 'package:castboard_showcaller/home_scaffold/HomeScaffoldLarge.dart';
+import 'package:castboard_showcaller/home_scaffold/HomeScaffoldSmall.dart';
 import 'package:castboard_showcaller/enums.dart';
 import 'package:castboard_showcaller/redux/actions/AsyncActions.dart';
 import 'package:castboard_showcaller/redux/actions/SyncActions.dart';
@@ -16,9 +19,12 @@ class HomeScaffoldContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, HomeScaffoldViewModel>(
       builder: (context, viewModel) {
-        return HomeScaffold(
-          viewModel: viewModel,
-        );
+        return ResponsiveBuilder(
+            smallContentBuilder: (_) => HomeScaffoldSmall(
+                  viewModel: viewModel,
+                ),
+            largeContentBuilder: (_) =>
+                HomeScaffoldLarge(viewModel: viewModel));
       },
       converter: (Store<AppState> store) {
         return HomeScaffoldViewModel(
@@ -35,12 +41,14 @@ class HomeScaffoldContainer extends StatelessWidget {
           onDebugButtonPressed: () => store.dispatch(InitMockData()),
           onUploadCastChange: () => store.dispatch(uploadCastChange(context)),
           popupMenuViewModel: HomePopupMenuViewModel(
-            allowPresetUpdates: _selectShowPresetActions(store),
+            allowPresetUpdates: selectShowPresetActions(store),
             mode: _selectSettingsMode(store),
             onUpdatePreset: () => store.dispatch(updatePreset(context)),
             onResetChanges: () => store.dispatch(ResetLiveEdits()),
             onSettingsPressed: () => store.dispatch(goToSettingsPage(context)),
           ),
+          onSettingsButtonPressed: () =>
+              store.dispatch(goToSettingsPage(context)),
         );
       },
     );
@@ -57,9 +65,5 @@ class HomeScaffoldContainer extends StatelessWidget {
     }
 
     return HomeSettingsMenuMode.generic;
-  }
-
-  bool _selectShowPresetActions(Store<AppState> store) {
-    return store.state.editingState.editedAssignments.isNotEmpty;
   }
 }
