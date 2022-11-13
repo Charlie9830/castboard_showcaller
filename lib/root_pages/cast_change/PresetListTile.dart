@@ -32,21 +32,26 @@ class PresetListTile extends StatelessWidget {
           leading: _buildLeadingIcon(context),
           title: Text(preset.name),
           subtitle: _buildSubtitle(),
+          selected: selected,
           onTap: _handleTap,
           actions: [
             _buildCombineButton(showIfDisabled: true) ?? const SizedBox(),
             IconButton(
-                onPressed: () => onPresetAction(PresetAction.editProperties),
-                icon: const Icon(Icons.edit)),
+              onPressed: () => onPresetAction(PresetAction.editProperties),
+              icon: const Icon(Icons.edit),
+              color: Colors.white,
+            ),
             IconButton(
               onPressed: () => onPresetAction(PresetAction.duplicate),
               icon: const Icon(Icons.copy),
+              color: Colors.white,
             ),
             IconButton(
               onPressed: preset.isBuiltIn
                   ? null
                   : () => onPresetAction(PresetAction.delete),
               icon: const Icon(Icons.delete),
+              color: Colors.white,
             ),
           ]);
     }
@@ -86,13 +91,17 @@ class PresetListTile extends StatelessWidget {
   Widget? _buildCombineButton({bool showIfDisabled = false}) {
     if (showIfDisabled == false) {
       return IconButton(
-          icon: const Icon(Icons.merge_type),
-          onPressed: () => onCombineButtonPressed?.call());
+        icon: const Icon(Icons.merge_type),
+        onPressed: () => onCombineButtonPressed?.call(),
+        color: Colors.white,
+      );
     }
 
     return IconButton(
-        icon: const Icon(Icons.merge_type),
-        onPressed: () => onCombineButtonPressed?.call());
+      icon: const Icon(Icons.merge_type),
+      onPressed: () => onCombineButtonPressed?.call(),
+      color: Colors.white,
+    );
   }
 
   void _handleLongPress(BuildContext context) async {

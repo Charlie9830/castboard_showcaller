@@ -1,4 +1,5 @@
 import 'package:castboard_core/models/PresetModel.dart';
+import 'package:castboard_core/widgets/color_tag.dart';
 import 'package:flutter/material.dart';
 
 class SelectNestedPresetBottomSheet extends StatelessWidget {
@@ -30,6 +31,7 @@ class SelectNestedPresetBottomSheet extends StatelessWidget {
               itemBuilder: (builderContext, index) {
                 final preset = availablePresets[index];
                 return ListTile(
+                  leading: _buildLeadingIcon(preset),
                   title: Text(preset.name),
                   subtitle:
                       preset.details.isNotEmpty ? Text(preset.details) : null,
@@ -42,5 +44,15 @@ class SelectNestedPresetBottomSheet extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Widget? _buildLeadingIcon(PresetModel preset) {
+    final colorTag = fetchPresetColorTag(preset.colorTagIndex);
+
+    if (colorTag == null) {
+      return null;
+    }
+
+    return ColorTag(color: colorTag);
   }
 }
