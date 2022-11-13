@@ -256,7 +256,7 @@ ThunkAction<AppState> initializeApp(BuildContext context) {
         final raw = jsonDecode(response.body);
         final data = RemoteShowData.fromMap(raw);
         store.dispatch(ReceiveShowData(data));
-        
+
         final bool showLoaded =
             data.manifest != null && data.manifest!.created.isNotEmpty;
 
@@ -389,7 +389,6 @@ ThunkAction<AppState> addNewPreset(BuildContext context) {
         createdOnRemote: true,
         name: result.name,
         details: result.details,
-        isNestable: result.isNestable,
         castChange: result.useExistingCastChange
             ? buildCopiedCastChange(
                 store.state.showState
@@ -409,14 +408,16 @@ ThunkAction<AppState> addNewPreset(BuildContext context) {
 
 ThunkAction<AppState> combinePreset(BuildContext context, String presetId) {
   return (Store<AppState> store) async {
-    final nestablePresets = store.state.showState.presets.values
-        .where((preset) => preset.isNestable == true);
-
     final unavailablePresetIds =
         store.state.editingState.combinedPresetIds.toSet();
 
-    if (nestablePresets.isEmpty ||
-        nestablePresets.length == unavailablePresetIds.length) {
+    final availablePresets = store.state.showState.presets.values
+        .where((preset) =>
+            preset.uid != store.state.editingState.selectedPresetId &&
+            unavailablePresetIds.contains(preset.uid) == false)
+        .toList();
+
+    if (availablePresets.isEmpty) {
       // Wouldn't be able to show any available options to user. So Bail.
       return;
     }
@@ -425,7 +426,7 @@ ThunkAction<AppState> combinePreset(BuildContext context, String presetId) {
       context: context,
       isScrollControlled: true,
       builder: (builderContext) => SelectNestedPresetBottomSheet(
-        availablePresets: nestablePresets.toList(),
+        availablePresets: availablePresets,
         unavailablePresetIds: unavailablePresetIds,
       ),
     );

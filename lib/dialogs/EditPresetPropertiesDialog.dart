@@ -19,13 +19,11 @@ class EditPresetPropertiesDialogState
     extends State<EditPresetPropertiesDialog> {
   late TextEditingController _nameController;
   late TextEditingController _detailsController;
-  late bool _isNestable;
 
   @override
   void initState() {
     _nameController = TextEditingController(text: widget.existing.name);
     _detailsController = TextEditingController(text: widget.existing.name);
-    _isNestable = widget.existing.isNestable;
     super.initState();
   }
 
@@ -41,7 +39,6 @@ class EditPresetPropertiesDialogState
           onPressed: () => Navigator.of(context).pop(widget.existing.copyWith(
             name: _nameController.text,
             details: _detailsController.text,
-            isNestable: _isNestable,
           )),
         )
       ],
@@ -61,13 +58,6 @@ class EditPresetPropertiesDialogState
               decoration: const InputDecoration(
                 hintText: 'Details',
               ),
-            ),
-            const SizedBox(height: 16),
-            SwitchListTile(
-              contentPadding: switchListTilePadding,
-              title: const Text('Nestable'),
-              value: _isNestable,
-              onChanged: (value) => setState(() => _isNestable = value),
             ),
           ],
         ),

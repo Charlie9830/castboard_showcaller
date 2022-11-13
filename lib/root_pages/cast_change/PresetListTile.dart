@@ -1,4 +1,5 @@
 import 'package:castboard_core/models/PresetModel.dart';
+import 'package:castboard_core/widgets/color_tag.dart';
 import 'package:castboard_core/widgets/hover_action_list_tile/HoverActionListTile.dart';
 import 'package:castboard_showcaller/isLargeLayout.dart';
 import 'package:flutter/material.dart';
@@ -65,6 +66,16 @@ class PresetListTile extends StatelessWidget {
     onTap?.call();
   }
 
+  Widget? _buildLeadingIcon(context) {
+    final colorTag = fetchPresetColorTag(preset.colorTagIndex);
+
+    if (colorTag != null) {
+      return ColorTag(color: colorTag);
+    }
+
+    return null;
+  }
+
   Widget? _buildSubtitle() {
     return preset.details.isNotEmpty || nestedPresetText.isNotEmpty
         ? _PresetSubtitle(
@@ -72,26 +83,16 @@ class PresetListTile extends StatelessWidget {
         : null;
   }
 
-  Widget? _buildLeadingIcon(BuildContext context) {
-    return preset.isNestable
-        ? Icon(Icons.subdirectory_arrow_right,
-            size: 20, color: Theme.of(context).disabledColor)
-        : null;
-  }
-
   Widget? _buildCombineButton({bool showIfDisabled = false}) {
     if (showIfDisabled == false) {
-      return preset.isNestable == false
-          ? IconButton(
-              icon: const Icon(Icons.merge_type),
-              onPressed: () => onCombineButtonPressed?.call())
-          : null;
+      return IconButton(
+          icon: const Icon(Icons.merge_type),
+          onPressed: () => onCombineButtonPressed?.call());
     }
 
     return IconButton(
         icon: const Icon(Icons.merge_type),
-        onPressed:
-            preset.isNestable ? () => onCombineButtonPressed?.call() : null);
+        onPressed: () => onCombineButtonPressed?.call());
   }
 
   void _handleLongPress(BuildContext context) async {

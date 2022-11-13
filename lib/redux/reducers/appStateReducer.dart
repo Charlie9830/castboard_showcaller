@@ -94,7 +94,6 @@ AppState appStateReducer(AppState state, dynamic action) {
           ),
           'nestedPreset1': PresetModel(
             uid: 'nestedPreset1',
-            isNestable: true,
             name: 'Diamonds',
             castChange: CastChangeModel(
               {

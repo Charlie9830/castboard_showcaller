@@ -31,6 +31,9 @@ class PlayerSettingsState extends State<PlayerSettings> {
   SystemConfig _loadedSystemConfig = SystemConfig.defaults();
   SystemConfig? _editingSystemConfig;
 
+  // Controllers
+  late TextEditingController _deviceNameController;
+
   @override
   void initState() {
     super.initState();
@@ -85,6 +88,15 @@ class PlayerSettingsState extends State<PlayerSettings> {
   ListView _buildSettings(BuildContext context) {
     return ListView(
       children: [
+        const _Subheading(text: 'Device Name'),
+        ListTile(
+            title: TextField(
+          controller: _deviceNameController,
+          onSubmitted: (newValue) => setState(() {
+            _editingSystemConfig =
+                _getEditingConfig().copyWith(deviceName: newValue);
+          }),
+        )),
         const _Subheading(text: 'Playback'),
         ListTile(
           title: const Text('Auto resume playback'),
@@ -239,6 +251,7 @@ class PlayerSettingsState extends State<PlayerSettings> {
       setState(() {
         _isFetchingSystemConfig = false;
         _systemConfigError = true;
+        _deviceNameController = TextEditingController();
       });
       return;
     }
@@ -246,6 +259,8 @@ class PlayerSettingsState extends State<PlayerSettings> {
     setState(() {
       _isFetchingSystemConfig = false;
       _loadedSystemConfig = systemConfig;
+      _deviceNameController =
+          TextEditingController(text: systemConfig.deviceName ?? '');
     });
   }
 
