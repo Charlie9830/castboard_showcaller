@@ -31,9 +31,6 @@ class PlayerSettingsState extends State<PlayerSettings> {
   SystemConfig _loadedSystemConfig = SystemConfig.defaults();
   SystemConfig? _editingSystemConfig;
 
-  // Controllers
-  late TextEditingController _deviceNameController;
-
   @override
   void initState() {
     super.initState();
@@ -54,17 +51,12 @@ class PlayerSettingsState extends State<PlayerSettings> {
                     ? _handleSaveButtonPressed
                     : null,
                 child: const Text('Save')),
-            PopupMenuButton(
-                icon: const Icon(Icons.more_vert),
-                itemBuilder: (_) => [
-                      PopupMenuItem(
-                          enabled: _editingSystemConfig != null,
-                          onTap: _handleResetButtonPressed,
-                          child: const Text('Reset Changes')),
-                      PopupMenuItem(
-                          onTap: _handleUpdateSoftwareButtonPressed,
-                          child: const Text('Update Player Software'))
-                    ]),
+            TextButton(
+              onPressed: _editingSystemConfig != null
+                  ? _handleResetButtonPressed
+                  : null,
+              child: const Text('Reset'),
+            )
           ],
         ),
         body: Padding(
@@ -88,15 +80,6 @@ class PlayerSettingsState extends State<PlayerSettings> {
   ListView _buildSettings(BuildContext context) {
     return ListView(
       children: [
-        const _Subheading(text: 'Device Name'),
-        ListTile(
-            title: TextField(
-          controller: _deviceNameController,
-          onSubmitted: (newValue) => setState(() {
-            _editingSystemConfig =
-                _getEditingConfig().copyWith(deviceName: newValue);
-          }),
-        )),
         const _Subheading(text: 'Playback'),
         ListTile(
           title: const Text('Auto resume playback'),
@@ -109,55 +92,6 @@ class PlayerSettingsState extends State<PlayerSettings> {
             onChanged: _handlePlayFromIdleChanged,
           ),
         ),
-        const _Subheading(text: 'Video Output'),
-        ListTile(
-          title: const Text('Output Resolution'),
-          trailing: SizedBox(
-            width: 180,
-            child: ResolutionDropdown(
-              selectedValue: _editingSystemConfig == null
-                  ? _loadedSystemConfig.deviceResolution
-                  : _editingSystemConfig!.deviceResolution,
-              resolutions: _loadedSystemConfig.availableResolutions.resolutions,
-              onChanged: _handleResolutionChanged,
-            ),
-          ),
-        ),
-        ListTile(
-            title: const Text('Screen Orientation'),
-            trailing: OrientationDropdown(
-              selectedValue: _editingSystemConfig == null
-                  ? _loadedSystemConfig.deviceOrientation
-                  : _editingSystemConfig!.deviceOrientation,
-              onChanged: _handleOrientationChanged,
-            )),
-        const _Subheading(text: 'Device Commands'),
-        ListTile(
-          title: Wrap(
-            alignment: WrapAlignment.spaceBetween,
-            children: [
-              TextButton(
-                child: const Text('Shutdown Player'),
-                onPressed: () => _handleShutdownButtonPressed(context),
-              ),
-              TextButton(
-                child: const Text('Reboot Player'),
-                onPressed: () => _handleRebootButtonPressed(context),
-              ),
-              TextButton(
-                child: const Text('Restart Player Software'),
-                onPressed: () => _handleRestartSoftwareButtonPressed(context),
-              )
-            ],
-          ),
-        ),
-        const _Subheading(text: 'Software Update'),
-        ListTile(
-            title: TextButton(
-          child: const Align(
-              alignment: Alignment.centerLeft, child: Text('Update Software')),
-          onPressed: () => _handleUpdateSoftwareButtonPressed(),
-        )),
         const _Subheading(text: 'Diagnostics'),
         PlayerDetailsListTile(
           leading: 'Player Version',
@@ -251,7 +185,6 @@ class PlayerSettingsState extends State<PlayerSettings> {
       setState(() {
         _isFetchingSystemConfig = false;
         _systemConfigError = true;
-        _deviceNameController = TextEditingController();
       });
       return;
     }
@@ -259,19 +192,6 @@ class PlayerSettingsState extends State<PlayerSettings> {
     setState(() {
       _isFetchingSystemConfig = false;
       _loadedSystemConfig = systemConfig;
-      _deviceNameController =
-          TextEditingController(text: systemConfig.deviceName ?? '');
-    });
-  }
-
-  void _handleResolutionChanged(DeviceResolution? res) {
-    if (res == null || res == _loadedSystemConfig.deviceResolution) {
-      return;
-    }
-
-    setState(() {
-      _editingSystemConfig =
-          _getEditingConfig().copyWith(deviceResolution: res);
     });
   }
 
@@ -283,17 +203,6 @@ class PlayerSettingsState extends State<PlayerSettings> {
     setState(() {
       _editingSystemConfig =
           _getEditingConfig().copyWith(playShowOnIdle: value);
-    });
-  }
-
-  void _handleOrientationChanged(DeviceOrientation? ori) {
-    if (ori == null) {
-      return;
-    }
-
-    setState(() {
-      _editingSystemConfig =
-          _getEditingConfig().copyWith(deviceOrientation: ori);
     });
   }
 
