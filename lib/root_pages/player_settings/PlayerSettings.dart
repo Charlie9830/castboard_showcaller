@@ -232,7 +232,7 @@ class PlayerSettingsState extends State<PlayerSettings> {
         widget.viewModel.onShowDeviceRestartingSplash?.call();
       } else {
         // No System restart required.
-        if (mounted) {
+        if (mounted && Navigator.of(context).canPop()) {
           // Pop the UploadingSettingsDialog off the stack.
           Navigator.of(context).pop();
         }
