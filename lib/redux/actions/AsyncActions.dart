@@ -32,54 +32,6 @@ import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:http/http.dart' as http;
 
-ThunkAction<AppState> updateSoftware(BuildContext context) {
-  return (Store<AppState> store) async {
-    // Show a file select Dialog.
-    final typeGroup = XTypeGroup(label: 'Zip file', extensions: ['.zip']);
-    final file = await openFile(acceptedTypeGroups: [typeGroup]);
-
-    if (file == null) {
-      return;
-    }
-
-    final uri = Uri.http(
-        store.state.playerState.uri.authority, 'system/softwareUpdate');
-
-    final result = await showDialog(
-        context: context,
-        builder: (_) => FileUploadDialog(uri: uri, xFile: file));
-
-    if (result is FileUploadDialogResult) {
-      // Exception thrown by http.
-      if (result.exceptionMessage.isNotEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: GeneralMessageSnackBar(
-          message: result.exceptionMessage,
-          success: false,
-        )));
-      }
-
-      // Non OK Response.
-      if (result.response != null && result.response!.statusCode != 200) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: GeneralMessageSnackBar(
-          message: result.response!.body,
-          success: false,
-        )));
-      }
-
-      // OK. Player is apply the update.
-      if (result.response != null && result.response!.statusCode == 200) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: GeneralMessageSnackBar(
-            message: 'Player software update in progress..',
-            success: true,
-          ),
-        ));
-      }
-    }
-  };
-}
 
 ThunkAction<AppState> showDeviceRestartingPage(BuildContext context) {
   return (Store<AppState> store) async {
