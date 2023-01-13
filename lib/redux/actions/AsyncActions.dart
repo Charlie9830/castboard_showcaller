@@ -15,6 +15,7 @@ import 'package:castboard_showcaller/dialogs/FileUploadDialog.dart';
 import 'package:castboard_showcaller/dialogs/ResyncingDialog.dart';
 import 'package:castboard_showcaller/dialogs/SelectNestedPresetBottomSheet.dart';
 import 'package:castboard_showcaller/dialogs/UpdatePresetDialog.dart';
+import 'package:castboard_showcaller/dialogs/performer_update_ready_dialog.dart';
 import 'package:castboard_showcaller/enums.dart';
 import 'package:castboard_showcaller/global_keys.dart';
 import 'package:castboard_showcaller/presence/PresenceManager.dart';
@@ -259,6 +260,13 @@ ThunkAction<AppState> initializeApp(BuildContext context) {
 
         final bool showLoaded =
             data.manifest != null && data.manifest!.created.isNotEmpty;
+
+        if (data.softwareUpdateReady) {
+          // A software Update for Performer is ready to install. Inform the user.
+          await showDialog(
+              context: context,
+              builder: (_) => const PerformerUpdateReadyDialog());
+        }
 
         if (showLoaded) {
           navigatorKey.currentState?.popAndPushNamed(Routes.home);
