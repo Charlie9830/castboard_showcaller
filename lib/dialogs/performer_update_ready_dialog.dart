@@ -16,7 +16,7 @@ class PerformerUpdateReadyDialog extends StatelessWidget {
                 'A Software update for Castboard Performer is ready to be installed.'),
             const SizedBox(height: 16),
             Text(
-                'To install this update, open Performer, Then go to  Settings (Press Escape) > Install Update.',
+                'To install, open Performer, Then go to  Settings (Press Escape) > Install Update.',
                 style: Theme.of(context).textTheme.bodySmall),
           ],
         ),
