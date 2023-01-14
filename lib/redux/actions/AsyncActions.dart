@@ -15,8 +15,10 @@ import 'package:castboard_showcaller/dialogs/FileUploadDialog.dart';
 import 'package:castboard_showcaller/dialogs/ResyncingDialog.dart';
 import 'package:castboard_showcaller/dialogs/SelectNestedPresetBottomSheet.dart';
 import 'package:castboard_showcaller/dialogs/UpdatePresetDialog.dart';
+import 'package:castboard_showcaller/dialogs/performer_update_ready_dialog.dart';
 import 'package:castboard_showcaller/enums.dart';
 import 'package:castboard_showcaller/global_keys.dart';
+import 'package:castboard_showcaller/isLargeLayout.dart';
 import 'package:castboard_showcaller/presence/PresenceManager.dart';
 import 'package:castboard_showcaller/redux/actions/SyncActions.dart';
 import 'package:castboard_showcaller/redux/state/AppState.dart';
@@ -24,61 +26,13 @@ import 'package:castboard_showcaller/root_pages/WaitingOverlay.dart';
 import 'package:castboard_showcaller/snackBars/FileUploadSnackBar.dart';
 import 'package:castboard_showcaller/snackBars/GeneralMessageSnackBar.dart';
 import 'package:castboard_showcaller/utils/getUid.dart';
+import 'package:castboard_showcaller/utils/is_root_scaffold_mounted.dart';
 import 'package:file_selector/file_selector.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:http/http.dart' as http;
-
-ThunkAction<AppState> updateSoftware(BuildContext context) {
-  return (Store<AppState> store) async {
-    // Show a file select Dialog.
-    final typeGroup = XTypeGroup(label: 'Zip file', extensions: ['.zip']);
-    final file = await openFile(acceptedTypeGroups: [typeGroup]);
-
-    if (file == null) {
-      return;
-    }
-
-    final uri = Uri.http(
-        store.state.playerState.uri.authority, 'system/softwareUpdate');
-
-    final result = await showDialog(
-        context: context,
-        builder: (_) => FileUploadDialog(uri: uri, xFile: file));
-
-    if (result is FileUploadDialogResult) {
-      // Exception thrown by http.
-      if (result.exceptionMessage.isNotEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: GeneralMessageSnackBar(
-          message: result.exceptionMessage,
-          success: false,
-        )));
-      }
-
-      // Non OK Response.
-      if (result.response != null && result.response!.statusCode != 200) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: GeneralMessageSnackBar(
-          message: result.response!.body,
-          success: false,
-        )));
-      }
-
-      // OK. Player is apply the update.
-      if (result.response != null && result.response!.statusCode == 200) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: GeneralMessageSnackBar(
-            message: 'Player software update in progress..',
-            success: true,
-          ),
-        ));
-      }
-    }
-  };
-}
 
 ThunkAction<AppState> showDeviceRestartingPage(BuildContext context) {
   return (Store<AppState> store) async {
@@ -117,6 +71,7 @@ ThunkAction<AppState> uploadShowFile(BuildContext context, XFile file,
     if (result is FileUploadDialogResult) {
       if (result.response == null) {
         // An Exception was thrown.
+        if (isRootScaffoldMounted()) {}
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: FileUploadSnackBar(success: false)),
         );
@@ -128,13 +83,15 @@ ThunkAction<AppState> uploadShowFile(BuildContext context, XFile file,
       if (statusCode != 200) {
         // Something went wrong Serverside.
         final serverMessage = result.response!.body;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-              content: FileUploadSnackBar(
-            success: false,
-            message: serverMessage,
-          )),
-        );
+        if (isRootScaffoldMounted() == true) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+                content: FileUploadSnackBar(
+              success: false,
+              message: serverMessage,
+            )),
+          );
+        }
 
         return;
       }
@@ -143,7 +100,7 @@ ThunkAction<AppState> uploadShowFile(BuildContext context, XFile file,
       showDialog(context: context, builder: (_) => const ResyncingDialog());
       await Future.delayed(const Duration(
           seconds:
-              4)); // Give he player some breathing room to finish loading the show File.
+              4)); // Give the player some breathing room to finish loading the show File.
 
       final uri = Uri.http(store.state.playerState.uri.authority, '/show');
 
@@ -154,14 +111,21 @@ ThunkAction<AppState> uploadShowFile(BuildContext context, XFile file,
           final raw = jsonDecode(response.body);
           final data = RemoteShowData.fromMap(raw);
           store.dispatch(ReceiveShowData(data));
-          store.dispatch(SetHomePage(HomePage.remote));
+
+          // If we are in Large Layout we go to the Cast Changes Tab. Otherwise we go to the Remote Tab.
+          if (scaffoldKey.currentContext != null &&
+              isLargeLayout(scaffoldKey.currentContext!)) {
+            store.dispatch(SetHomePage(HomePage.castChanges));
+          } else {
+            store.dispatch(SetHomePage(HomePage.remote));
+          }
 
           // Pops the resyncing Dialog.
           navigatorKey.currentState?.pop();
 
           if (isInitialRoute) {
             // Because this is the initial route. We have no home page route underneath in the stack.
-            navigatorKey.currentState?.pushNamed(Routes.home);
+            navigatorKey.currentState?.popAndPushNamed(Routes.home);
           }
         } else {
           print(response.statusCode);
@@ -217,13 +181,29 @@ ThunkAction<AppState> uploadCastChange(BuildContext context) {
 
       navigatorKey.currentState?.pop();
       if (response.statusCode == 200) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: GeneralMessageSnackBar(
-                success: true, message: 'Changes uploaded'),
-          ),
-        );
+        if (isRootScaffoldMounted()) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: GeneralMessageSnackBar(
+                  success: true, message: 'Changes uploaded'),
+            ),
+          );
+        }
       } else {
+        if (isRootScaffoldMounted()) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: GeneralMessageSnackBar(
+                  success: false,
+                  message: 'Something went wrong, please try again.'),
+            ),
+          );
+        }
+      }
+    } catch (error) {
+      navigatorKey.currentState?.pop();
+
+      if (isRootScaffoldMounted()) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: GeneralMessageSnackBar(
@@ -232,16 +212,6 @@ ThunkAction<AppState> uploadCastChange(BuildContext context) {
           ),
         );
       }
-    } catch (error) {
-      navigatorKey.currentState?.pop();
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: GeneralMessageSnackBar(
-              success: false,
-              message: 'Something went wrong, please try again.'),
-        ),
-      );
     }
   };
 }
@@ -259,6 +229,13 @@ ThunkAction<AppState> initializeApp(BuildContext context) {
 
         final bool showLoaded =
             data.manifest != null && data.manifest!.created.isNotEmpty;
+
+        if (data.softwareUpdateReady) {
+          // A software Update for Performer is ready to install. Inform the user.
+          await showDialog(
+              context: context,
+              builder: (_) => const PerformerUpdateReadyDialog());
+        }
 
         if (showLoaded) {
           navigatorKey.currentState?.popAndPushNamed(Routes.home);

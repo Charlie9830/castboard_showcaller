@@ -124,10 +124,6 @@ class PlayerSettingsState extends State<PlayerSettings> {
     );
   }
 
-  void _handleUpdateSoftwareButtonPressed() {
-    widget.viewModel.onUpdateSoftwareButtonPressed();
-  }
-
   void _handleShutdownButtonPressed(BuildContext context) async {
     final result = await showDialog(
         context: context,

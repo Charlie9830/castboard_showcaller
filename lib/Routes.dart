@@ -1,6 +1,6 @@
 class Routes {
   static const splash = 'splash';
-  static const home = 'home';
+  static const home = '/';
   static const settings = 'settings';
   static const showfileUpload = 'showfileUpload';
   static const deviceRestarting = 'deviceRestarting';
