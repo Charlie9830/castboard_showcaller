@@ -169,7 +169,7 @@ packages:
       name: http
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.13.4"
+    version: "0.13.5"
   http_parser:
     dependency: transitive
     description:
@@ -497,6 +497,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.2"
+  version:
+    dependency: transitive
+    description:
+      name: version
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.2"
   win32:
     dependency: transitive
     description:
