@@ -151,6 +151,16 @@ ThunkAction<AppState> uploadShowData(BuildContext context) {
   return (Store<AppState> store) async {
     final uri = Uri.http(store.state.playerState.uri.authority, '/show');
 
+    if (store.state.editingState.slidesMetadata.every((slide) =>
+        store.state.editingState.disabledSlideIds.contains(slide.slideId))) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: GeneralMessageSnackBar(
+              success: false,
+              message: 'Please select at least one slide to display')));
+      store.dispatch(SetHomePage(HomePage.slides));
+      return;
+    }
+
     final remoteShowData = RemoteShowData(
         playbackState: PlaybackStateModel(
           combinedPresetIds: store.state.editingState.combinedPresetIds,
