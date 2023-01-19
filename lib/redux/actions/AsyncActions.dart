@@ -3,10 +3,10 @@ import 'dart:convert';
 
 import 'package:castboard_core/models/CastChangeModel.dart';
 import 'package:castboard_core/models/PresetModel.dart';
-import 'package:castboard_core/models/RemoteCastChangeData.dart';
 import 'package:castboard_core/models/RemoteShowData.dart';
 import 'package:castboard_core/models/ShowDataModel.dart';
 import 'package:castboard_core/models/ShowModificationData.dart';
+import 'package:castboard_core/models/playback_state_model.dart';
 import 'package:castboard_showcaller/Routes.dart';
 import 'package:castboard_showcaller/dialogs/AddNewPresetDialog.dart';
 import 'package:castboard_showcaller/dialogs/DeletePresetDialog.dart';
@@ -147,15 +147,17 @@ ThunkAction<AppState> uploadShowFile(BuildContext context, XFile file,
   };
 }
 
-ThunkAction<AppState> uploadCastChange(BuildContext context) {
+ThunkAction<AppState> uploadShowData(BuildContext context) {
   return (Store<AppState> store) async {
     final uri = Uri.http(store.state.playerState.uri.authority, '/show');
 
     final remoteShowData = RemoteShowData(
-        playbackState: PlaybackStateData(
+        playbackState: PlaybackStateModel(
           combinedPresetIds: store.state.editingState.combinedPresetIds,
           currentPresetId: store.state.editingState.selectedPresetId,
           liveCastChangeEdits: store.state.editingState.editedAssignments,
+          disabledSlideIds: store.state.editingState.disabledSlideIds,
+          slidesMetadata: [], // We don't need to pass the Slide Metadata back to Performer.
         ),
         showModificationData: ShowModificationData(
           deletedPresetIds: store.state.editingState.deletedPresetIds,
@@ -181,6 +183,8 @@ ThunkAction<AppState> uploadCastChange(BuildContext context) {
 
       navigatorKey.currentState?.pop();
       if (response.statusCode == 200) {
+        store.dispatch(SetHasUploadableEdits(false));
+
         if (isRootScaffoldMounted()) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(

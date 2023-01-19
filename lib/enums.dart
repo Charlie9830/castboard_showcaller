@@ -1,6 +1,7 @@
 enum HomePage {
   remote,
   castChanges,
+  slides,
   showfile,
 }
 

@@ -4,6 +4,18 @@ import 'package:castboard_core/models/RemoteShowData.dart';
 import 'package:castboard_core/models/TrackRef.dart';
 import 'package:castboard_showcaller/enums.dart';
 
+class SetDisabledSlideIds {
+  final Set<String> ids;
+
+  SetDisabledSlideIds(this.ids);
+}
+
+class SetHasUploadableEdits {
+  final bool value;
+
+  SetHasUploadableEdits(this.value);
+}
+
 class SetFetched {
   final bool fetched;
 

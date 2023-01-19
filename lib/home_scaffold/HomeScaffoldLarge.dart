@@ -1,4 +1,5 @@
 import 'package:castboard_showcaller/containers/ShowfilePageContainer.dart';
+import 'package:castboard_showcaller/containers/slide_settings_container.dart';
 import 'package:castboard_showcaller/global_keys.dart';
 import 'package:castboard_showcaller/containers/CastChangePageContainer.dart';
 import 'package:castboard_showcaller/enums.dart';
@@ -24,6 +25,7 @@ class HomeScaffoldLargeState extends State<HomeScaffoldLarge>
       appBar: _buildAppBar(context),
       bottomNavigationBar: _buildBottomBar(context),
       body: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           NavigationRail(
             labelType: NavigationRailLabelType.selected,
@@ -32,6 +34,8 @@ class HomeScaffoldLargeState extends State<HomeScaffoldLarge>
             destinations: const [
               NavigationRailDestination(
                   icon: Icon(Icons.sticky_note_2), label: Text('Cast Changes')),
+              NavigationRailDestination(
+                  icon: Icon(Icons.view_carousel), label: Text('Slides')),
               NavigationRailDestination(
                   icon: Icon(Icons.folder), label: Text('Showfile')),
               NavigationRailDestination(
@@ -50,8 +54,10 @@ class HomeScaffoldLargeState extends State<HomeScaffoldLarge>
         return 0;
       case HomePage.castChanges:
         return 0;
-      case HomePage.showfile:
+      case HomePage.slides:
         return 1;
+      case HomePage.showfile:
+        return 2;
     }
   }
 
@@ -61,9 +67,12 @@ class HomeScaffoldLargeState extends State<HomeScaffoldLarge>
         widget.viewModel.onHomePageChanged(HomePage.castChanges);
         break;
       case 1:
-        widget.viewModel.onHomePageChanged(HomePage.showfile);
+        widget.viewModel.onHomePageChanged(HomePage.slides);
         break;
       case 2:
+        widget.viewModel.onHomePageChanged(HomePage.showfile);
+        break;
+      case 3:
         widget.viewModel.onSettingsButtonPressed();
         break;
     }
@@ -88,11 +97,14 @@ class HomeScaffoldLargeState extends State<HomeScaffoldLarge>
               bottom: 14,
               child: AnimatedScale(
                 duration: const Duration(milliseconds: 125),
-                scale: widget.viewModel.currentPage == HomePage.castChanges
+                scale: widget.viewModel.currentPage == HomePage.castChanges ||
+                        widget.viewModel.currentPage == HomePage.slides
                     ? 1
                     : 0,
                 child: ElevatedButton.icon(
-                  onPressed: () => widget.viewModel.onUploadCastChange(),
+                  onPressed: widget.viewModel.hasUploadableEdits
+                      ? () => widget.viewModel.onUploadCastChange()
+                      : null,
                   icon: const Icon(Icons.cloud_upload),
                   label: const Text('Upload'),
                 ),
@@ -121,6 +133,8 @@ class HomeScaffoldLargeState extends State<HomeScaffoldLarge>
         return const CastChangePageContainer();
       case HomePage.showfile:
         return const ShowfilePageContainer();
+      case HomePage.slides:
+        return const SlideSettingsContainer();
       default:
         return const ShowfilePageContainer();
     }

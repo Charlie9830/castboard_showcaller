@@ -1,5 +1,6 @@
 import 'package:castboard_showcaller/HomePopupMenu.dart';
 import 'package:castboard_showcaller/containers/ShowfilePageContainer.dart';
+import 'package:castboard_showcaller/containers/slide_settings_container.dart';
 import 'package:castboard_showcaller/global_keys.dart';
 import 'package:castboard_showcaller/root_pages/remote_page/RemotePage.dart';
 import 'package:castboard_showcaller/containers/CastChangePageContainer.dart';
@@ -37,23 +38,31 @@ class HomeScaffoldSmallState extends State<HomeScaffoldSmall>
       key: scaffoldKey,
       appBar: _buildSmallAppBar(context),
       body: _getCurrentPage(widget.viewModel),
-      floatingActionButton: widget.viewModel.currentPage == HomePage.castChanges
-          ? FloatingActionButton(
-              onPressed: widget.viewModel.onUploadCastChange,
-              child: const Icon(Icons.cloud_upload),
-            )
-          : null,
+      floatingActionButton:
+          (widget.viewModel.currentPage == HomePage.castChanges ||
+                      widget.viewModel.currentPage == HomePage.slides) &&
+                  widget.viewModel.hasUploadableEdits
+              ? FloatingActionButton(
+                  onPressed: widget.viewModel.onUploadCastChange,
+                  child: const Icon(Icons.cloud_upload),
+                )
+              : null,
       bottomNavigationBar: BottomNavigationBar(
         onTap: _handleBottomNavBarTap,
         currentIndex: _getCurrentPageIndex(widget.viewModel),
+        type: BottomNavigationBarType.fixed,
         items: const [
           BottomNavigationBarItem(
             label: 'Remote',
             icon: Icon(Icons.settings_remote),
           ),
           BottomNavigationBarItem(
-            label: 'Cast Changes',
+            label: 'Changes',
             icon: Icon(Icons.sticky_note_2),
+          ),
+          BottomNavigationBarItem(
+            label: 'Slides',
+            icon: Icon(Icons.view_carousel),
           ),
           BottomNavigationBarItem(
             label: 'Showfile',
@@ -113,8 +122,10 @@ class HomeScaffoldSmallState extends State<HomeScaffoldSmall>
         return 0;
       case HomePage.castChanges:
         return 1;
-      case HomePage.showfile:
+      case HomePage.slides:
         return 2;
+      case HomePage.showfile:
+        return 3;
       default:
         return 0;
     }
@@ -134,6 +145,9 @@ class HomeScaffoldSmallState extends State<HomeScaffoldSmall>
         return CastChangePageContainer(
           tabController: _tabController,
         );
+      case HomePage.slides:
+        return const SlideSettingsContainer();
+
       case HomePage.showfile:
       default:
         return const ShowfilePageContainer();
@@ -149,6 +163,9 @@ class HomeScaffoldSmallState extends State<HomeScaffoldSmall>
         widget.viewModel.onHomePageChanged(HomePage.castChanges);
         return;
       case 2:
+        widget.viewModel.onHomePageChanged(HomePage.slides);
+        return;
+      case 3:
         widget.viewModel.onHomePageChanged(HomePage.showfile);
         return;
     }

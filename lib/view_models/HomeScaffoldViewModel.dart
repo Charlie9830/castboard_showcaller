@@ -2,6 +2,7 @@ import 'package:castboard_showcaller/enums.dart';
 import 'package:castboard_showcaller/view_models/HomePopupMenuViewModel.dart';
 
 class HomeScaffoldViewModel {
+  final bool hasUploadableEdits;
   final HomePage currentPage;
   final HomePopupMenuViewModel popupMenuViewModel;
   final dynamic onHomePageChanged;
@@ -12,6 +13,7 @@ class HomeScaffoldViewModel {
   final dynamic onSettingsButtonPressed;
 
   HomeScaffoldViewModel({
+    required this.hasUploadableEdits,
     required this.onUploadCastChange,
     required this.currentPage,
     required this.popupMenuViewModel,

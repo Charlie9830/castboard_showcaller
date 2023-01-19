@@ -28,6 +28,7 @@ class HomeScaffoldContainer extends StatelessWidget {
       },
       converter: (Store<AppState> store) {
         return HomeScaffoldViewModel(
+          hasUploadableEdits: store.state.editingState.hasUploadableEdits,
           currentPage: store.state.navState.homePage,
           onHomePageChanged: (HomePage page) => store.dispatch(
             SetHomePage(page),
@@ -39,7 +40,7 @@ class HomeScaffoldContainer extends StatelessWidget {
             SetCastChangePageTab(tab),
           ),
           onDebugButtonPressed: () => store.dispatch(InitMockData()),
-          onUploadCastChange: () => store.dispatch(uploadCastChange(context)),
+          onUploadCastChange: () => store.dispatch(uploadShowData(context)),
           popupMenuViewModel: HomePopupMenuViewModel(
             allowPresetUpdates: selectShowPresetActions(store),
             mode: _selectSettingsMode(store),
