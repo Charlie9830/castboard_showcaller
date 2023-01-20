@@ -1,7 +1,7 @@
 import 'package:castboard_core/models/PresetModel.dart';
+import 'package:castboard_core/utils/is_mobile_layout.dart';
 import 'package:castboard_core/widgets/color_tag.dart';
 import 'package:castboard_core/widgets/hover_action_list_tile/HoverActionListTile.dart';
-import 'package:castboard_showcaller/isLargeLayout.dart';
 import 'package:flutter/material.dart';
 
 class PresetListTile extends StatelessWidget {
@@ -26,7 +26,7 @@ class PresetListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (isLargeLayout(context)) {
+    if (isNotMobileLayout(context)) {
       return HoverActionListTile(
           key: Key(preset.uid),
           leading: _buildLeadingIcon(context),

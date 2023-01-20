@@ -1,4 +1,4 @@
-import 'package:castboard_showcaller/isLargeLayout.dart';
+import 'package:castboard_core/utils/is_mobile_layout.dart';
 import 'package:flutter/material.dart';
 
 class ResponsiveBuilder extends StatelessWidget {
@@ -14,7 +14,7 @@ class ResponsiveBuilder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (_, constraints) {
-      if (isLargeLayout(context)) {
+      if (isNotMobileLayout(context)) {
         return largeContentBuilder(context);
       } else {
         return smallContentBuilder(context);

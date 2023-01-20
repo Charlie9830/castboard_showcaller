@@ -7,6 +7,7 @@ import 'package:castboard_core/models/RemoteShowData.dart';
 import 'package:castboard_core/models/ShowDataModel.dart';
 import 'package:castboard_core/models/ShowModificationData.dart';
 import 'package:castboard_core/models/playback_state_model.dart';
+import 'package:castboard_core/utils/is_mobile_layout.dart';
 import 'package:castboard_showcaller/Routes.dart';
 import 'package:castboard_showcaller/dialogs/AddNewPresetDialog.dart';
 import 'package:castboard_showcaller/dialogs/DeletePresetDialog.dart';
@@ -18,7 +19,6 @@ import 'package:castboard_showcaller/dialogs/UpdatePresetDialog.dart';
 import 'package:castboard_showcaller/dialogs/performer_update_ready_dialog.dart';
 import 'package:castboard_showcaller/enums.dart';
 import 'package:castboard_showcaller/global_keys.dart';
-import 'package:castboard_showcaller/isLargeLayout.dart';
 import 'package:castboard_showcaller/presence/PresenceManager.dart';
 import 'package:castboard_showcaller/redux/actions/SyncActions.dart';
 import 'package:castboard_showcaller/redux/state/AppState.dart';
@@ -114,7 +114,7 @@ ThunkAction<AppState> uploadShowFile(BuildContext context, XFile file,
 
           // If we are in Large Layout we go to the Cast Changes Tab. Otherwise we go to the Remote Tab.
           if (scaffoldKey.currentContext != null &&
-              isLargeLayout(scaffoldKey.currentContext!)) {
+              isNotMobileLayout(scaffoldKey.currentContext!)) {
             store.dispatch(SetHomePage(HomePage.castChanges));
           } else {
             store.dispatch(SetHomePage(HomePage.remote));

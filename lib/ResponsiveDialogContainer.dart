@@ -1,5 +1,4 @@
-import 'package:castboard_showcaller/dialogs/DialogButtonRow.dart';
-import 'package:castboard_showcaller/isLargeLayout.dart';
+import 'package:castboard_core/utils/is_mobile_layout.dart';
 import 'package:flutter/material.dart';
 
 class ResponsiveDialogContainer extends StatelessWidget {
@@ -18,7 +17,7 @@ class ResponsiveDialogContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (isLargeLayout(context)) {
+    if (isNotMobileLayout(context)) {
       return Dialog(
         child: Material(
           child: Padding(
