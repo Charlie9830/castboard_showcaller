@@ -1,24 +1,28 @@
-import 'package:castboard_core/models/SlideModel.dart';
 import 'package:castboard_core/widgets/slide_enable_selector/slide_enable_selector.dart';
-import 'package:castboard_showcaller/view_models/ShowfilePageViewModel.dart';
 import 'package:castboard_showcaller/view_models/slide_settings_page_view_model.dart';
 import 'package:flutter/material.dart';
 
-class SlideSettingsPageLarge extends StatefulWidget {
+class SlideSettingsPage extends StatefulWidget {
   final SlideSettingsPageViewModel viewModel;
 
-  const SlideSettingsPageLarge({
+  const SlideSettingsPage({
     Key? key,
     required this.viewModel,
   }) : super(key: key);
 
   @override
-  SlideSettingsPageLargeState createState() => SlideSettingsPageLargeState();
+  SlideSettingsPageState createState() => SlideSettingsPageState();
 }
 
-class SlideSettingsPageLargeState extends State<SlideSettingsPageLarge> {
+class SlideSettingsPageState extends State<SlideSettingsPage> {
   @override
   Widget build(BuildContext context) {
+    if (widget.viewModel.slides.isEmpty) {
+      return Center(
+          child:
+              Text('No Slides', style: Theme.of(context).textTheme.bodySmall));
+    }
+
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.all(16),

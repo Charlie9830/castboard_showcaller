@@ -3,7 +3,7 @@ import 'package:castboard_showcaller/redux/actions/AsyncActions.dart';
 import 'package:castboard_showcaller/redux/actions/SyncActions.dart';
 import 'package:castboard_showcaller/redux/state/AppState.dart';
 import 'package:castboard_showcaller/root_pages/showfile_page/ShowfilePage.dart';
-import 'package:castboard_showcaller/root_pages/slides_settings/slide_settings_page_large.dart';
+import 'package:castboard_showcaller/root_pages/slides_settings/slide_settings_page.dart';
 import 'package:castboard_showcaller/view_models/ShowfilePageViewModel.dart';
 import 'package:castboard_showcaller/view_models/slide_settings_page_view_model.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +17,7 @@ class SlideSettingsContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, SlideSettingsPageViewModel>(
       builder: (context, viewModel) {
-        return SlideSettingsPageLarge(
+        return SlideSettingsPage(
           viewModel: viewModel,
         );
       },
