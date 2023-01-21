@@ -29,10 +29,8 @@ class EditPresetPropertiesDialogState
 
   @override
   Widget build(BuildContext context) {
-    const switchListTilePadding = EdgeInsets.only(left: 0);
-
     return ResponsiveDialogContainer(
-      title: 'Edit Details',
+      title: 'Edit Preset Details',
       actions: [
         TextButton(
           child: const Text('Update'),
@@ -42,21 +40,23 @@ class EditPresetPropertiesDialogState
           )),
         )
       ],
+      includeCancel: true,
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(0),
         child: Column(
           children: [
             TextField(
               controller: _nameController,
               decoration: const InputDecoration(
-                hintText: 'Name',
+                label: Text('Name'),
+                alignLabelWithHint: true,
               ),
             ),
             const SizedBox(height: 16),
             TextField(
               controller: _detailsController,
               decoration: const InputDecoration(
-                hintText: 'Details',
+                label: Text('Details'),
               ),
             ),
           ],
