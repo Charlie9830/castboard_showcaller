@@ -380,6 +380,7 @@ ThunkAction<AppState> addNewPreset(BuildContext context) {
         createdOnRemote: true,
         name: result.name,
         details: result.details,
+        colorTagIndex: result.colorTagIndex,
         castChange: result.useExistingCastChange
             ? buildCopiedCastChange(
                 store.state.showState

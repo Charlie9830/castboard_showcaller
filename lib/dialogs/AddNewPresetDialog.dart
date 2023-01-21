@@ -1,3 +1,4 @@
+import 'package:castboard_core/widgets/color_tag_selector/color_tag_selector.dart';
 import 'package:castboard_showcaller/ResponsiveDialogContainer.dart';
 import 'package:flutter/material.dart';
 
@@ -15,6 +16,8 @@ class AddNewPresetDialogState extends State<AddNewPresetDialog> {
   late TextEditingController _detailsController;
   bool _allowCreation = false;
   bool _useExistingCastChange = true;
+  int _colorTag = -1;
+
   @override
   void initState() {
     _nameController = TextEditingController()
@@ -39,6 +42,7 @@ class AddNewPresetDialogState extends State<AddNewPresetDialog> {
                       name: _nameController.text,
                       details: _detailsController.text,
                       useExistingCastChange: _useExistingCastChange,
+                      colorTagIndex: _colorTag,
                     ),
                   )
               : null,
@@ -62,7 +66,13 @@ class AddNewPresetDialogState extends State<AddNewPresetDialog> {
               label: Text('Details'),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 24),
+          ColorTagSelector(
+            leftAligned: true,
+            selectedColorIndex: _colorTag,
+            onChange: (value) => setState(() => _colorTag = value),
+          ),
+          const SizedBox(height: 24),
           SwitchListTile(
             contentPadding: switchListTilePadding,
             title: const Text("Copy from current cast change"),
@@ -90,10 +100,12 @@ class AddNewPresetDialogResult {
   final String name;
   final String details;
   final bool useExistingCastChange;
+  final int colorTagIndex;
 
   AddNewPresetDialogResult({
     this.name = '',
     this.details = '',
     this.useExistingCastChange = false,
+    this.colorTagIndex = -1,
   });
 }

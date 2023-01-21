@@ -1,4 +1,5 @@
 import 'package:castboard_core/models/PresetModel.dart';
+import 'package:castboard_core/widgets/color_tag_selector/color_tag_selector.dart';
 import 'package:castboard_showcaller/ResponsiveDialogContainer.dart';
 import 'package:flutter/material.dart';
 
@@ -19,9 +20,11 @@ class EditPresetPropertiesDialogState
     extends State<EditPresetPropertiesDialog> {
   late TextEditingController _nameController;
   late TextEditingController _detailsController;
+  int _colorTag = -1;
 
   @override
   void initState() {
+    _colorTag = widget.existing.colorTagIndex;
     _nameController = TextEditingController(text: widget.existing.name);
     _detailsController = TextEditingController(text: widget.existing.name);
     super.initState();
@@ -37,6 +40,7 @@ class EditPresetPropertiesDialogState
           onPressed: () => Navigator.of(context).pop(widget.existing.copyWith(
             name: _nameController.text,
             details: _detailsController.text,
+            colorTagIndex: _colorTag
           )),
         )
       ],
@@ -44,6 +48,7 @@ class EditPresetPropertiesDialogState
       body: Padding(
         padding: const EdgeInsets.all(0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TextField(
               controller: _nameController,
@@ -59,6 +64,12 @@ class EditPresetPropertiesDialogState
                 label: Text('Details'),
               ),
             ),
+            const SizedBox(height: 24),
+            ColorTagSelector(
+              leftAligned: true,
+              selectedColorIndex: _colorTag,
+              onChange: (value) => setState(() => _colorTag = value),
+            )
           ],
         ),
       ),
