@@ -51,7 +51,7 @@ class ResponsiveDialogContainer extends StatelessWidget {
           title: Text(title),
           actions: actions,
         ),
-        body: body,
+        body: Padding(padding: const EdgeInsets.symmetric(horizontal: 16), child: body),
       );
     }
   }

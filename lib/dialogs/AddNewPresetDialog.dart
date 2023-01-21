@@ -1,3 +1,4 @@
+import 'package:castboard_core/utils/is_mobile_layout.dart';
 import 'package:castboard_core/widgets/color_tag_selector/color_tag_selector.dart';
 import 'package:castboard_showcaller/ResponsiveDialogContainer.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +32,8 @@ class AddNewPresetDialogState extends State<AddNewPresetDialog> {
   @override
   Widget build(BuildContext context) {
     const switchListTilePadding = EdgeInsets.only(left: 0);
+
+    final desktopLayout = isNotMobileLayout(context);
 
     return ResponsiveDialogContainer(
       title: 'Create new Preset',
@@ -68,18 +71,31 @@ class AddNewPresetDialogState extends State<AddNewPresetDialog> {
           ),
           const SizedBox(height: 24),
           ColorTagSelector(
+            labelPosition: ColorTagSelectorLabelPosition.top,
             leftAligned: true,
             selectedColorIndex: _colorTag,
             onChange: (value) => setState(() => _colorTag = value),
           ),
-          const SizedBox(height: 24),
-          SwitchListTile(
-            contentPadding: switchListTilePadding,
-            title: const Text("Copy from current cast change"),
-            value: _useExistingCastChange,
-            onChanged: (value) =>
-                setState(() => _useExistingCastChange = value),
-          ),
+          const SizedBox(height: 16),
+          if (!desktopLayout)
+            SwitchListTile(
+              contentPadding: switchListTilePadding,
+              title: Text("Copy from current cast change",
+                  style: Theme.of(context).textTheme.bodyMedium),
+              value: _useExistingCastChange,
+              onChanged: (value) =>
+                  setState(() => _useExistingCastChange = value),
+            ),
+          if (desktopLayout)
+            CheckboxListTile(
+              controlAffinity: ListTileControlAffinity.leading,
+              contentPadding: switchListTilePadding,
+              title: Text("Copy from current cast change",
+                  style: Theme.of(context).textTheme.bodyMedium),
+              value: _useExistingCastChange,
+              onChanged: (value) =>
+                  setState(() => _useExistingCastChange = value ?? true),
+            ),
           if (_useExistingCastChange == false)
             Text('Cast change will start from blank',
                 style: Theme.of(context).textTheme.caption),

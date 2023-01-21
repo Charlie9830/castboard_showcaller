@@ -66,6 +66,7 @@ class EditPresetPropertiesDialogState
             ),
             const SizedBox(height: 24),
             ColorTagSelector(
+              labelPosition: ColorTagSelectorLabelPosition.top,
               leftAligned: true,
               selectedColorIndex: _colorTag,
               onChange: (value) => setState(() => _colorTag = value),

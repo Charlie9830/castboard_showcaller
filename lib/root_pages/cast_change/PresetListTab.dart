@@ -15,6 +15,7 @@ class PresetListTab extends StatelessWidget {
         return PresetListTile(
           preset: preset,
           selected: selected,
+          canCombine: viewModel.presets.values.length > 1,
           allowPropertyEdit: preset.isBuiltIn == false,
           onPresetAction: (action) => _handlePresetAction(preset.uid, action),
           nestedPresetText: selected
@@ -65,7 +66,3 @@ class PresetListTab extends StatelessWidget {
     return 'Combined with $reducedPresetNames';
   }
 }
-
-
-
-

@@ -4,10 +4,13 @@ import 'package:castboard_core/widgets/color_tag.dart';
 import 'package:castboard_core/widgets/hover_action_list_tile/HoverActionListTile.dart';
 import 'package:flutter/material.dart';
 
+const double _kDesktopIconButtonSplashRadius = 20;
+
 class PresetListTile extends StatelessWidget {
   final PresetModel preset;
   final bool selected;
   final bool allowPropertyEdit;
+  final bool canCombine;
   final String nestedPresetText;
   final Function(PresetAction action) onPresetAction;
   final dynamic onTap;
@@ -18,6 +21,7 @@ class PresetListTile extends StatelessWidget {
     required this.preset,
     required this.selected,
     required this.onPresetAction,
+    this.canCombine = false,
     this.allowPropertyEdit = true,
     this.nestedPresetText = '',
     this.onTap,
@@ -35,23 +39,36 @@ class PresetListTile extends StatelessWidget {
           selected: selected,
           onTap: _handleTap,
           actions: [
-            _buildCombineButton(showIfDisabled: true) ?? const SizedBox(),
-            IconButton(
-              onPressed: () => onPresetAction(PresetAction.editProperties),
-              icon: const Icon(Icons.edit),
-              color: Colors.white,
+            _buildCombineButton(
+                canCombine ? () => onCombineButtonPressed?.call() : null),
+            Tooltip(
+              message: 'Edit',
+              child: IconButton(
+                splashRadius: _kDesktopIconButtonSplashRadius,
+                onPressed: () => onPresetAction(PresetAction.editProperties),
+                icon: const Icon(Icons.edit),
+                color: Colors.white,
+              ),
             ),
-            IconButton(
-              onPressed: () => onPresetAction(PresetAction.duplicate),
-              icon: const Icon(Icons.copy),
-              color: Colors.white,
+            Tooltip(
+              message: 'Duplicate',
+              child: IconButton(
+                splashRadius: _kDesktopIconButtonSplashRadius,
+                onPressed: () => onPresetAction(PresetAction.duplicate),
+                icon: const Icon(Icons.copy),
+                color: Colors.white,
+              ),
             ),
-            IconButton(
-              onPressed: preset.isBuiltIn
-                  ? null
-                  : () => onPresetAction(PresetAction.delete),
-              icon: const Icon(Icons.delete),
-              color: Colors.white,
+            Tooltip(
+              message: 'Delete',
+              child: IconButton(
+                splashRadius: _kDesktopIconButtonSplashRadius,
+                onPressed: preset.isBuiltIn
+                    ? null
+                    : () => onPresetAction(PresetAction.delete),
+                icon: const Icon(Icons.delete),
+                color: Colors.white,
+              ),
             ),
           ]);
     }
@@ -64,7 +81,8 @@ class PresetListTile extends StatelessWidget {
         subtitle: _buildSubtitle(),
         onTap: _handleTap,
         onLongPress: allowPropertyEdit ? () => _handleLongPress(context) : null,
-        trailing: _buildCombineButton());
+        trailing: _buildCombineButton(
+            canCombine ? () => onCombineButtonPressed?.call() : null));
   }
 
   void _handleTap() {
@@ -88,19 +106,15 @@ class PresetListTile extends StatelessWidget {
         : null;
   }
 
-  Widget? _buildCombineButton({bool showIfDisabled = false}) {
-    if (showIfDisabled == false) {
-      return IconButton(
+  Widget _buildCombineButton(void Function()? onPressed) {
+    return Tooltip(
+      message: 'Combine with...',
+      child: IconButton(
+        splashRadius: _kDesktopIconButtonSplashRadius,
         icon: const Icon(Icons.merge_type),
-        onPressed: () => onCombineButtonPressed?.call(),
+        onPressed: onPressed,
         color: Colors.white,
-      );
-    }
-
-    return IconButton(
-      icon: const Icon(Icons.merge_type),
-      onPressed: () => onCombineButtonPressed?.call(),
-      color: Colors.white,
+      ),
     );
   }
 
