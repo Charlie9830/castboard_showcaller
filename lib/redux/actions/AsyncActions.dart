@@ -181,6 +181,7 @@ ThunkAction<AppState> uploadShowData(BuildContext context) {
           trackRefsByName: const ShowDataModel.initial().trackRefsByName,
           tracks: const ShowDataModel.initial().tracks,
           trackIndex: const ShowDataModel.initial().trackIndex,
+          subtitleFields: const ShowDataModel.initial().subtitleFields,
         ));
 
     final jsonShowData = json.encode(remoteShowData.toMap());
